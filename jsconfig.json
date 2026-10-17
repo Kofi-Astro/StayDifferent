@@ -1,0 +1,10 @@
+{
+  "//": "Editor-only config: gives VS Code IntelliSense + JSDoc type hints across server and browser code. Nothing is compiled.",
+  "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "target": "es2022",
+    "checkJs": false
+  },
+  "exclude": ["node_modules", "storage"]
+}

@@ -1,0 +1,157 @@
+/**
+ * Colour Guide — all copy, undertones, quiz questions and "I want…" rows for
+ * the flagship /colour-guide page. Editable in Admin → Colour Guide.
+ *
+ * Headings use a pipe "|" to split into two lines: text after the "|" renders
+ * on a second line in italic accent. e.g. "Know your|undertone".
+ *
+ * Shades themselves live in data/shades.js — here we only reference them by slug.
+ */
+
+export const colourGuide = {
+  hero: {
+    eyebrow: 'Stay Different Hair',
+    heading: 'The Stay Different|Colour Guide',
+    sub: 'Find the shade that does not just match you — it feels like you.',
+  },
+
+  opening: {
+    eyebrow: 'Before you choose',
+    heading: 'Your shade|starts here',
+    body:
+      'The right colour does more than look good in a photo. It warms your complexion, brightens your eyes and makes people ask what you have changed.\n\nThree things point you in the right direction: your skin tone (how light or deep you are), your undertone (the colour beneath the surface) and contrast (how much your hair stands apart from your skin).\n\nConsider this a guide, not a rulebook. The best shade is the one you feel most like yourself in — and if that breaks every rule here, even better.',
+    pillars: [
+      { title: 'Skin tone', text: 'How light or deep your skin is on the surface. It changes with the seasons.' },
+      { title: 'Undertone', text: 'The warm, cool or neutral colour underneath. It never changes.' },
+      { title: 'Contrast', text: 'How far your hair sits from your skin. Low blends, high makes a statement.' },
+    ],
+  },
+
+  step1: {
+    eyebrow: 'Step 01 — Know your undertone',
+    heading: 'Know your|undertone',
+    body:
+      'Skin tone is the shade you see in the mirror — fair, medium, deep. Undertone is the subtle hue underneath it, and it stays the same whether you are winter-pale or holiday-bronzed. It is the secret to a shade that looks expensive instead of off.',
+    quizHeading: 'Not sure? Take the 30-second quiz.',
+    quizIntro: 'Three quick questions. Go with your first instinct.',
+  },
+
+  /** Quiz — each answer votes for an undertone; the most votes wins (ties → neutral). */
+  quiz: [
+    {
+      question: 'Look at the veins on your inner wrist in daylight. What colour are they?',
+      options: [
+        { label: 'Green or olive', undertone: 'warm' },
+        { label: 'Blue or purple', undertone: 'cool' },
+        { label: 'A mix — hard to tell', undertone: 'neutral' },
+      ],
+    },
+    {
+      question: 'Which jewellery makes your skin glow?',
+      options: [
+        { label: 'Gold, always', undertone: 'warm' },
+        { label: 'Silver or platinum', undertone: 'cool' },
+        { label: 'Honestly, both', undertone: 'neutral' },
+      ],
+    },
+    {
+      question: 'How does your skin react to the sun?',
+      options: [
+        { label: 'I tan easily and rarely burn', undertone: 'warm' },
+        { label: 'I burn first, tan later (if at all)', undertone: 'cool' },
+        { label: 'A little of both', undertone: 'neutral' },
+      ],
+    },
+  ],
+
+  /** The three undertone cards. `matches` are shade slugs. */
+  undertones: [
+    {
+      key: 'warm',
+      number: '01',
+      name: 'Warm',
+      description:
+        'Your skin has golden, peachy or yellow hints underneath. You glow in sunlight and look radiant in earthy, rich colours.',
+      jewellery: 'Gold makes you glow.',
+      lookTowards: ['Honey & caramel', 'Golden blondes', 'Toffee & copper ribbons', 'Warm chocolate browns'],
+      matches: ['toffee-riot', 'golden-hour', 'honey-rebel', 'cocoa-muse'],
+    },
+    {
+      key: 'cool',
+      number: '02',
+      name: 'Cool',
+      description:
+        'Your skin has pink, red or bluish hints underneath. You shine in jewel tones and crisp colours, and warmth can sometimes make you look flushed.',
+      jewellery: 'Silver is your metal.',
+      lookTowards: ['Ash browns', 'Smoky, mushroom tones', 'Deep neutral espresso', 'Cool, beige blondes'],
+      matches: ['smoke-signal', 'midnight-espresso'],
+    },
+    {
+      key: 'neutral',
+      number: '03',
+      name: 'Neutral',
+      description:
+        'A balance of warm and cool — your undertone is hard to pin down, and that is your superpower. Almost every shade family works for you.',
+      jewellery: 'Gold and silver both work.',
+      lookTowards: ['Bronde', 'Soft brunettes', 'Multi-tonal melts', 'Rich deep browns'],
+      matches: ['honey-rebel', 'cocoa-muse', 'wild-card', 'midnight-espresso', 'smoke-signal'],
+    },
+  ],
+
+  step2: {
+    eyebrow: 'Step 02 — Find your shade',
+    heading: 'Find|your shade',
+    body: 'Seven shades, each with its own personality. Filter by undertone or how much dimension you want, then fall in love.',
+  },
+
+  texture: {
+    eyebrow: 'Colour, with texture',
+    heading: 'Colour looks different|on curls',
+    body: 'Curls and coils catch light differently to straight hair, so dimension reads deeper and highlights pop harder. These two were made for it.',
+    /** Product slugs to feature as large cards. */
+    products: ['toffee-riot-curly-bundle', 'wild-card-curly-wig'],
+  },
+
+  step3: {
+    eyebrow: 'Step 03 — Choose by the look',
+    heading: 'Choose by|the look',
+    body: 'Know the vibe but not the shade name? Start with how you want to feel.',
+  },
+
+  looks: [
+    { statement: 'I want something dark & natural', shade: 'midnight-espresso' },
+    { statement: 'I want soft, sun-kissed brightness', shade: 'honey-rebel' },
+    { statement: 'I want rich brunette with a hint of warmth', shade: 'cocoa-muse' },
+    { statement: 'I want bold highlights on my curls', shade: 'toffee-riot' },
+    { statement: 'I want full-on golden blonde', shade: 'golden-hour' },
+    { statement: 'I want cool and brass-free', shade: 'smoke-signal' },
+    { statement: 'I want to change the room when I walk in', shade: 'wild-card' },
+  ],
+
+  step4: {
+    eyebrow: 'Step 04 — Harmony or contrast?',
+    heading: 'Harmony|or contrast?',
+    body: 'Once you know your undertone, decide how loud you want to be. There is no wrong answer — only a different one.',
+    harmony: {
+      label: 'Harmony',
+      title: 'Blend in beautifully',
+      text: 'Match your hair to your undertone — warm with warm, cool with cool. The result is seamless, soft and naturally "is that your real hair?"',
+      example: 'Warm undertone + Cocoa Muse · Cool undertone + Smoke Signal',
+    },
+    contrast: {
+      label: 'Contrast',
+      title: 'Stand out on purpose',
+      badge: 'The Stay Different pick',
+      text: 'Pair opposites — cool skin with golden warmth, deep skin with bright blonde — and turn your hair into the statement. Contrast is not a mistake. It is a choice.',
+      example: 'Deep skin + Golden Hour · Cool undertone + Wild Card',
+    },
+  },
+
+  closing: {
+    eyebrow: 'One last note',
+    heading: 'Your hair. Your rules.|Stay different.',
+    body: 'Lighting, screens and your own natural hair all change how a colour looks in real life. Use this guide to narrow it down, then choose the shade that feels most like you. Still torn? We will happily help you decide.',
+    primaryLabel: 'Shop all shades',
+    secondaryLabel: 'Still unsure? Chat with us',
+  },
+};

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Stay Different monogram: espresso disc, gold ring, cream "SD" -->
+  <circle cx="32" cy="32" r="31" fill="#1e1612"/>
+  <circle cx="32" cy="32" r="27.5" fill="none" stroke="#b8935a" stroke-width="1"/>
+  <text x="32" y="41" text-anchor="middle" font-family="Didot, 'Bodoni 72', 'Bodoni Moda', Georgia, serif" font-size="26" letter-spacing="1" fill="#f6f0e8">SD</text>
+</svg>
