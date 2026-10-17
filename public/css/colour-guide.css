@@ -1,0 +1,943 @@
+/* ==========================================================================
+   Colour Guide — page styles (loaded only on /colour-guide)
+   Sections follow the page order: hero → sub-nav → opening → step 01 (quiz,
+   undertone cards) → step 02 (filters, shade cards) → texture band →
+   step 03 (look picker) → step 04 (harmony/contrast) → closing.
+   ========================================================================== */
+
+/* Leave room for header + sticky sub-nav when jumping to anchors. */
+html {
+  scroll-padding-top: calc(var(--header-h) + 5rem);
+}
+
+/* ---------- Hero --------------------------------------------------------- */
+.cg-hero {
+  position: relative;
+  overflow: hidden;
+  padding-block: clamp(4rem, 3rem + 5vw, 7.5rem) clamp(3rem, 2rem + 4vw, 6rem);
+}
+/* Soft glow behind the ribbon */
+.cg-hero::before {
+  content: '';
+  position: absolute;
+  inset: auto -10% -40% 40%;
+  height: 80%;
+  background: radial-gradient(closest-side, rgb(210 85 47 / 0.22), transparent);
+  pointer-events: none;
+}
+.cg-hero__inner {
+  position: relative;
+  display: grid;
+  gap: 3rem;
+  align-items: center;
+}
+.cg-hero__copy {
+  display: grid;
+  gap: 1.5rem;
+  justify-items: start;
+}
+.cg-hero__eyebrow {
+  color: var(--gold-soft);
+}
+.cg-hero__title {
+  font-size: clamp(3rem, 1.6rem + 6.5vw, 7.5rem);
+  line-height: 0.95;
+}
+.cg-hero__sub {
+  font-size: var(--step-1);
+  color: var(--muted-light);
+  max-width: 30rem;
+}
+.cg-hero__steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  letter-spacing: 0.06em;
+}
+.cg-hero__steps a {
+  color: var(--cream);
+  border-bottom: 1px solid rgb(246 240 232 / 0.3);
+  padding-bottom: 2px;
+  transition: border-color 0.2s ease;
+}
+.cg-hero__steps a:hover {
+  border-color: var(--accent);
+}
+
+/* The "ribbon": one tall hair strand per shade */
+.cg-ribbon {
+  display: flex;
+  gap: 0.6rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  scrollbar-width: none;
+  margin-inline: calc(var(--gutter) * -1);
+  padding-inline: var(--gutter);
+}
+.cg-ribbon::-webkit-scrollbar {
+  display: none;
+}
+.cg-ribbon li {
+  flex: 0 0 auto;
+}
+.cg-ribbon__strand {
+  position: relative;
+  display: block;
+  width: 4.25rem;
+  height: 15rem;
+  border-radius: 999px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px rgb(246 240 232 / 0.12);
+  transition:
+    transform 0.6s var(--ease),
+    box-shadow 0.3s ease;
+}
+.cg-ribbon__strand:hover,
+.cg-ribbon__strand:focus-visible {
+  transform: translateY(-0.75rem);
+  box-shadow: 0 0 0 2px var(--gold-soft);
+}
+.cg-ribbon__label {
+  position: absolute;
+  inset: auto 0 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-inline: auto;
+  width: max-content;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 0 1px 6px rgb(0 0 0 / 0.6);
+}
+.cg-ribbon__label span {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  letter-spacing: 0;
+}
+@media (min-width: 1024px) {
+  .cg-hero__inner {
+    grid-template-columns: 1.15fr 1fr;
+    gap: 4rem;
+  }
+  .cg-ribbon {
+    overflow: visible;
+    margin: 0;
+    padding: 0;
+    justify-content: flex-end;
+    gap: 0.75rem;
+  }
+  .cg-ribbon__strand {
+    width: clamp(3.5rem, 1rem + 3vw, 4.75rem);
+    height: clamp(22rem, 16rem + 10vw, 30rem);
+  }
+  /* Stagger the strands into a gentle wave. */
+  .cg-ribbon li {
+    margin-top: calc(sin(calc(var(--i) * 52deg)) * 2.5rem + 2.5rem);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .cg-ribbon li {
+      animation: fade-up 1s var(--ease) both;
+      animation-delay: calc(var(--i) * 80ms + 200ms);
+    }
+  }
+}
+
+/* ---------- Sticky step navigation -------------------------------------- */
+.cg-subnav {
+  position: sticky;
+  top: var(--header-h);
+  z-index: 30;
+  background: rgb(246 240 232 / 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--sand);
+}
+.cg-subnav__list {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-block: 0.75rem;
+  margin-inline: calc(var(--gutter) * -1);
+  padding-inline: var(--gutter);
+}
+.cg-subnav__list .chip {
+  white-space: nowrap;
+  min-height: 2.25rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+}
+.cg-subnav .chip[aria-current='location'] {
+  background: var(--espresso);
+  border-color: var(--espresso);
+  color: var(--cream);
+}
+@media (min-width: 1024px) {
+  .cg-subnav__list {
+    justify-content: center;
+  }
+}
+
+/* ---------- Opening ------------------------------------------------------ */
+.cg-opening__grid {
+  display: grid;
+  gap: 1rem;
+}
+@media (min-width: 1024px) {
+  .cg-opening__grid {
+    grid-template-columns: 1fr 1.1fr;
+    gap: 5rem;
+    align-items: start;
+  }
+}
+.cg-pillars {
+  display: grid;
+  gap: 2rem;
+  margin-top: clamp(3rem, 2rem + 3vw, 5rem);
+}
+@media (min-width: 768px) {
+  .cg-pillars {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+  }
+}
+.cg-pillar {
+  display: grid;
+  gap: 0.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--espresso);
+}
+.cg-pillar__num {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.5rem;
+  color: var(--accent-strong);
+}
+.cg-pillar__title {
+  font-size: var(--step-2);
+}
+.cg-pillar__text {
+  color: var(--espresso-soft);
+}
+
+/* ---------- Step 01 — Quiz ---------------------------------------------- */
+.quiz {
+  display: grid;
+  gap: 2rem;
+  padding: clamp(1.5rem, 1rem + 2.5vw, 3rem);
+  margin-bottom: clamp(2.5rem, 2rem + 2vw, 4rem);
+  background: var(--paper);
+  border: 1px solid var(--sand);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 30px 60px -40px rgb(30 22 18 / 0.35);
+}
+.quiz__head {
+  display: grid;
+  gap: 0.5rem;
+}
+.quiz__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--accent-strong);
+}
+.quiz__title {
+  font-size: var(--step-3);
+}
+.quiz__intro {
+  color: var(--muted);
+}
+.quiz__questions {
+  display: grid;
+  gap: 2rem;
+}
+@media (min-width: 1024px) {
+  .quiz__questions {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+  }
+}
+.quiz__q {
+  border: 0;
+  padding: 0;
+  min-width: 0;
+}
+.quiz__legend {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  line-height: 1.45;
+}
+.quiz__num {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.35rem;
+  line-height: 1;
+  color: var(--accent-strong);
+}
+.quiz__q[data-missing='true'] .quiz__legend {
+  color: var(--danger);
+}
+.quiz__options {
+  display: grid;
+  gap: 0.5rem;
+}
+.quiz__option {
+  position: relative;
+  display: block;
+  cursor: pointer;
+}
+/* The real radio stays in the DOM (keyboard + screen readers) but is hidden;
+   the <span> next to it is the visible, styled answer. */
+.quiz__option input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  cursor: pointer;
+}
+.quiz__option span {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 3rem;
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--sand-deep);
+  border-radius: var(--radius);
+  font-size: 0.9375rem;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+.quiz__option span::before {
+  content: '';
+  flex-shrink: 0;
+  width: 1.1rem;
+  height: 1.1rem;
+  border: 1px solid var(--sand-deep);
+  border-radius: 50%;
+  transition:
+    border 0.2s ease,
+    background 0.2s ease;
+}
+.quiz__option:hover span {
+  border-color: var(--espresso);
+}
+.quiz__option input:checked + span {
+  border-color: var(--espresso);
+  background: var(--cream-deep);
+}
+.quiz__option input:checked + span::before {
+  border: 5px solid var(--accent-strong);
+}
+.quiz__option input:focus-visible + span {
+  outline: 2px solid var(--accent-strong);
+  outline-offset: 2px;
+}
+.quiz__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.5rem;
+}
+.quiz__progress {
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+.quiz__result {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1.75rem;
+  border-radius: var(--radius);
+  background: var(--espresso);
+  color: var(--cream);
+  animation: fade-up 0.6s var(--ease) both;
+}
+.quiz__result:focus {
+  outline: none;
+}
+.quiz__result .eyebrow {
+  color: var(--gold-soft);
+}
+.quiz__result-title {
+  font-family: var(--font-display);
+  font-size: var(--step-3);
+  line-height: 1.1;
+}
+.quiz__result-title em {
+  color: #e2734f;
+}
+.quiz__result-text {
+  color: var(--muted-light);
+  max-width: 40rem;
+}
+.quiz__result .btn-row {
+  margin-top: 0.5rem;
+}
+.quiz__result .btn-outline {
+  border-color: rgb(246 240 232 / 0.5);
+}
+.quiz__result .btn-outline:hover {
+  background: var(--cream);
+  color: var(--espresso);
+}
+.quiz__result .btn-primary {
+  background: var(--accent-strong);
+}
+.quiz__result .btn-primary:hover {
+  background: var(--cream);
+  color: var(--espresso);
+}
+
+/* ---------- Step 01 — Undertone cards ----------------------------------- */
+.undertone-grid {
+  display: grid;
+  gap: 1.25rem;
+}
+@media (min-width: 1024px) {
+  .undertone-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+}
+.undertone-card {
+  position: relative;
+  display: grid;
+  gap: 1.25rem;
+  align-content: start;
+  padding: clamp(1.5rem, 1.2rem + 1.5vw, 2.25rem);
+  background: var(--paper);
+  border: 1px solid var(--sand);
+  border-radius: var(--radius-lg);
+  transition:
+    transform 0.5s var(--ease),
+    opacity 0.4s ease,
+    box-shadow 0.4s ease,
+    border-color 0.3s ease;
+}
+.undertone-card:focus {
+  outline: none;
+}
+.undertone-card[data-matched='true'] {
+  border-color: var(--accent-strong);
+  box-shadow:
+    0 0 0 1px var(--accent-strong),
+    0 30px 60px -30px rgb(180 68 31 / 0.45);
+  transform: translateY(-6px);
+}
+.undertone-card[data-dimmed='true'] {
+  opacity: 0.6;
+}
+.undertone-card__match {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  display: none;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background: var(--accent-strong);
+  color: #fff;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.undertone-card[data-matched='true'] .undertone-card__match {
+  display: inline-flex;
+}
+.undertone-card__label {
+  color: var(--accent-strong);
+}
+.undertone-card__name {
+  font-size: var(--step-4);
+  font-style: italic;
+  margin-top: -0.5rem;
+}
+.undertone-card__band {
+  height: 0.6rem;
+  border-radius: 999px;
+}
+.undertone-card__desc {
+  color: var(--espresso-soft);
+}
+.undertone-card__jewellery {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  background: var(--cream);
+  border-radius: var(--radius);
+  font-size: 0.9375rem;
+}
+.metal {
+  flex-shrink: 0;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.08);
+}
+.metal--gold {
+  background: linear-gradient(135deg, #f3dc9b, #b8935a 55%, #8a6a35);
+}
+.metal--silver {
+  background: linear-gradient(135deg, #fafafa, #b9bec4 55%, #7c8188);
+}
+.metal--both {
+  background: linear-gradient(135deg, #f3dc9b, #b8935a 49%, #b9bec4 51%, #7c8188);
+}
+.undertone-card__look .eyebrow,
+.undertone-card__matches .eyebrow {
+  color: var(--muted);
+  margin-bottom: 0.65rem;
+}
+.undertone-card__look ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+}
+.undertone-card__look li {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.9375rem;
+}
+.undertone-card__look li::before {
+  content: '';
+  width: 0.35rem;
+  height: 0.35rem;
+  background: var(--gold);
+  transform: rotate(45deg);
+}
+.shade-chip {
+  min-height: 2.25rem;
+  padding-left: 0.4rem;
+  background: var(--cream);
+}
+.shade-chip .swatch-dot {
+  width: 1.35rem;
+  height: 1.35rem;
+  margin: 0;
+  border: 0;
+}
+.shade-chip:hover {
+  background: var(--espresso);
+  color: var(--cream);
+}
+
+/* ---------- Step 02 — Filters & shade cards ----------------------------- */
+.shade-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1.25rem 2.5rem;
+  padding-bottom: 1.5rem;
+  margin-bottom: 2.5rem;
+  border-bottom: 1px solid var(--sand);
+}
+.shade-filters__group {
+  display: grid;
+  gap: 0.6rem;
+}
+.shade-filters__label {
+  color: var(--muted);
+}
+.shade-filters__count {
+  margin-left: auto;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+.shade-grid {
+  display: grid;
+  gap: 3rem 1.5rem;
+}
+@media (min-width: 768px) {
+  .shade-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1280px) {
+  .shade-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4rem 2rem;
+  }
+}
+.shade-card {
+  display: grid;
+  align-content: start;
+  border-radius: var(--radius-lg);
+  scroll-margin-top: calc(var(--header-h) + 6rem);
+}
+.shade-card[data-flash='true'] {
+  animation: flash 1.6s var(--ease);
+}
+@keyframes flash {
+  0%,
+  60% {
+    box-shadow: 0 0 0 3px var(--accent-strong);
+  }
+  100% {
+    box-shadow: 0 0 0 3px transparent;
+  }
+}
+.shade-card__swatch {
+  aspect-ratio: 5 / 4;
+  border-radius: var(--radius-lg);
+}
+.shade-card__number {
+  position: absolute;
+  left: 1.25rem;
+  bottom: 0.75rem;
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 2.5rem + 3vw, 5.5rem);
+  line-height: 1;
+  color: #fff;
+  text-shadow: 0 2px 20px rgb(0 0 0 / 0.35);
+}
+.shade-card__strip {
+  position: absolute;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  display: flex;
+}
+.shade-card__strip span {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  border: 2px solid rgb(255 255 255 / 0.85);
+  margin-left: -0.35rem;
+}
+.shade-card__body {
+  display: grid;
+  gap: 0.75rem;
+  padding-top: 1.5rem;
+}
+.shade-card__family {
+  color: var(--muted);
+}
+.shade-card__name {
+  font-size: var(--step-3);
+}
+.shade-card__name a:hover {
+  color: var(--accent-strong);
+}
+.shade-card__hook {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: var(--step-1);
+  color: var(--accent-strong);
+  line-height: 1.35;
+}
+.shade-card__desc {
+  color: var(--espresso-soft);
+}
+.spec-table {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 0.5rem;
+  border-top: 1px solid var(--sand);
+}
+.spec-table > div {
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--sand);
+}
+.spec-table > div:nth-child(odd):not(.spec-table__wide) {
+  padding-right: 1rem;
+}
+.spec-table__wide {
+  grid-column: 1 / -1;
+}
+.spec-table dt {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.spec-table dd {
+  margin: 0;
+  font-size: 0.9375rem;
+}
+.spec-table__dimension {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.meter {
+  display: inline-flex;
+  gap: 3px;
+}
+.meter span {
+  width: 0.9rem;
+  height: 0.3rem;
+  border-radius: 2px;
+  background: var(--sand);
+}
+.meter span.on {
+  background: var(--accent-strong);
+}
+.shade-card__cta {
+  margin-top: 0.5rem;
+  justify-self: start;
+}
+.shade-card__cta:hover {
+  color: var(--accent-strong);
+}
+.shade-empty {
+  display: grid;
+  justify-items: start;
+  gap: 1rem;
+  padding: 2rem 0;
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+}
+
+/* ---------- Colour, with texture ---------------------------------------- */
+.cg-texture__grid {
+  display: grid;
+  gap: 1.25rem;
+}
+@media (min-width: 768px) {
+  .cg-texture__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+}
+.texture-card {
+  position: relative;
+  display: block;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.texture-card__media {
+  display: block;
+  aspect-ratio: 4 / 5;
+}
+@media (min-width: 1024px) {
+  .texture-card__media {
+    aspect-ratio: 5 / 6;
+  }
+}
+.texture-card__media > * {
+  transition: transform 1.2s var(--ease);
+}
+.texture-card:hover .texture-card__media > * {
+  transform: scale(1.05);
+}
+.texture-card__body {
+  position: absolute;
+  inset: auto 0 0 0;
+  display: grid;
+  gap: 0.5rem;
+  justify-items: start;
+  padding: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+  background: linear-gradient(to top, rgb(20 14 11 / 0.85), transparent);
+  color: #fff;
+}
+.texture-card__shade {
+  color: var(--gold-soft);
+}
+.texture-card__name {
+  font-family: var(--font-display);
+  font-size: var(--step-3);
+  line-height: 1.05;
+}
+.texture-card__cta {
+  margin-top: 0.5rem;
+}
+.texture-card:hover .texture-card__cta .icon {
+  transform: translateX(4px);
+}
+
+/* ---------- Step 03 — Look picker --------------------------------------- */
+.look-picker {
+  border-top: 1px solid var(--espresso);
+}
+.look-picker li {
+  border-bottom: 1px solid var(--sand-deep);
+}
+.look-row {
+  display: grid;
+  gap: 0.75rem;
+  padding-block: clamp(1.25rem, 1rem + 1vw, 2rem);
+  transition: color 0.25s ease;
+}
+@media (min-width: 768px) {
+  .look-row {
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 2rem;
+  }
+}
+.look-row__statement {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 1.1rem + 1.8vw, 2.75rem);
+  line-height: 1.1;
+  transition: transform 0.5s var(--ease);
+}
+.look-row__shade {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.look-row__dot {
+  width: 1.75rem;
+  height: 1.75rem;
+  margin: 0;
+  border: 0;
+}
+.look-row__arrow {
+  transition: transform 0.4s var(--ease);
+}
+.look-row:hover,
+.look-row:focus-visible {
+  color: var(--accent-strong);
+}
+.look-row:hover .look-row__statement {
+  transform: translateX(0.5rem);
+  font-style: italic;
+}
+.look-row:hover .look-row__arrow,
+.look-row:focus-visible .look-row__arrow {
+  transform: translateX(0.6rem);
+}
+
+/* ---------- Step 04 — Harmony or contrast ------------------------------- */
+.hc-grid {
+  display: grid;
+  gap: 1.25rem;
+}
+@media (min-width: 768px) {
+  .hc-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+}
+.hc-panel {
+  position: relative;
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+  padding: clamp(1.75rem, 1.2rem + 2.5vw, 3.5rem);
+  border-radius: var(--radius-lg);
+  background: var(--cream);
+}
+.hc-panel--contrast {
+  background: var(--espresso);
+  color: var(--cream);
+}
+.hc-panel__badge {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+}
+.hc-panel__label {
+  color: var(--accent-strong);
+}
+.hc-panel--contrast .hc-panel__label {
+  color: var(--gold-soft);
+}
+.hc-panel__title {
+  font-size: var(--step-4);
+  font-style: italic;
+}
+.hc-panel--contrast .hc-panel__title {
+  color: #e2734f;
+}
+.hc-panel__text {
+  font-size: var(--step-1);
+  color: var(--espresso-soft);
+}
+.hc-panel--contrast .hc-panel__text {
+  color: var(--muted-light);
+}
+.hc-panel__example {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+  align-items: baseline;
+  padding-top: 1rem;
+  border-top: 1px solid var(--sand-deep);
+  font-size: 0.9375rem;
+}
+.hc-panel--contrast .hc-panel__example {
+  border-color: rgb(246 240 232 / 0.18);
+}
+.hc-panel__example .eyebrow {
+  color: var(--muted);
+}
+.hc-panel--contrast .hc-panel__example .eyebrow {
+  color: var(--gold-soft);
+}
+/* Two overlapping circles: skin + hair. Harmony blends, contrast pops. */
+.hc-visual {
+  display: flex;
+  margin-bottom: 1rem;
+}
+.hc-visual span {
+  width: clamp(4rem, 3rem + 3vw, 6rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+.hc-visual span + span {
+  margin-left: -1.5rem;
+}
+.hc-visual--harmony .hc-visual__skin {
+  background: radial-gradient(circle at 30% 30%, #d8a57f, #a8714d);
+}
+.hc-visual--harmony .hc-visual__hair {
+  background: radial-gradient(circle at 30% 30%, #b07a4a, #5d3f2c);
+  mix-blend-mode: multiply;
+}
+.hc-visual--contrast .hc-visual__skin {
+  background: radial-gradient(circle at 30% 30%, #7a4f38, #3f281c);
+  box-shadow: 0 0 0 2px var(--espresso);
+}
+.hc-visual--contrast .hc-visual__hair {
+  background: radial-gradient(circle at 30% 30%, #f4dcaa, #c99d62);
+  box-shadow: 0 0 0 3px var(--espresso);
+}
+
+/* ---------- Closing note ------------------------------------------------- */
+.cg-closing__inner {
+  display: grid;
+  justify-items: center;
+  gap: 1.25rem;
+  max-width: 52rem;
+  text-align: center;
+}
+.cg-closing__diamond {
+  width: 0.7rem;
+  height: 0.7rem;
+  background: var(--gold);
+  transform: rotate(45deg);
+}
+.cg-closing__eyebrow {
+  color: var(--accent-strong);
+}
+.cg-closing__title {
+  font-size: var(--step-5);
+}
+.cg-closing__body {
+  font-size: var(--step-1);
+  color: var(--espresso-soft);
+  max-width: 38rem;
+}
+.cg-closing__ctas {
+  justify-content: center;
+  margin-top: 1rem;
+}

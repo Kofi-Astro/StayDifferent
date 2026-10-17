@@ -37,21 +37,24 @@ function rng(seed) {
   };
 }
 
-/** Wave settings per texture: amplitude (px) and half-wavelength (px). */
+/** Wave settings per texture: amplitude (px), half-wavelength (px), strand count. */
 const WAVES = {
-  straight: { amp: 6, half: 260, strands: 26 },
-  'body-wave': { amp: 20, half: 75, strands: 22 },
-  curly: { amp: 13, half: 26, strands: 20 },
-  'kinky-curly': { amp: 9, half: 14, strands: 18 },
+  straight: { amp: 5, half: 260, strands: 44 },
+  'body-wave': { amp: 18, half: 80, strands: 40 },
+  curly: { amp: 12, half: 26, strands: 30 },
+  'kinky-curly': { amp: 8, half: 13, strands: 30 },
 };
+
+/** Number of distinct strand shapes; neighbouring strands share similar phases. */
+const VARIANTS = 6;
 
 /**
  * Build one vertical wavy strand path starting at x=0, as a chain of cubic
  * curves that approximate a sine wave.
  */
 function strandPath(amp, half, phase) {
-  let d = `M0 ${-40 + phase}`;
-  let y = -40 + phase;
+  let d = `M0 ${(-40 - phase).toFixed(0)}`;
+  let y = -40 - phase;
   let dir = 1;
   while (y < 560) {
     const k = amp * 1.33 * dir;
@@ -73,16 +76,19 @@ export function hairArt({ swatch, texture = 'straight', seed = '', label = '' })
   const id = `ha${hash(`${seed}|${texture}|${s.base}${s.mid}${s.highlight}`).toString(36)}`;
   const rand = rng(hash(id));
 
-  // Three strand shapes with different phases; strands reuse them via <use>.
-  const variants = [0, 1, 2].map((i) => strandPath(wave.amp, wave.half, -i * wave.half * 0.66));
+  // A few strand shapes whose phase shifts gradually — like real hair, the
+  // waves run roughly parallel and drift across the head.
+  const variants = Array.from({ length: VARIANTS }, (_, i) => strandPath(wave.amp, wave.half, i * wave.half * 0.16));
 
   let strands = '';
   for (let i = 0; i < wave.strands; i++) {
-    const x = Math.round(-20 + (440 / wave.strands) * i + rand() * 14);
-    const colour = rand() > 0.45 ? s.highlight : s.mid;
-    const width = (1.5 + rand() * 5).toFixed(1);
-    const opacity = (0.18 + rand() * 0.45).toFixed(2);
-    strands += `<use href="#${id}-p${i % 3}" x="${x}" stroke="${colour}" stroke-width="${width}" opacity="${opacity}"/>`;
+    const x = Math.round(-20 + (440 / wave.strands) * i + rand() * 8);
+    // Pick a variant from the strand's position (+ a little randomness).
+    const v = Math.min(VARIANTS - 1, Math.floor((i / wave.strands) * VARIANTS + rand() * 1.4));
+    const colour = rand() > 0.4 ? s.highlight : s.mid;
+    const width = (0.8 + rand() * 2.6).toFixed(1);
+    const opacity = (0.2 + rand() * 0.45).toFixed(2);
+    strands += `<use href="#${id}-p${v}" x="${x}" stroke="${colour}" stroke-width="${width}" opacity="${opacity}"/>`;
   }
 
   const a11y = label ? `role="img" aria-label="${escapeHtml(label)}"` : 'aria-hidden="true"';
