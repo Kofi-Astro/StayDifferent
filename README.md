@@ -99,6 +99,12 @@ All colours, fonts, spacing and motion values are CSS custom properties at the t
 
 Fonts are Bodoni Moda for display headings and DM Sans for body text.
 
+**Light / dark theme.** The moon/sun button in the header switches themes. On a first visit the site follows the device setting; after that the visitor's choice is remembered.
+- The dark values are the same token names, redefined under `:root[data-theme='dark']` in `styles.css`.
+- "Always dark" surfaces (footer, announcement bar, dark sections) use `--night` / `--on-night`, so they stay dark in both themes.
+- Toggle logic: `public/js/client/theme.js`. A small inline script in `templates/base.html` applies the saved choice before the page paints, so there's no flash.
+- Both themes pass WCAG AA contrast checks.
+
 ---
 
 ## 3. Editing content

@@ -20,12 +20,18 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Flag that JavaScript is running (CSS shows no-JS fallbacks otherwise). -->
-  <script>document.documentElement.classList.add('js')</script>
+  <!-- Runs before the page paints: flags that JS is on, and applies the
+       visitor's saved light/dark choice so there is no flash of the wrong theme.
+       No saved choice = follow the device setting (handled in CSS). -->
+  <script>
+    document.documentElement.classList.add('js');
+    try { var t = localStorage.getItem('sd-theme'); if (t === 'dark' || t === 'light') document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
   <title>{{ page_title }}</title>
   <meta name="description" content="{{ page_description }}" />
   <link rel="canonical" href="{{ canonical }}" />
   {% if meta.noindex %}<meta name="robots" content="noindex" />{% endif %}
+  <meta name="color-scheme" content="light dark" />
   <meta name="theme-color" content="#1e1612" />
 
   <!-- Open Graph / social sharing -->

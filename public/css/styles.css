@@ -71,6 +71,19 @@
   --success: #2f6b45;
   --danger: #a8321c;
 
+  /* Fixed "always dark" surfaces (footer, announcement bar, dark sections).
+     These do NOT change with the theme. */
+  --night: #1e1612;
+  --night-raised: #2a201b;
+  --on-night: #f6f0e8;
+  /* Text on accent-coloured buttons and badges */
+  --on-accent: #fff;
+  /* Accent used on tinted (sand / cream-deep) sections — darker in light mode
+     so small terracotta text keeps 4.5:1 contrast there. */
+  --accent-on-tint: #9a3a1a;
+  --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231e1612' stroke-width='1.5'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  color-scheme: light;
+
   /* Type */
   --font-display: 'Bodoni Moda', 'Bodoni 72', Didot, Georgia, serif;
   --font-sans: 'DM Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -98,6 +111,49 @@
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --shadow-soft: 0 20px 50px -20px rgb(30 22 18 / 0.35);
 }
+/* Dark theme ---------------------------------------------------------------
+   Same token names, darker values. Applied when the visitor picks "dark"
+   with the header toggle, or (until they choose) when their device is set to
+   dark mode. The toggle is wired up in public/js/client/theme.js. */
+:root[data-theme='dark'] {
+  --espresso: #f3ece3; /* text */
+  --espresso-soft: #d6cbbf;
+  --cream: #15110e; /* page background */
+  --cream-deep: #1f1915;
+  --paper: #241d18; /* cards & inputs */
+  --sand: #3a2f28; /* dividers, quiet fills */
+  --sand-deep: #574a40; /* borders */
+  --muted: #a89b8f; /* 6.4:1 on the dark page */
+  --accent: #e8825f;
+  --accent-strong: #e8825f; /* brighter terracotta reads well on dark */
+  --accent-soft: #3d241b;
+  --on-accent: #1e1612;
+  --accent-on-tint: #e8825f;
+  --shadow-soft: 0 20px 50px -20px rgb(0 0 0 / 0.7);
+  --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f3ece3' stroke-width='1.5'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --espresso: #f3ece3; /* text */
+    --espresso-soft: #d6cbbf;
+    --cream: #15110e; /* page background */
+    --cream-deep: #1f1915;
+    --paper: #241d18; /* cards & inputs */
+    --sand: #3a2f28; /* dividers, quiet fills */
+    --sand-deep: #574a40; /* borders */
+    --muted: #a89b8f; /* 6.4:1 on the dark page */
+    --accent: #e8825f;
+    --accent-strong: #e8825f; /* brighter terracotta reads well on dark */
+    --accent-soft: #3d241b;
+    --on-accent: #1e1612;
+    --accent-on-tint: #e8825f;
+    --shadow-soft: 0 20px 50px -20px rgb(0 0 0 / 0.7);
+    --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f3ece3' stroke-width='1.5'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    color-scheme: dark;
+  }
+}
+
 @media (min-width: 768px) {
   :root {
     --gutter: 2rem;
@@ -216,13 +272,15 @@ main:focus {
 }
 .section--sand {
   background: var(--sand);
+  --accent-strong: var(--accent-on-tint);
 }
 .section--deep {
   background: var(--cream-deep);
+  --accent-strong: var(--accent-on-tint);
 }
 .section--dark {
-  background: var(--espresso);
-  color: var(--cream);
+  background: var(--night);
+  color: var(--on-night);
 }
 .btn-row {
   display: flex;
@@ -353,6 +411,7 @@ main:focus {
   gap: 0.6rem;
   min-height: 3rem;
   padding: 0.75rem 1.75rem;
+  font-family: var(--font-sans);
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.18em;
@@ -386,7 +445,7 @@ main:focus {
 }
 .btn-accent {
   background: var(--accent-strong);
-  color: #fff;
+  color: var(--on-accent);
 }
 .btn-accent:hover:not(:disabled) {
   background: var(--cream);
@@ -402,7 +461,7 @@ main:focus {
 }
 .btn-outline-light {
   border-color: rgb(246 240 232 / 0.55);
-  color: var(--cream);
+  color: var(--on-night);
 }
 .btn-outline-light:hover {
   background: var(--cream);
@@ -471,7 +530,7 @@ textarea.field {
 }
 select.field {
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231e1612' stroke-width='1.5'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-image: var(--select-arrow);
   background-repeat: no-repeat;
   background-position: right 0.9rem center;
   background-size: 1rem;
@@ -584,10 +643,10 @@ select.field {
   transition: background-color 0.2s ease;
 }
 .icon-btn:hover {
-  background: rgb(30 22 18 / 0.06);
+  background: color-mix(in srgb, var(--espresso) 7%, transparent);
 }
 .icon-btn--light {
-  color: var(--cream);
+  color: var(--on-night);
   border: 1px solid rgb(246 240 232 / 0.25);
 }
 .icon-btn--light:hover {
@@ -617,8 +676,8 @@ select.field {
   top: 0.75rem;
   z-index: 100;
   padding: 0.75rem 1.25rem;
-  background: var(--espresso);
-  color: var(--cream);
+  background: var(--night);
+  color: var(--on-night);
   border-radius: 999px;
   transform: translateY(-200%);
   transition: transform 0.2s ease;
@@ -635,7 +694,7 @@ select.field {
   color: var(--espresso);
 }
 .logo--light {
-  color: var(--cream);
+  color: var(--on-night);
 }
 .logo__word {
   font-family: var(--font-display);
@@ -659,6 +718,14 @@ select.field {
    still meets WCAG contrast (5.2:1 on cream). */
 .logo--dark .logo__sub {
   color: #7d5f2e;
+}
+[data-theme='dark'] .logo--dark .logo__sub {
+  color: var(--gold-soft);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .logo--dark .logo__sub {
+    color: var(--gold-soft);
+  }
 }
 .logo__diamond {
   width: 0.35rem;
@@ -687,8 +754,8 @@ select.field {
 
 /* Announcement bar */
 .announcement {
-  background: var(--espresso);
-  color: var(--cream);
+  background: var(--night);
+  color: var(--on-night);
   font-size: 0.75rem;
   letter-spacing: 0.06em;
   text-align: center;
@@ -706,7 +773,7 @@ select.field {
   position: sticky;
   top: 0;
   z-index: 40;
-  background: rgb(246 240 232 / 0.94);
+  background: color-mix(in srgb, var(--cream) 94%, transparent);
   backdrop-filter: saturate(1.4) blur(10px);
   border-bottom: 1px solid transparent;
   transition:
@@ -753,7 +820,7 @@ select.field {
   padding-inline: 0.3rem;
   border-radius: 999px;
   background: var(--accent-strong);
-  color: #fff;
+  color: var(--on-accent);
   font-size: 0.65rem;
   font-weight: 700;
   line-height: 1.15rem;
@@ -948,8 +1015,8 @@ select.field {
   gap: 1rem;
   padding: 2rem;
   border-radius: var(--radius-lg);
-  background: var(--espresso);
-  color: var(--cream);
+  background: var(--night);
+  color: var(--on-night);
   min-height: 15rem;
 }
 .mega__feature .eyebrow {
@@ -965,7 +1032,7 @@ select.field {
   color: #e2734f;
 }
 .mega__feature .swatch-dot {
-  border-color: var(--espresso);
+  border-color: var(--night);
 }
 .mega__feature-cta {
   display: inline-flex;
@@ -1365,8 +1432,8 @@ dialog.fade-dialog[open] {
 
 /* 8. Footer ---------------------------------------------------------------- */
 .site-footer {
-  background: var(--espresso);
-  color: var(--cream);
+  background: var(--night);
+  color: var(--on-night);
   padding-top: clamp(4rem, 3rem + 4vw, 7rem);
 }
 .site-footer__top {
@@ -1419,7 +1486,7 @@ dialog.fade-dialog[open] {
   transition: color 0.2s ease;
 }
 .site-footer__col a:hover {
-  color: var(--cream);
+  color: var(--on-night);
 }
 .site-footer__bottom {
   display: flex;
@@ -1437,7 +1504,7 @@ dialog.fade-dialog[open] {
   gap: 0.5rem;
 }
 .site-footer__contact a:hover {
-  color: var(--cream);
+  color: var(--on-night);
 }
 
 /* Newsletter form */
@@ -1469,9 +1536,9 @@ dialog.fade-dialog[open] {
   padding-inline: 1.25rem;
 }
 .newsletter--dark .newsletter__input {
-  background: var(--espresso-raised);
+  background: var(--night-raised);
   border-color: rgb(246 240 232 / 0.25);
-  color: var(--cream);
+  color: var(--on-night);
 }
 .newsletter--dark .newsletter__input::placeholder {
   color: var(--muted-light);
@@ -1614,7 +1681,7 @@ dialog.fade-dialog[open] {
 }
 .badge--accent {
   background: var(--accent-strong);
-  color: #fff;
+  color: var(--on-accent);
 }
 .badge--dark {
   background: var(--espresso);
@@ -1759,8 +1826,8 @@ dialog.fade-dialog[open] {
   padding: 0.9rem 1.25rem;
   max-width: calc(100vw - 2rem);
   border-radius: 999px;
-  background: var(--espresso);
-  color: var(--cream);
+  background: var(--night);
+  color: var(--on-night);
   font-size: 0.875rem;
   box-shadow: var(--shadow-soft);
   transform: translate(-50%, 150%);
@@ -1889,7 +1956,7 @@ dialog.fade-dialog[open] {
   gap: 0.75rem;
   padding: 0.75rem 1.1rem 0.75rem 0.75rem;
   border-radius: 999px;
-  background: rgb(246 240 232 / 0.94);
+  background: color-mix(in srgb, var(--cream) 94%, transparent);
   backdrop-filter: blur(6px);
   font-size: 0.875rem;
   line-height: 1.3;
@@ -1918,8 +1985,8 @@ dialog.fade-dialog[open] {
 /* ---------- Home: tagline marquee --------------------------------------- */
 .marquee {
   overflow: hidden;
-  background: var(--espresso);
-  color: var(--cream);
+  background: var(--night);
+  color: var(--on-night);
   padding-block: 1.1rem;
 }
 .marquee__track {
@@ -2798,8 +2865,8 @@ dialog.fade-dialog[open] {
   margin-top: 2rem;
   padding: 1.75rem;
   border-radius: var(--radius-lg);
-  background: var(--espresso);
-  color: var(--cream);
+  background: var(--night);
+  color: var(--on-night);
 }
 .help-card p:not(.help-card__title) {
   color: var(--muted-light);
@@ -2905,9 +2972,9 @@ a.contact-card:hover {
   word-break: break-word;
 }
 .contact-card--accent {
-  background: var(--espresso);
-  border-color: var(--espresso);
-  color: var(--cream);
+  background: var(--night);
+  border-color: var(--night);
+  color: var(--on-night);
 }
 .contact-card--accent > .icon {
   color: #e2734f;
@@ -2928,4 +2995,14 @@ a.contact-card:hover {
 }
 .contact-social {
   border: 1px solid var(--sand-deep);
+}
+
+/* ---------- Theme toggle -------------------------------------------------- */
+/* Shows a moon in light mode and a sun in dark mode. */
+.theme-toggle .icon--sun,
+[data-theme='dark'] .theme-toggle .icon--moon {
+  display: none;
+}
+[data-theme='dark'] .theme-toggle .icon--sun {
+  display: block;
 }

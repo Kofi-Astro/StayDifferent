@@ -87,6 +87,11 @@
 
     <div class="site-header__actions">
       <div class="site-header__currency">{{ ui.currency_select('currency-header') }}</div>
+      {# Light/dark theme switch — behaviour in public/js/client/theme.js #}
+      <button type="button" class="icon-btn theme-toggle" data-theme-toggle aria-pressed="false">
+        {{ icon('moon', 'icon--moon') }}{{ icon('sun', 'icon--sun') }}
+        <span class="sr-only">Dark theme</span>
+      </button>
       <button type="button" class="icon-btn" data-dialog-open="search-dialog" aria-haspopup="dialog" aria-controls="search-dialog">
         {{ icon('search') }}<span class="sr-only">Search</span>
       </button>
