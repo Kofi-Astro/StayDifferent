@@ -1,0 +1,289 @@
+{#
+  ==========================================================================
+  /colour-guide — the flagship page
+  Hero → Opening → 01 Undertone (quiz + cards) → 02 Shades (filterable)
+  → Colour with texture → 03 Choose by the look → 04 Harmony/Contrast → Closing
+
+  Copy: data/colour-guide.json (Admin → Pages → Colour Guide)
+  Shades: data/shades.json (Admin → Shades)
+  Behaviour: public/js/client/colour-guide.js
+  ==========================================================================
+#}
+{% extends 'base.html' %}
+{% set dim_level = {'soft': 1, 'medium': 2, 'high': 3} %}
+{% set steps = [('undertone', '01 Undertone'), ('shades', '02 Shades'), ('look', '03 The look'), ('harmony-contrast', '04 Harmony or contrast')] %}
+
+{% block styles %}<link rel="stylesheet" href="{{ asset('/css/colour-guide.css') }}" />{% endblock %}
+{% block scripts %}<script type="module" src="{{ asset('/js/client/colour-guide.js') }}"></script>{% endblock %}
+
+{# Where a shade links to: its hero product if live, otherwise the Coloured collection. #}
+{% macro shade_href(s) -%}
+  {{ '/products/' ~ s.product if s.product in live_slugs else '/shop/coloured' }}
+{%- endmacro %}
+
+{% block content %}
+<!-- ── Hero ─────────────────────────────────────────────────────────── -->
+<section class="cg-hero section--dark" aria-labelledby="cg-title">
+  <div class="container-page cg-hero__inner">
+    <div class="cg-hero__copy fade-in-up">
+      <p class="eyebrow cg-hero__eyebrow">{{ guide.hero.eyebrow }}</p>
+      <h1 class="cg-hero__title" id="cg-title">{{ guide.hero.heading | split_heading }}</h1>
+      <p class="cg-hero__sub">{{ guide.hero.sub }}</p>
+      <ol class="cg-hero__steps" role="list">
+        {% for id, label in steps %}<li><a href="#{{ id }}">{{ label }}</a></li>{% endfor %}
+      </ol>
+    </div>
+    {# A fan of hair "strands", one per shade — each jumps to its card. #}
+    <ul class="cg-ribbon" role="list" aria-label="Jump to a shade">
+      {% for s in guide_shades %}
+        <li style="--i:{{ loop.index0 }}">
+          <a class="cg-ribbon__strand" href="#shade-{{ s.slug }}">
+            {{ ui.media('', '', s.swatch, 'body-wave', 'ribbon-' ~ s.slug, true) }}
+            <span class="cg-ribbon__label"><span>{{ s.number }}</span> {{ s.name }}</span>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+
+<!-- ── Sticky step navigation ───────────────────────────────────────── -->
+<nav class="cg-subnav" aria-label="Colour Guide steps">
+  <div class="container-page">
+    <ol class="cg-subnav__list no-scrollbar" role="list">
+      {% for id, label in steps %}<li><a class="chip" href="#{{ id }}" data-spy="{{ id }}">{{ label }}</a></li>{% endfor %}
+    </ol>
+  </div>
+</nav>
+
+<!-- ── Opening ──────────────────────────────────────────────────────── -->
+<section class="section cg-opening" aria-labelledby="cg-opening-title">
+  <div class="container-page">
+    <div class="cg-opening__grid">
+      {{ ui.section_heading(guide.opening.heading, guide.opening.eyebrow, id='cg-opening-title', cls='reveal') }}
+      <div class="prose reveal">{{ guide.opening.body | paragraphs }}</div>
+    </div>
+    <ol class="cg-pillars" role="list">
+      {% for p in guide.opening.pillars %}
+        <li class="cg-pillar reveal">
+          <span class="cg-pillar__num" aria-hidden="true">{{ ['i', 'ii', 'iii', 'iv', 'v'][loop.index0] if loop.index0 < 5 else loop.index }}</span>
+          <h3 class="cg-pillar__title">{{ p.title }}</h3>
+          <p class="cg-pillar__text">{{ p.text }}</p>
+        </li>
+      {% endfor %}
+    </ol>
+  </div>
+</section>
+
+<!-- ── Step 01 — Undertone ──────────────────────────────────────────── -->
+<section class="section section--deep cg-step" id="undertone" aria-labelledby="undertone-title" data-spy-section>
+  <div class="container-page">
+    {{ ui.section_heading(guide.step1.heading, guide.step1.eyebrow, guide.step1.body, id='undertone-title', cls='reveal') }}
+
+    {# UndertoneQuiz — native radio groups: Tab between questions, arrows between answers. #}
+    <form class="quiz reveal" data-quiz aria-labelledby="quiz-heading" novalidate>
+      <div class="quiz__head">
+        <p class="eyebrow quiz__eyebrow">{{ icon('sparkle', 'icon--sm') }} Undertone quiz</p>
+        <h3 class="quiz__title" id="quiz-heading">{{ guide.step1.quizHeading }}</h3>
+        <p class="quiz__intro">{{ guide.step1.quizIntro }}</p>
+      </div>
+      <div class="quiz__questions">
+        {% for q in guide.quiz %}
+          {% set qi = loop.index0 %}
+          <fieldset class="quiz__q">
+            <legend class="quiz__legend"><span class="quiz__num">0{{ loop.index }}</span> {{ q.question }}</legend>
+            <div class="quiz__options">
+              {% for o in q.options %}
+                <label class="quiz__option">
+                  <input type="radio" name="q{{ qi }}" value="{{ o.undertone }}" required />
+                  <span>{{ o.label }}</span>
+                </label>
+              {% endfor %}
+            </div>
+          </fieldset>
+        {% endfor %}
+      </div>
+      <div class="quiz__actions">
+        <button class="btn btn-accent" type="submit">Reveal my undertone {{ icon('arrow', 'icon--sm') }}</button>
+        <p class="quiz__progress" data-quiz-progress aria-live="polite">0 of {{ guide.quiz | length }} answered</p>
+      </div>
+      <div class="quiz__result" data-quiz-result hidden tabindex="-1" role="status" aria-live="polite"></div>
+    </form>
+
+    {# UndertoneCards #}
+    <div class="undertone-grid">
+      {# undertone_cards = guide.undertones + `match_shades` and `band` (prepared in app/routes/site.py) #}
+      {% for u in undertone_cards %}
+        {% set metal = {'warm': 'gold', 'cool': 'silver'}.get(u.key, 'both') %}
+        <article class="undertone-card reveal" id="undertone-{{ u.key }}" data-undertone-card="{{ u.key }}" tabindex="-1" aria-labelledby="undertone-{{ u.key }}-name">
+          <span class="undertone-card__match" aria-hidden="true">{{ icon('sparkle', 'icon--sm') }} Your match</span>
+          <p class="eyebrow undertone-card__label">{{ u.number }} / {{ u.name }}</p>
+          <h3 class="undertone-card__name" id="undertone-{{ u.key }}-name">{{ u.name }}</h3>
+          <div class="undertone-card__band" style="background:linear-gradient(90deg, {{ u.band }})" aria-hidden="true"></div>
+          <p class="undertone-card__desc">{{ u.description }}</p>
+          <p class="undertone-card__jewellery">
+            <span class="metal metal--{{ metal }}" aria-hidden="true"></span>
+            <span><strong>Jewellery test:</strong> {{ u.jewellery }}</span>
+          </p>
+          <div class="undertone-card__look">
+            <p class="eyebrow">Look towards</p>
+            <ul role="list">{% for l in u.lookTowards %}<li>{{ l }}</li>{% endfor %}</ul>
+          </div>
+          <div class="undertone-card__matches">
+            <p class="eyebrow">Your Stay Different matches</p>
+            <ul class="chip-row" role="list">
+              {% for s in u.match_shades %}<li><a class="chip shade-chip" href="#shade-{{ s.slug }}">{{ ui.swatch_dot(s) }} {{ s.name }}</a></li>{% endfor %}
+            </ul>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ── Step 02 — Shades ─────────────────────────────────────────────── -->
+<section class="section cg-step" id="shades" aria-labelledby="shades-title" data-spy-section>
+  <div class="container-page">
+    {{ ui.section_heading(guide.step2.heading, guide.step2.eyebrow, guide.step2.body, id='shades-title', cls='reveal') }}
+
+    <div class="shade-filters" data-shade-filters>
+      <div class="shade-filters__group" role="group" aria-labelledby="filter-undertone-label">
+        <span class="eyebrow shade-filters__label" id="filter-undertone-label">Undertone</span>
+        <div class="chip-row">
+          {% for v in ['all', 'warm', 'cool', 'neutral'] %}
+            <button type="button" class="chip" data-filter="undertone" data-value="{{ v }}" aria-pressed="{{ 'true' if v == 'all' else 'false' }}">{{ 'All' if v == 'all' else v | capitalize }}</button>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="shade-filters__group" role="group" aria-labelledby="filter-dimension-label">
+        <span class="eyebrow shade-filters__label" id="filter-dimension-label">Dimension</span>
+        <div class="chip-row">
+          {% for v in ['all', 'soft', 'medium', 'high'] %}
+            <button type="button" class="chip" data-filter="dimension" data-value="{{ v }}" aria-pressed="{{ 'true' if v == 'all' else 'false' }}">{{ 'Any' if v == 'all' else v | capitalize }}</button>
+          {% endfor %}
+        </div>
+      </div>
+      <p class="shade-filters__count" data-shade-count role="status" aria-live="polite">Showing all {{ guide_shades | length }} shades</p>
+    </div>
+
+    {# ShadeCards — data-undertones / data-dimension power the filter chips. #}
+    <div class="shade-grid">
+      {% for s in guide_shades %}
+        {% set href = shade_href(s) %}
+        <article class="shade-card reveal" id="shade-{{ s.slug }}" data-shade-card data-undertones="{{ s.undertones | join(' ') }}" data-dimension="{{ s.dimension }}" aria-labelledby="shade-{{ s.slug }}-name">
+          <div class="shade-card__swatch media-frame">
+            {{ ui.media('', '', s.swatch, 'body-wave', 'guide-' ~ s.slug) }}
+            <span class="shade-card__number" aria-hidden="true">{{ s.number }}</span>
+            {# Base → highlight strip: the "colour chip" view of the shade #}
+            <span class="shade-card__strip" aria-hidden="true">
+              <span style="background:{{ s.swatch.base }}"></span><span style="background:{{ s.swatch.mid }}"></span><span style="background:{{ s.swatch.highlight }}"></span>
+            </span>
+          </div>
+          <div class="shade-card__body">
+            <p class="eyebrow shade-card__family">No. {{ s.number }} · {{ s.family }}</p>
+            <h3 class="shade-card__name" id="shade-{{ s.slug }}-name"><a href="{{ href }}">{{ s.name }}</a></h3>
+            <p class="shade-card__hook">{{ s.hook }}</p>
+            <p class="shade-card__desc">{{ s.description }}</p>
+            <dl class="spec-table">
+              <div><dt>Undertone</dt><dd>{{ s.undertoneLabel }}</dd></div>
+              <div><dt>Depth</dt><dd>{{ s.depth }}</dd></div>
+              <div class="spec-table__wide">
+                <dt>Dimension</dt>
+                <dd class="spec-table__dimension">
+                  <span class="meter" aria-hidden="true">{% for n in [1, 2, 3] %}<span class="{{ 'on' if n <= dim_level.get(s.dimension, 1) }}"></span>{% endfor %}</span>
+                  {{ s.dimension | capitalize }}
+                </dd>
+              </div>
+              <div class="spec-table__wide"><dt>Best suited to</dt><dd>{{ s.bestFor }}</dd></div>
+            </dl>
+            <a class="link-arrow shade-card__cta" href="{{ href }}">Shop {{ s.name }} {{ icon('arrow', 'icon--sm') }}</a>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+    <div class="shade-empty" data-shade-empty hidden>
+      <p>No shades match that combination — which is very on-brand, honestly.</p>
+      <button type="button" class="btn btn-outline" data-filter-reset>Clear filters</button>
+    </div>
+  </div>
+</section>
+
+<!-- ── Colour, with texture ─────────────────────────────────────────── -->
+{% if texture_products %}
+<section class="section section--dark cg-texture" aria-labelledby="texture-title">
+  <div class="container-page">
+    {{ ui.section_heading(guide.texture.heading, guide.texture.eyebrow, guide.texture.body, id='texture-title', cls='reveal') }}
+    <div class="cg-texture__grid">
+      {% for p in texture_products %}
+        {% set shade = shades.get(p.shade) %}
+        <a class="texture-card reveal" href="/products/{{ p.slug }}">
+          <span class="texture-card__media media-frame">
+            {{ ui.media(p.images[0] if p.images else '', p.name ~ ' in ' ~ (shade.name if shade else ''), shade.swatch if shade else none, p.texture, 'texture-' ~ p.slug) }}
+          </span>
+          <span class="texture-card__body">
+            <span class="eyebrow texture-card__shade">{{ shade.name if shade }}</span>
+            <span class="texture-card__name">{{ p.name }}</span>
+            <span class="link-arrow texture-card__cta">Discover shade {{ icon('arrow', 'icon--sm') }}</span>
+          </span>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- ── Step 03 — Choose by the look (LookPicker) ────────────────────── -->
+<section class="section cg-step" id="look" aria-labelledby="look-title" data-spy-section>
+  <div class="container-page">
+    {{ ui.section_heading(guide.step3.heading, guide.step3.eyebrow, guide.step3.body, id='look-title', cls='reveal') }}
+    <ul class="look-picker" role="list">
+      {% for l in guide.looks if l.shade in shades %}
+        {% set s = shades[l.shade] %}
+        <li class="reveal">
+          <a class="look-row" href="{{ shade_href(s) }}">
+            <span class="look-row__statement">{{ l.statement }}</span>
+            <span class="look-row__shade">{{ ui.swatch_dot(s, 'look-row__dot') }}<span class="look-row__name">{{ s.name }}</span>{{ icon('arrow', 'look-row__arrow') }}</span>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+
+<!-- ── Step 04 — Harmony or contrast ────────────────────────────────── -->
+<section class="section section--sand cg-step" id="harmony-contrast" aria-labelledby="hc-title" data-spy-section>
+  <div class="container-page">
+    {{ ui.section_heading(guide.step4.heading, guide.step4.eyebrow, guide.step4.body, id='hc-title', cls='reveal') }}
+    <div class="hc-grid">
+      {% for kind in ['harmony', 'contrast'] %}
+        {% set p = guide.step4[kind] %}
+        <article class="hc-panel hc-panel--{{ kind }} reveal" aria-labelledby="hc-{{ kind }}">
+          {% if p.badge %}<span class="badge badge--accent hc-panel__badge">{{ p.badge }}</span>{% endif %}
+          {# Two overlapping circles (skin + hair) that blend or clash on purpose #}
+          <div class="hc-visual hc-visual--{{ kind }}" aria-hidden="true"><span class="hc-visual__skin"></span><span class="hc-visual__hair"></span></div>
+          <p class="eyebrow hc-panel__label">{{ p.label }}</p>
+          <h3 class="hc-panel__title" id="hc-{{ kind }}">{{ p.title }}</h3>
+          <p class="hc-panel__text">{{ p.text }}</p>
+          {% if p.example %}<p class="hc-panel__example"><span class="eyebrow">Try</span> {{ p.example }}</p>{% endif %}
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ── Closing note ─────────────────────────────────────────────────── -->
+<section class="section cg-closing" aria-labelledby="closing-title">
+  <div class="container-page cg-closing__inner reveal">
+    <span class="cg-closing__diamond" aria-hidden="true"></span>
+    <p class="eyebrow cg-closing__eyebrow">{{ guide.closing.eyebrow }}</p>
+    <h2 class="cg-closing__title" id="closing-title">{{ guide.closing.heading | split_heading }}</h2>
+    <p class="cg-closing__body">{{ guide.closing.body }}</p>
+    <div class="btn-row cg-closing__ctas">
+      <a class="btn btn-primary" href="/shop/coloured">{{ guide.closing.primaryLabel }} {{ icon('arrow', 'icon--sm') }}</a>
+      <a class="btn btn-outline" href="{{ whatsapp_url(settings.contact, "Hi! I'm using the Colour Guide and could use help choosing a shade.") }}" target="_blank" rel="noopener">
+        {{ icon('whatsapp', 'icon--sm') }} {{ guide.closing.secondaryLabel }}<span class="sr-only"> (opens WhatsApp)</span>
+      </a>
+    </div>
+  </div>
+</section>
+{% endblock %}

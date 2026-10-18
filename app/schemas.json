@@ -1,0 +1,1752 @@
+{
+  "//": "Admin content schemas. Read by app/schemas.py (validation) and the admin UI (forms). See README.",
+  "sections": [
+    {
+      "key": "products",
+      "label": "Products",
+      "group": "Catalogue",
+      "kind": "collection",
+      "preview": "/products/{slug}",
+      "idKey": "id",
+      "titleKey": "name",
+      "defaults": {
+        "id": "$auto",
+        "name": "",
+        "slug": "",
+        "status": "draft",
+        "collections": [],
+        "texture": "straight",
+        "type": "bundle",
+        "shade": "natural-black",
+        "summary": "",
+        "description": "",
+        "details": [],
+        "care": "",
+        "variants": [
+          {
+            "length": 18,
+            "price": 100,
+            "compareAt": null,
+            "stock": 0
+          }
+        ],
+        "images": [],
+        "bestseller": false,
+        "allowPreorder": false,
+        "badge": "New",
+        "createdAt": "$today"
+      },
+      "fields": [
+        {
+          "type": "hidden",
+          "key": "id"
+        },
+        {
+          "type": "text",
+          "key": "name",
+          "label": "Product name",
+          "required": true
+        },
+        {
+          "type": "text",
+          "key": "slug",
+          "label": "URL slug",
+          "required": true,
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "help": "Used in the web address. Lowercase letters, numbers and dashes only. e.g. /products/honey-rebel-straight-bundle"
+        },
+        {
+          "type": "select",
+          "key": "status",
+          "label": "Visibility",
+          "options": [
+            {
+              "value": "active",
+              "label": "Active — visible in the shop"
+            },
+            {
+              "value": "draft",
+              "label": "Draft — hidden while you work on it"
+            },
+            {
+              "value": "archived",
+              "label": "Archived — hidden, kept for records"
+            }
+          ]
+        },
+        {
+          "type": "multiselect",
+          "key": "collections",
+          "label": "Collections",
+          "optionsFrom": "collections"
+        },
+        {
+          "type": "select",
+          "key": "texture",
+          "label": "Texture",
+          "optionsFrom": "textures"
+        },
+        {
+          "type": "select",
+          "key": "type",
+          "label": "Product type",
+          "optionsFrom": "types"
+        },
+        {
+          "type": "select",
+          "key": "shade",
+          "label": "Shade",
+          "optionsFrom": "shades"
+        },
+        {
+          "type": "images",
+          "key": "images",
+          "label": "Photos",
+          "help": "First photo is the main one. Portrait (4:5) works best. Leave empty to show the branded placeholder."
+        },
+        {
+          "type": "text",
+          "key": "summary",
+          "label": "Short summary",
+          "help": "One line shown on cards and in Google results."
+        },
+        {
+          "type": "textarea",
+          "key": "description",
+          "label": "Description",
+          "rows": 5
+        },
+        {
+          "type": "list",
+          "key": "details",
+          "label": "Details (bullet points)",
+          "addLabel": "Add detail"
+        },
+        {
+          "type": "textarea",
+          "key": "care",
+          "label": "Care instructions",
+          "rows": 4
+        },
+        {
+          "type": "repeater",
+          "key": "variants",
+          "label": "Lengths, prices & stock",
+          "help": "One row per length. Prices are in your base currency. Set stock to 0 when a length sells out.",
+          "itemLabel": "{length}\"",
+          "addLabel": "Add length",
+          "layout": "row",
+          "fields": [
+            {
+              "type": "number",
+              "key": "length",
+              "label": "Length (inches)",
+              "min": 1,
+              "step": 1,
+              "required": true
+            },
+            {
+              "type": "number",
+              "key": "price",
+              "label": "Price",
+              "min": 0,
+              "step": 0.01,
+              "required": true
+            },
+            {
+              "type": "number",
+              "key": "compareAt",
+              "label": "\"Was\" price (optional)",
+              "min": 0,
+              "step": 0.01,
+              "nullable": true
+            },
+            {
+              "type": "number",
+              "key": "stock",
+              "label": "In stock",
+              "min": 0,
+              "step": 1
+            }
+          ]
+        },
+        {
+          "type": "toggle",
+          "key": "allowPreorder",
+          "label": "Allow pre-orders when a length is out of stock"
+        },
+        {
+          "type": "toggle",
+          "key": "bestseller",
+          "label": "Show in Home page bestsellers"
+        },
+        {
+          "type": "text",
+          "key": "badge",
+          "label": "Badge",
+          "help": "Small label on the product card, e.g. \"New\" or \"Bestseller\". Leave blank for none."
+        },
+        {
+          "type": "hidden",
+          "key": "createdAt"
+        }
+      ]
+    },
+    {
+      "key": "shades",
+      "label": "Shades",
+      "group": "Catalogue",
+      "kind": "collection",
+      "preview": "/colour-guide#shade-{slug}",
+      "idKey": "slug",
+      "titleKey": "name",
+      "defaults": {
+        "slug": "",
+        "number": "",
+        "name": "",
+        "family": "",
+        "hook": "",
+        "description": "",
+        "undertoneLabel": "Neutral",
+        "undertones": [
+          "neutral"
+        ],
+        "depth": "Medium",
+        "dimension": "soft",
+        "bestFor": "",
+        "swatch": {
+          "base": "#3a2b22",
+          "mid": "#6b4a32",
+          "highlight": "#c99d62"
+        },
+        "product": "",
+        "inGuide": true
+      },
+      "fields": [
+        {
+          "type": "text",
+          "key": "name",
+          "label": "Shade name",
+          "required": true
+        },
+        {
+          "type": "text",
+          "key": "slug",
+          "label": "URL slug",
+          "required": true,
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "help": "Used in the web address. Lowercase letters, numbers and dashes only. e.g. honey-rebel"
+        },
+        {
+          "type": "text",
+          "key": "number",
+          "label": "Number",
+          "help": "Shown as \"No. 01\"."
+        },
+        {
+          "type": "text",
+          "key": "family",
+          "label": "Colour family",
+          "help": "e.g. Bronde, Brunette, Blonde"
+        },
+        {
+          "type": "text",
+          "key": "hook",
+          "label": "One-line hook (shown in italics)"
+        },
+        {
+          "type": "textarea",
+          "key": "description",
+          "label": "Description (2 sentences)",
+          "rows": 3
+        },
+        {
+          "type": "text",
+          "key": "undertoneLabel",
+          "label": "Undertone (as shown)",
+          "help": "e.g. Warm–neutral"
+        },
+        {
+          "type": "multiselect",
+          "key": "undertones",
+          "label": "Undertone filters this shade appears under",
+          "options": [
+            {
+              "value": "warm",
+              "label": "Warm"
+            },
+            {
+              "value": "cool",
+              "label": "Cool"
+            },
+            {
+              "value": "neutral",
+              "label": "Neutral"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "key": "depth",
+          "label": "Depth",
+          "help": "e.g. Light, Medium, Deep"
+        },
+        {
+          "type": "select",
+          "key": "dimension",
+          "label": "Dimension",
+          "options": [
+            {
+              "value": "soft",
+              "label": "Soft"
+            },
+            {
+              "value": "medium",
+              "label": "Medium"
+            },
+            {
+              "value": "high",
+              "label": "High"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "key": "bestFor",
+          "label": "Best suited to"
+        },
+        {
+          "type": "group",
+          "key": "swatch",
+          "label": "Swatch colours",
+          "help": "These paint the shade everywhere on the site until photos are added.",
+          "layout": "row",
+          "fields": [
+            {
+              "type": "color",
+              "key": "base",
+              "label": "Root / base"
+            },
+            {
+              "type": "color",
+              "key": "mid",
+              "label": "Mid-lengths"
+            },
+            {
+              "type": "color",
+              "key": "highlight",
+              "label": "Highlights / ends"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "key": "product",
+          "label": "Hero product (where the shade links to)",
+          "optionsFrom": "products"
+        },
+        {
+          "type": "toggle",
+          "key": "inGuide",
+          "label": "Show in the Colour Guide shade grid"
+        }
+      ]
+    },
+    {
+      "key": "collections",
+      "label": "Collections",
+      "group": "Catalogue",
+      "kind": "collection",
+      "preview": "/shop/{slug}",
+      "idKey": "slug",
+      "titleKey": "name",
+      "defaults": {
+        "slug": "",
+        "name": "",
+        "tagline": "",
+        "description": "",
+        "image": "",
+        "artShade": "natural-black",
+        "artTexture": "straight",
+        "featured": false
+      },
+      "fields": [
+        {
+          "type": "text",
+          "key": "name",
+          "label": "Collection name",
+          "required": true
+        },
+        {
+          "type": "text",
+          "key": "slug",
+          "label": "URL slug",
+          "required": true,
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "help": "Used in the web address. Lowercase letters, numbers and dashes only. e.g. /shop/body-wave"
+        },
+        {
+          "type": "text",
+          "key": "tagline",
+          "label": "Tagline"
+        },
+        {
+          "type": "textarea",
+          "key": "description",
+          "label": "Description",
+          "rows": 3
+        },
+        {
+          "type": "image",
+          "key": "image",
+          "label": "Image",
+          "help": "Optional. Leave empty for the branded placeholder."
+        },
+        {
+          "type": "select",
+          "key": "artShade",
+          "label": "Placeholder colours from shade",
+          "optionsFrom": "shades"
+        },
+        {
+          "type": "select",
+          "key": "artTexture",
+          "label": "Placeholder texture",
+          "optionsFrom": "textures"
+        },
+        {
+          "type": "toggle",
+          "key": "featured",
+          "label": "Feature on the Home page"
+        }
+      ]
+    },
+    {
+      "key": "home",
+      "label": "Home page",
+      "group": "Pages",
+      "kind": "singleton",
+      "preview": "/",
+      "fields": [
+        {
+          "type": "group",
+          "key": "hero",
+          "label": "Hero",
+          "fields": [
+            {
+              "type": "text",
+              "key": "eyebrow",
+              "label": "Eyebrow (small label above the heading)"
+            },
+            {
+              "type": "heading",
+              "key": "heading",
+              "label": "Heading",
+              "help": "Use a | to break onto a second, italic line. e.g. \"Know your|undertone\""
+            },
+            {
+              "type": "textarea",
+              "key": "sub",
+              "label": "Intro text",
+              "rows": 2
+            },
+            {
+              "type": "text",
+              "key": "primaryLabel",
+              "label": "Main button text"
+            },
+            {
+              "type": "text",
+              "key": "primaryLink",
+              "label": "Main button link"
+            },
+            {
+              "type": "text",
+              "key": "secondaryLabel",
+              "label": "Second button text"
+            },
+            {
+              "type": "text",
+              "key": "secondaryLink",
+              "label": "Second button link"
+            },
+            {
+              "type": "image",
+              "key": "image",
+              "label": "Hero image"
+            },
+            {
+              "type": "select",
+              "key": "artShade",
+              "label": "Placeholder shade (also the \"Now wearing\" tag)",
+              "optionsFrom": "shades"
+            },
+            {
+              "type": "select",
+              "key": "artTexture",
+              "label": "Placeholder texture",
+              "optionsFrom": "textures"
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "key": "collections",
+          "label": "Collections section",
+          "fields": [
+            {
+              "type": "text",
+              "key": "eyebrow",
+              "label": "Eyebrow (small label above the heading)"
+            },
+            {
+              "type": "heading",
+              "key": "heading",
+              "label": "Heading",
+              "help": "Use a | to break onto a second, italic line. e.g. \"Know your|undertone\""
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "key": "shadeTeaser",
+          "label": "\"Find your shade\" section",
+          "fields": [
+            {
+              "type": "text",
+              "key": "eyebrow",
+              "label": "Eyebrow (small label above the heading)"
+            },
+            {
+              "type": "heading",
+              "key": "heading",
+              "label": "Heading",
+              "help": "Use a | to break onto a second, italic line. e.g. \"Know your|undertone\""
+            },
+            {
+              "type": "textarea",
+              "key": "body",
+              "label": "Text",
+              "rows": 2
+            },
+            {
+              "type": "text",
+              "key": "ctaLabel",
+              "label": "Button text"
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "key": "bestsellers",
+          "label": "Bestsellers section",
+          "fields": [
+            {
+              "type": "text",
+              "key": "eyebrow",
+              "label": "Eyebrow (small label above the heading)"
+            },
+            {
+              "type": "heading",
+              "key": "heading",
+              "label": "Heading",
+              "help": "Use a | to break onto a second, italic line. e.g. \"Know your|undertone\""
+            }
+          ]
+        },
+        {
+          "type": "repeater",
+          "key": "promise",
+          "label": "Brand promise strip",
+          "itemLabel": "title",
+          "addLabel": "Add promise",
+          "fields": [
+            {
+              "type": "text",
+              "key": "title",
+              "label": "Title"
+            },
+            {
+              "type": "text",
+              "key": "text",
+              "label": "Text"
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "key": "social",
+          "label": "Social section",
+          "fields": [
+            {
+              "type": "text",
+              "key": "eyebrow",
+              "label": "Eyebrow (small label above the heading)"
+            },
+            {
+              "type": "heading",
+              "key": "heading",
+              "label": "Heading",
+              "help": "Use a | to break onto a second, italic line. e.g. \"Know your|undertone\""
+            },
+            {
+              "type": "textarea",
+              "key": "body",
+              "label": "Text",
+              "rows": 2
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "key": "newsletter",
+          "label": "Newsletter section",
+          "fields": [
+            {
+              "type": "text",
+              "key": "eyebrow",
+              "label": "Eyebrow (small label above the heading)"
+            },
+            {
+              "type": "text",
+              "key": "heading",
+              "label": "Heading"
+            },
+            {
+              "type": "textarea",
+              "key": "text",
+              "label": "Text",
+              "rows": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "colourGuide",
+      "label": "Colour Guide",
+      "group": "Pages",
+      "kind": "singleton",
+      "preview": "/colour-guide",
+      "fields": [
+        {
+          "type": "group",
+          "key": "hero",
+          "label": "Hero",
+          "fields": [
+            {
+              "type": "text",
+              "key": "eyebrow",
+              "label": "Eyebrow (small label above the heading)"
+            },
+            {
+              "type": "heading",
+              "key": "heading",
+              "label": "Heading",
+              "help": "Use a | to break onto a second, italic line. e.g. \"Know your|undertone\""
+            },
+            {
+              "type": "textarea",
+              "key": "sub",
+              "label": "Intro line",
+              "rows": 2
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "key": "opening",
+          "label": "Opening — \"Your shade starts here\"",
+          "fields": [
+            {
+              "type": "text",
+              "key": "eyebrow",
+              "label": "Eyebrow (small label above the heading)"
+            },
+            {
+              "type": "heading",
+              "key": "heading",
+              "label": "Heading",
+              "help": "Use a | to break onto a second, italic line. e.g. \"Know your|undertone\""
+            },
+            {
+              "type": "textarea",
+              "key": "body",
+              "label": "Text",
+              "rows": 3
+            },
+            {
+              "type": "repeater",
+              "key": "pillars",
+              "label": "Pillars",
+              "itemLabel": "title",
+              "addLabel": "Add pillar",
+              "fields": [
+                {
+                  "type": "text",
+                  "key": "title",
+                  "label": "Title"
+                },
+                {
+                  "type": "textarea",
+                  "key": "text",
+                  "label": "Text",
+                  "rows": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "key": "step1",
+          "label": "Step 01 — Undertone",
+          "fields": [
+            {
+              "type": "text",
+              "key": "eyebrow",
+              "label": "Eyebrow (small label above the heading)"
+            },
+            {
+              "type": "heading",
+              "key": "heading",
+              "label": "Heading",
+              "help": "Use a | to break onto a second, italic line. e.g. \"Know your|undertone\""
+            },
+            {
+              "type": "textarea",
+              "key": "body",
+              "label": "Text",
+              "rows": 3
+            },
+            {
+              "type": "text",
+              "key": "quizHeading",
+              "label": "Quiz heading"
+            },
+            {
+              "type": "text",
+              "key": "quizIntro",
+              "label": "Quiz intro"
+            }
+          ]
+        },
+        {
+          "type": "repeater",
+          "key": "quiz",
+          "label": "Undertone quiz questions",
+          "help": "Each answer votes for an undertone. The most votes wins; a tie means Neutral.",
+          "itemLabel": "question",
+          "addLabel": "Add question",
+          "fields": [
+            {
+              "type": "text",
+              "key": "question",
+              "label": "Question",
+              "required": true
+            },
+            {
+              "type": "repeater",
+              "key": "options",
+              "label": "Answers",
+              "itemLabel": "label",
+              "addLabel": "Add answer",
+              "layout": "row",
+              "fields": [
+                {
+                  "type": "text",
+                  "key": "label",
+                  "label": "Answer",
+                  "required": true
+                },
+                {
+                  "type": "select",
+                  "key": "undertone",
+                  "label": "Counts as",
+                  "options": [
+                    {
+                      "value": "warm",
+                      "label": "Warm"
+                    },
+                    {
+                      "value": "cool",
+                      "label": "Cool"
+                    },
+                    {
+                      "value": "neutral",
+                      "label": "Neutral"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "repeater",
+          "key": "undertones",
+          "label": "Undertone cards",
+          "itemLabel": "name",
+          "fixed": true,
+          "fields": [
+            {
+              "type": "hidden",
+              "key": "key"
+            },
+            {
+              "type": "text",
+              "key": "number",
+              "label": "Number"
+            },
+            {
+              "type": "text",
+              "key": "name",
+              "label": "Name"
+            },
+            {
+              "type": "textarea",
+              "key": "description",
+              "label": "Description",
+              "rows": 3
+            },
+            {
+              "type": "text",
+              "key": "jewellery",
+              "label": "Jewellery hint"
+            },
+            {
+              "type": "list",
+              "key": "lookTowards",
+              "label": "\"Look towards\" colour families",
+              "addLabel": "Add family"
+            },
+            {
+              "type": "multiselect",
+              "key": "matches",
+              "label": "Matching shades",
+              "optionsFrom": "guideShades"
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "key": "step2",
+          "label": "Step 02 — Find your shade",
+          "fields": [
+            {
+              "type": "text",
+              "key": "eyebrow",
+              "label": "Eyebrow (small label above the heading)"
+            },
+            {
+              "type": "heading",
+              "key": "heading",
+              "label": "Heading",
+              "help": "Use a | to break onto a second, italic line. e.g. \"Know your|undertone\""
+            },
+            {
+              "type": "textarea",
+              "key": "body",
+              "label": "Text",
+              "rows": 3
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "key": "texture",
+          "label": "\"Colour, with texture\" band",
+          "fields": [
+            {
+              "type": "text",
+              "key": "eyebrow",
+              "label": "Eyebrow (small label above the heading)"
+            },
+            {
+              "type": "heading",
+              "key": "heading",
+              "label": "Heading",
+              "help": "Use a | to break onto a second, italic line. e.g. \"Know your|undertone\""
+            },
+            {
+              "type": "textarea",
+              "key": "body",
+              "label": "Text",
+              "rows": 3
+            },
+            {
+              "type": "multiselect",
+              "key": "products",
+              "label": "Featured products (pick 2)",
+              "optionsFrom": "products"
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "key": "step3",
+          "label": "Step 03 — Choose by the look",
+          "fields": [
+            {
+              "type": "text",
+              "key": "eyebrow",
+              "label": "Eyebrow (small label above the heading)"
+            },
+            {
+              "type": "heading",
+              "key": "heading",
+              "label": "Heading",
+              "help": "Use a | to break onto a second, italic line. e.g. \"Know your|undertone\""
+            },
+            {
+              "type": "textarea",
+              "key": "body",
+              "label": "Text",
+              "rows": 3
+            }
+          ]
+        },
+        {
+          "type": "repeater",
+          "key": "looks",
+          "label": "\"I want…\" rows",
+          "itemLabel": "statement",
+          "addLabel": "Add row",
+          "layout": "row",
+          "fields": [
+            {
+              "type": "text",
+              "key": "statement",
+              "label": "Statement",
+              "required": true
+            },
+            {
+              "type": "select",
+              "key": "shade",
+              "label": "Shade",
+              "optionsFrom": "guideShades"
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "key": "step4",
+          "label": "Step 04 — Harmony or contrast",
+          "fields": [
+            {
+              "type": "text",
+              "key": "eyebrow",
+              "label": "Eyebrow (small label above the heading)"
+            },
+            {
+              "type": "heading",
+              "key": "heading",
+              "label": "Heading",
+              "help": "Use a | to break onto a second, italic line. e.g. \"Know your|undertone\""
+            },
+            {
+              "type": "textarea",
+              "key": "body",
+              "label": "Text",
+              "rows": 3
+            },
+            {
+              "type": "group",
+              "key": "harmony",
+              "label": "Harmony panel",
+              "fields": [
+                {
+                  "type": "text",
+                  "key": "label",
+                  "label": "Label"
+                },
+                {
+                  "type": "text",
+                  "key": "title",
+                  "label": "Title"
+                },
+                {
+                  "type": "textarea",
+                  "key": "text",
+                  "label": "Text",
+                  "rows": 3
+                },
+                {
+                  "type": "text",
+                  "key": "example",
+                  "label": "Example"
+                }
+              ]
+            },
+            {
+              "type": "group",
+              "key": "contrast",
+              "label": "Contrast panel",
+              "fields": [
+                {
+                  "type": "text",
+                  "key": "label",
+                  "label": "Label"
+                },
+                {
+                  "type": "text",
+                  "key": "title",
+                  "label": "Title"
+                },
+                {
+                  "type": "text",
+                  "key": "badge",
+                  "label": "Badge"
+                },
+                {
+                  "type": "textarea",
+                  "key": "text",
+                  "label": "Text",
+                  "rows": 3
+                },
+                {
+                  "type": "text",
+                  "key": "example",
+                  "label": "Example"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "key": "closing",
+          "label": "Closing note",
+          "fields": [
+            {
+              "type": "text",
+              "key": "eyebrow",
+              "label": "Eyebrow (small label above the heading)"
+            },
+            {
+              "type": "heading",
+              "key": "heading",
+              "label": "Heading",
+              "help": "Use a | to break onto a second, italic line. e.g. \"Know your|undertone\""
+            },
+            {
+              "type": "textarea",
+              "key": "body",
+              "label": "Text",
+              "rows": 3
+            },
+            {
+              "type": "text",
+              "key": "primaryLabel",
+              "label": "Shop button"
+            },
+            {
+              "type": "text",
+              "key": "secondaryLabel",
+              "label": "Chat button"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "about",
+      "label": "About",
+      "group": "Pages",
+      "kind": "singleton",
+      "preview": "/about",
+      "fields": [
+        {
+          "type": "group",
+          "key": "hero",
+          "label": "Hero",
+          "fields": [
+            {
+              "type": "text",
+              "key": "eyebrow",
+              "label": "Eyebrow (small label above the heading)"
+            },
+            {
+              "type": "heading",
+              "key": "heading",
+              "label": "Heading",
+              "help": "Use a | to break onto a second, italic line. e.g. \"Know your|undertone\""
+            },
+            {
+              "type": "textarea",
+              "key": "sub",
+              "label": "Intro line",
+              "rows": 2
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "key": "story",
+          "label": "Story",
+          "fields": [
+            {
+              "type": "text",
+              "key": "eyebrow",
+              "label": "Eyebrow (small label above the heading)"
+            },
+            {
+              "type": "heading",
+              "key": "heading",
+              "label": "Heading",
+              "help": "Use a | to break onto a second, italic line. e.g. \"Know your|undertone\""
+            },
+            {
+              "type": "textarea",
+              "key": "body",
+              "label": "Story",
+              "rows": 10,
+              "help": "Leave a blank line between paragraphs."
+            },
+            {
+              "type": "image",
+              "key": "image",
+              "label": "Image"
+            }
+          ]
+        },
+        {
+          "type": "repeater",
+          "key": "values",
+          "label": "Values",
+          "itemLabel": "title",
+          "addLabel": "Add value",
+          "fields": [
+            {
+              "type": "text",
+              "key": "title",
+              "label": "Title"
+            },
+            {
+              "type": "textarea",
+              "key": "text",
+              "label": "Text",
+              "rows": 2
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "key": "closing",
+          "label": "Closing",
+          "fields": [
+            {
+              "type": "heading",
+              "key": "heading",
+              "label": "Heading",
+              "help": "Use a | to break onto a second, italic line. e.g. \"Know your|undertone\""
+            },
+            {
+              "type": "text",
+              "key": "body",
+              "label": "Text"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "hairCare",
+      "label": "Hair Care",
+      "group": "Pages",
+      "kind": "singleton",
+      "preview": "/hair-care",
+      "fields": [
+        {
+          "type": "group",
+          "key": "hero",
+          "label": "Hero",
+          "fields": [
+            {
+              "type": "text",
+              "key": "eyebrow",
+              "label": "Eyebrow (small label above the heading)"
+            },
+            {
+              "type": "heading",
+              "key": "heading",
+              "label": "Heading",
+              "help": "Use a | to break onto a second, italic line. e.g. \"Know your|undertone\""
+            },
+            {
+              "type": "textarea",
+              "key": "sub",
+              "label": "Intro line",
+              "rows": 2
+            }
+          ]
+        },
+        {
+          "type": "repeater",
+          "key": "sections",
+          "label": "Topics",
+          "itemLabel": "title",
+          "addLabel": "Add topic",
+          "fields": [
+            {
+              "type": "text",
+              "key": "title",
+              "label": "Title",
+              "required": true
+            },
+            {
+              "type": "select",
+              "key": "icon",
+              "label": "Icon",
+              "options": [
+                {
+                  "value": "drop",
+                  "label": "drop"
+                },
+                {
+                  "value": "comb",
+                  "label": "comb"
+                },
+                {
+                  "value": "flame",
+                  "label": "flame"
+                },
+                {
+                  "value": "box",
+                  "label": "box"
+                },
+                {
+                  "value": "clock",
+                  "label": "clock"
+                },
+                {
+                  "value": "sparkle",
+                  "label": "sparkle"
+                },
+                {
+                  "value": "shield",
+                  "label": "shield"
+                },
+                {
+                  "value": "palette",
+                  "label": "palette"
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "key": "tips",
+              "label": "Tips",
+              "addLabel": "Add tip"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "faq",
+      "label": "FAQ",
+      "group": "Pages",
+      "kind": "singleton",
+      "preview": "/faq",
+      "fields": [
+        {
+          "type": "group",
+          "key": "hero",
+          "label": "Hero",
+          "fields": [
+            {
+              "type": "text",
+              "key": "eyebrow",
+              "label": "Eyebrow (small label above the heading)"
+            },
+            {
+              "type": "heading",
+              "key": "heading",
+              "label": "Heading",
+              "help": "Use a | to break onto a second, italic line. e.g. \"Know your|undertone\""
+            },
+            {
+              "type": "textarea",
+              "key": "sub",
+              "label": "Intro line",
+              "rows": 2
+            }
+          ]
+        },
+        {
+          "type": "repeater",
+          "key": "groups",
+          "label": "Sections",
+          "itemLabel": "title",
+          "addLabel": "Add section",
+          "fields": [
+            {
+              "type": "text",
+              "key": "title",
+              "label": "Section title",
+              "required": true
+            },
+            {
+              "type": "repeater",
+              "key": "items",
+              "label": "Questions",
+              "itemLabel": "q",
+              "addLabel": "Add question",
+              "fields": [
+                {
+                  "type": "text",
+                  "key": "q",
+                  "label": "Question",
+                  "required": true
+                },
+                {
+                  "type": "textarea",
+                  "key": "a",
+                  "label": "Answer",
+                  "rows": 4,
+                  "required": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "shipping",
+      "label": "Shipping & Returns",
+      "group": "Pages",
+      "kind": "singleton",
+      "preview": "/shipping-returns",
+      "fields": [
+        {
+          "type": "group",
+          "key": "hero",
+          "label": "Hero",
+          "fields": [
+            {
+              "type": "text",
+              "key": "eyebrow",
+              "label": "Eyebrow (small label above the heading)"
+            },
+            {
+              "type": "heading",
+              "key": "heading",
+              "label": "Heading",
+              "help": "Use a | to break onto a second, italic line. e.g. \"Know your|undertone\""
+            },
+            {
+              "type": "textarea",
+              "key": "sub",
+              "label": "Intro line",
+              "rows": 2
+            }
+          ]
+        },
+        {
+          "type": "repeater",
+          "key": "groups",
+          "label": "Sections",
+          "itemLabel": "title",
+          "addLabel": "Add section",
+          "fields": [
+            {
+              "type": "text",
+              "key": "title",
+              "label": "Section title",
+              "required": true
+            },
+            {
+              "type": "repeater",
+              "key": "items",
+              "label": "Questions",
+              "itemLabel": "q",
+              "addLabel": "Add question",
+              "fields": [
+                {
+                  "type": "text",
+                  "key": "q",
+                  "label": "Question",
+                  "required": true
+                },
+                {
+                  "type": "textarea",
+                  "key": "a",
+                  "label": "Answer",
+                  "rows": 4,
+                  "required": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "contactPage",
+      "label": "Contact",
+      "group": "Pages",
+      "kind": "singleton",
+      "preview": "/contact",
+      "fields": [
+        {
+          "type": "group",
+          "key": "hero",
+          "label": "Hero",
+          "fields": [
+            {
+              "type": "text",
+              "key": "eyebrow",
+              "label": "Eyebrow (small label above the heading)"
+            },
+            {
+              "type": "heading",
+              "key": "heading",
+              "label": "Heading",
+              "help": "Use a | to break onto a second, italic line. e.g. \"Know your|undertone\""
+            },
+            {
+              "type": "textarea",
+              "key": "sub",
+              "label": "Intro line",
+              "rows": 2
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "key": "formHeading",
+          "label": "Form heading"
+        },
+        {
+          "type": "list",
+          "key": "topics",
+          "label": "\"What can we help with?\" options",
+          "addLabel": "Add option"
+        }
+      ]
+    },
+    {
+      "key": "settings",
+      "label": "Settings",
+      "group": "Store",
+      "kind": "singleton",
+      "preview": "/",
+      "fields": [
+        {
+          "type": "group",
+          "key": "brand",
+          "label": "Brand",
+          "fields": [
+            {
+              "type": "text",
+              "key": "name",
+              "label": "Brand name",
+              "required": true
+            },
+            {
+              "type": "text",
+              "key": "shortName",
+              "label": "Short name"
+            },
+            {
+              "type": "text",
+              "key": "monogram",
+              "label": "Monogram"
+            },
+            {
+              "type": "text",
+              "key": "tagline",
+              "label": "Main tagline"
+            },
+            {
+              "type": "list",
+              "key": "taglineAlts",
+              "label": "Alternative taglines",
+              "addLabel": "Add tagline"
+            },
+            {
+              "type": "image",
+              "key": "logoImage",
+              "label": "Logo image",
+              "help": "Optional. Leave empty to use the built-in \"STAY D ( HAIR )\" wordmark."
+            },
+            {
+              "type": "textarea",
+              "key": "promise",
+              "label": "Brand promise (footer)",
+              "rows": 3
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "key": "contact",
+          "label": "Contact details",
+          "fields": [
+            {
+              "type": "text",
+              "key": "email",
+              "label": "Email",
+              "inputType": "email"
+            },
+            {
+              "type": "text",
+              "key": "phone",
+              "label": "Phone (as displayed)"
+            },
+            {
+              "type": "text",
+              "key": "whatsapp",
+              "label": "WhatsApp number",
+              "help": "International format, digits only — e.g. 233241234567"
+            },
+            {
+              "type": "text",
+              "key": "whatsappMessage",
+              "label": "Default WhatsApp message"
+            },
+            {
+              "type": "text",
+              "key": "hours",
+              "label": "Opening hours"
+            },
+            {
+              "type": "text",
+              "key": "address",
+              "label": "Address (optional)"
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "key": "social",
+          "label": "Social media",
+          "help": "Handles without the @. Leave blank to hide.",
+          "fields": [
+            {
+              "type": "text",
+              "key": "instagram",
+              "label": "Instagram"
+            },
+            {
+              "type": "text",
+              "key": "tiktok",
+              "label": "TikTok"
+            },
+            {
+              "type": "text",
+              "key": "youtube",
+              "label": "YouTube"
+            },
+            {
+              "type": "text",
+              "key": "facebook",
+              "label": "Facebook"
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "key": "commerce",
+          "label": "Prices, currency & checkout",
+          "fields": [
+            {
+              "type": "text",
+              "key": "baseCurrency",
+              "label": "Base currency code",
+              "help": "The currency your prices are entered in, e.g. USD, GBP, GHS."
+            },
+            {
+              "type": "text",
+              "key": "defaultCurrency",
+              "label": "Currency shown to new visitors"
+            },
+            {
+              "type": "repeater",
+              "key": "currencies",
+              "label": "Currencies shoppers can pick",
+              "help": "Rate = how much 1 unit of your base currency is worth in this currency.",
+              "itemLabel": "code",
+              "addLabel": "Add currency",
+              "layout": "row",
+              "fields": [
+                {
+                  "type": "text",
+                  "key": "code",
+                  "label": "Code",
+                  "required": true
+                },
+                {
+                  "type": "text",
+                  "key": "label",
+                  "label": "Name"
+                },
+                {
+                  "type": "number",
+                  "key": "rate",
+                  "label": "Rate",
+                  "min": 0,
+                  "step": 0.0001
+                }
+              ]
+            },
+            {
+              "type": "number",
+              "key": "freeShippingThreshold",
+              "label": "Free shipping over (base currency, 0 = off)",
+              "min": 0,
+              "step": 1
+            },
+            {
+              "type": "number",
+              "key": "lowStockThreshold",
+              "label": "\"Only X left\" shows at or below",
+              "min": 0,
+              "step": 1
+            },
+            {
+              "type": "select",
+              "key": "checkoutMode",
+              "label": "Checkout button",
+              "options": [
+                {
+                  "value": "whatsapp",
+                  "label": "Send the order on WhatsApp"
+                },
+                {
+                  "value": "disabled",
+                  "label": "Show a \"coming soon\" message"
+                }
+              ]
+            },
+            {
+              "type": "textarea",
+              "key": "checkoutMessage",
+              "label": "\"Coming soon\" message",
+              "rows": 2
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "key": "announcement",
+          "label": "Announcement bar",
+          "fields": [
+            {
+              "type": "toggle",
+              "key": "enabled",
+              "label": "Show the announcement bar"
+            },
+            {
+              "type": "text",
+              "key": "text",
+              "label": "Text",
+              "help": "{threshold} is replaced with the free-shipping amount."
+            },
+            {
+              "type": "text",
+              "key": "link",
+              "label": "Link (optional)",
+              "help": "e.g. /shipping-returns"
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "key": "catalog",
+          "label": "Catalogue options",
+          "fields": [
+            {
+              "type": "repeater",
+              "key": "textures",
+              "label": "Textures",
+              "itemLabel": "label",
+              "addLabel": "Add texture",
+              "layout": "row",
+              "fields": [
+                {
+                  "type": "text",
+                  "key": "label",
+                  "label": "Name",
+                  "required": true
+                },
+                {
+                  "type": "text",
+                  "key": "value",
+                  "label": "Code",
+                  "required": true,
+                  "help": "e.g. deep-wave"
+                }
+              ]
+            },
+            {
+              "type": "repeater",
+              "key": "types",
+              "label": "Product types",
+              "itemLabel": "label",
+              "addLabel": "Add type",
+              "layout": "row",
+              "fields": [
+                {
+                  "type": "text",
+                  "key": "label",
+                  "label": "Name",
+                  "required": true
+                },
+                {
+                  "type": "text",
+                  "key": "value",
+                  "label": "Code",
+                  "required": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "key": "seo",
+          "label": "Search & sharing",
+          "fields": [
+            {
+              "type": "text",
+              "key": "title",
+              "label": "Default page title"
+            },
+            {
+              "type": "textarea",
+              "key": "description",
+              "label": "Default description",
+              "rows": 2
+            },
+            {
+              "type": "image",
+              "key": "ogImage",
+              "label": "Social share image (1200×630)"
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "key": "footer",
+          "label": "Footer",
+          "fields": [
+            {
+              "type": "text",
+              "key": "newsletterHeading",
+              "label": "Newsletter heading"
+            },
+            {
+              "type": "textarea",
+              "key": "newsletterText",
+              "label": "Newsletter text",
+              "rows": 2
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -11,8 +11,8 @@
  * ============================================================================
  */
 import { $, $$, storage, scrollToEl } from './core.js';
-import { html } from '../shared/html.js';
-import { icon } from '../components/icons.js';
+import { html, raw } from '../shared/html.js';
+import { icons } from '../shared/icons.js';
 
 const UNDERTONE_KEY = 'sd-undertone';
 
@@ -79,7 +79,7 @@ function initQuiz() {
       <p class="quiz__result-title">You're most likely <em>${name}</em>.</p>
       <p class="quiz__result-text">${jewellery} We've highlighted your card below, along with the shades made for you.</p>
       <div class="btn-row">
-        <a class="btn btn-primary" href="#undertone-${key}" data-see-card>See my undertone ${icon('arrow', 'icon--sm')}</a>
+        <a class="btn btn-primary" href="#undertone-${key}" data-see-card>See my undertone ${raw(icons.arrow('icon--sm'))}</a>
         <a class="btn btn-outline" href="#shades" data-see-shades="${key}">Show my shades</a>
         <button type="button" class="btn btn-outline" data-quiz-reset>Retake</button>
       </div>`.toString();

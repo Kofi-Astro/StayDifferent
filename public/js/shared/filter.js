@@ -1,10 +1,10 @@
 /**
- * Shop filtering & sorting — shared by server and browser.
+ * Shop filtering & sorting (browser).
  *
- * The server uses it to render the right products for a URL like
- *   /shop/wigs?texture=body-wave&length=20&price=150-250&sort=price-asc
- * (so filtered pages work without JavaScript and can be bookmarked/shared),
- * and the browser uses it to update the grid instantly when a filter changes.
+ * The JavaScript twin of app/catalog.py: the server renders the right
+ * products for a URL like /shop/wigs?texture=body-wave&sort=price-asc, and
+ * this file lets the browser update the grid instantly when a filter changes.
+ * If you change the rules in one, mirror them in the other.
  */
 import { priceRange, isSoldOut } from './catalog.js';
 
@@ -66,9 +66,9 @@ export function activeFilterCount(f) {
  * Apply filters + sorting.
  * @param {import('../../../data/types.js').Product[]} products
  * @param {ReturnType<typeof parseFilters>} f
- * @param {Record<string, {name: string}>} [shades]  For text search on shade names.
+ * @param {Record<string, string>} [shadeNames]  { slug: name } for text search.
  */
-export function applyFilters(products, f, shades = {}) {
+export function applyFilters(products, f, shadeNames = {}) {
   const words = f.q.toLowerCase().split(/\s+/).filter(Boolean);
   const bands = PRICE_BANDS.filter((b) => f.price.includes(b.value));
 
@@ -82,7 +82,7 @@ export function applyFilters(products, f, shades = {}) {
     }
     if (f.available && isSoldOut(p)) return false;
     if (words.length) {
-      const hay = `${p.name} ${p.summary} ${p.texture} ${p.type} ${shades[p.shade]?.name || ''}`.toLowerCase();
+      const hay = `${p.name} ${p.summary} ${p.texture} ${p.type} ${shadeNames[p.shade] || ''}`.toLowerCase();
       if (!words.every((w) => hay.includes(w))) return false;
     }
     return true;
@@ -99,7 +99,7 @@ export function applyFilters(products, f, shades = {}) {
     case 'name':
       return result.sort((a, b) => a.name.localeCompare(b.name));
     default:
-      // "Featured": bestsellers first, sold-out last, otherwise catalogue order.
-      return result.sort((a, b) => Number(isSoldOut(a)) - Number(isSoldOut(b)) || Number(b.bestseller) - Number(a.bestseller));
+      // "Featured": in stock first, then bestsellers, otherwise catalogue order.
+      return result.sort((a, b) => Number(isSoldOut(a)) - Number(isSoldOut(b)) || Number(Boolean(b.bestseller)) - Number(Boolean(a.bestseller)));
   }
 }

@@ -1,54 +1,38 @@
 /**
- * Money formatting & currency conversion — shared by server and browser.
+ * Money formatting & currency conversion (browser).
  *
- * All prices are STORED in the base currency (Admin → Settings → Commerce).
- * For display we multiply by the selected currency's `rate` and format with
- * the browser's Intl API, so symbols, separators and placement are correct
- * for every currency without any lookup tables.
+ * Mirrors app/money.py exactly, so a price looks identical whether the server
+ * rendered it or the browser re-formatted it after a currency switch.
+ * All prices are stored in the base currency; `rate` converts from it.
  */
 
-/**
- * @typedef {{ code: string, label?: string, rate: number }} Currency
- */
+/** Display symbols. Unknown codes are shown as "XYZ 1,234". */
+const SYMBOLS = {
+  USD: '$',
+  GBP: '£',
+  EUR: '€',
+  GHS: 'GH₵',
+  NGN: '₦',
+  CAD: 'CA$',
+  AUD: 'A$',
+  ZAR: 'R',
+  KES: 'KSh',
+};
 
 /**
- * Convert a base-currency amount into another currency.
- * @param {number} amount        Amount in base currency.
- * @param {Currency} [currency]  Target currency (rate relative to base).
- */
-export function convert(amount, currency) {
-  const rate = currency && Number(currency.rate) > 0 ? Number(currency.rate) : 1;
-  return Number(amount || 0) * rate;
-}
-
-/**
- * Format a base-currency amount for display, e.g. 189 → "$189" or "£149".
- * Converted prices are rounded to whole units so they look intentional.
+ * Format a base-currency amount, e.g. 189 → "$189" or "£149".
  * @param {number} amount
- * @param {Currency} [currency]
+ * @param {{ code: string, rate: number }} [currency]
  */
 export function formatMoney(amount, currency) {
-  const code = currency?.code || 'USD';
-  const value = convert(amount, currency);
-  try {
-    return new Intl.NumberFormat('en', {
-      style: 'currency',
-      currency: code,
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-      currencyDisplay: 'narrowSymbol',
-    }).format(Math.round(value));
-  } catch {
-    // Unknown currency code typed in the admin — fall back gracefully.
-    return `${code} ${Math.round(value).toLocaleString('en')}`;
-  }
+  const rate = Number(currency?.rate) > 0 ? Number(currency.rate) : 1;
+  const value = Math.round(Number(amount || 0) * rate);
+  const code = String(currency?.code || 'USD').toUpperCase();
+  const formatted = value.toLocaleString('en-US');
+  return SYMBOLS[code] ? `${SYMBOLS[code]}${formatted}` : `${code} ${formatted}`;
 }
 
-/**
- * Find a currency by code in the settings list (falls back to the first one).
- * @param {Currency[]} currencies
- * @param {string} code
- */
+/** Find a currency by code in the settings list (falls back to the first one). */
 export function findCurrency(currencies, code) {
   return currencies.find((c) => c.code === code) || currencies[0] || { code: 'USD', rate: 1 };
 }

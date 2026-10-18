@@ -17,3 +17,17 @@ storage/
 .DS_Store
 *.log
 *.tsbuildinfo
+
+# python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/

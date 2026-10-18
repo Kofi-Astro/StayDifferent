@@ -1,0 +1,42 @@
+{# About — brand story centred on the "stay different" idea. Copy: data/about.json #}
+{% extends 'base.html' %}
+{% block content %}
+{{ ui.page_hero(about.hero) }}
+
+<section class="section" aria-labelledby="story-title">
+  <div class="container-page about-story">
+    <div class="about-story__media media-frame reveal">
+      {{ ui.media(about.story.image, 'The Stay Different team styling hair', story_swatch, 'curly', 'about') }}
+    </div>
+    <div class="about-story__copy">
+      {{ ui.section_heading(about.story.heading, about.story.eyebrow, id='story-title', cls='reveal') }}
+      <div class="prose reveal">{{ about.story.body | paragraphs }}</div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--dark" aria-label="Our values">
+  <div class="container-page">
+    <ol class="values-grid" role="list">
+      {% for v in about["values"] %}
+        <li class="value reveal">
+          <span class="value__num" aria-hidden="true">0{{ loop.index }}</span>
+          <h2 class="value__title">{{ v.title }}</h2>
+          <p class="value__text">{{ v.text }}</p>
+        </li>
+      {% endfor %}
+    </ol>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container-page about-closing__inner reveal">
+    <h2 class="about-closing__title">{{ about.closing.heading | split_heading }}</h2>
+    <p class="about-closing__body">{{ about.closing.body }}</p>
+    <div class="btn-row" style="justify-content:center">
+      <a class="btn btn-primary" href="/shop">Shop the collection {{ icon('arrow', 'icon--sm') }}</a>
+      <a class="btn btn-outline" href="/colour-guide">Find your shade</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,51 @@
+{
+  "hero": {
+    "eyebrow": "Shipping & Returns",
+    "heading": "Fast to you.|Fair if not.",
+    "sub": "Everything you need to know about getting your hair — and sending it back if it is not right."
+  },
+  "groups": [
+    {
+      "title": "Shipping",
+      "items": [
+        {
+          "q": "Processing time",
+          "a": "Orders are dispatched within 1–2 business days. Custom colour and wig customisation can take 5–7 business days."
+        },
+        {
+          "q": "Delivery times",
+          "a": "Domestic express: 1–3 business days. International: 5–10 business days. Tracking is emailed as soon as your order ships."
+        },
+        {
+          "q": "Shipping costs",
+          "a": "Free express shipping on orders over the threshold shown at the top of the site. Otherwise, shipping is calculated at checkout."
+        },
+        {
+          "q": "Customs & duties",
+          "a": "International orders may be subject to import duties, which are the responsibility of the customer."
+        }
+      ]
+    },
+    {
+      "title": "Returns",
+      "items": [
+        {
+          "q": "Return window",
+          "a": "Return unopened, unworn hair with its original packaging and seal intact within 14 days of delivery."
+        },
+        {
+          "q": "Non-returnable items",
+          "a": "For hygiene reasons, hair that has been opened, worn, washed, coloured, cut or had its lace altered cannot be returned."
+        },
+        {
+          "q": "How to start a return",
+          "a": "Contact us with your order number. We will send you instructions and the return address."
+        },
+        {
+          "q": "Refunds",
+          "a": "Refunds are issued to the original payment method within 5–7 business days of us receiving your return."
+        }
+      ]
+    }
+  ]
+}

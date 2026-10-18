@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Sign in — Stay Different admin</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/admin/admin.css" />
+</head>
+<body class="login-page">
+  <main class="login-card">
+    <p class="login-logo"><span>STAY D</span><small>( ADMIN )</small></p>
+    {% if not enabled %}
+      <h1>Admin is switched off</h1>
+      <p class="login-hint">Set the <code>ADMIN_PASSWORD</code> environment variable on the server to turn it on (see the README).</p>
+    {% else %}
+      <h1>Welcome back</h1>
+      <form method="post" action="/admin/login">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required autofocus
+               {% if error %}aria-invalid="true" aria-describedby="login-error"{% endif %} />
+        {% if error %}<p class="login-error" id="login-error" role="alert">That password didn't match. Try again.</p>{% endif %}
+        <button type="submit">Sign in</button>
+      </form>
+    {% endif %}
+    <p class="login-hint"><a href="/">← Back to the shop</a></p>
+  </main>
+</body>
+</html>

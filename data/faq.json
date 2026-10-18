@@ -1,0 +1,56 @@
+{
+  "hero": {
+    "eyebrow": "Help centre",
+    "heading": "Questions,|answered",
+    "sub": "Can't find what you're looking for? Message us — we reply fast."
+  },
+  "groups": [
+    {
+      "title": "Hair & quality",
+      "items": [
+        {
+          "q": "Is your hair 100% human hair?",
+          "a": "Yes. Every product is 100% human hair, cuticle-aligned and never mixed with synthetic or animal fibres."
+        },
+        {
+          "q": "Can I colour or bleach the hair?",
+          "a": "Our natural (1B) hair can be coloured and lifted by a professional. Pre-coloured shades can be toned or darkened, but we do not recommend lifting them further."
+        },
+        {
+          "q": "Will the hair shed or tangle?",
+          "a": "A little shedding in the first couple of washes is normal. Follow our Hair Care guide and tangling stays minimal."
+        },
+        {
+          "q": "How many bundles do I need?",
+          "a": "For a full sew-in: 3 bundles up to 20\", 4 bundles for 22\" and longer. Add a closure or frontal for a leave-out-free install."
+        }
+      ]
+    },
+    {
+      "title": "Colour",
+      "items": [
+        {
+          "q": "How do I pick the right shade?",
+          "a": "Start with our Colour Guide — the 30-second quiz finds your undertone and matches you with shades. Still unsure? Send us a photo in natural light on WhatsApp."
+        },
+        {
+          "q": "Why does the colour look different on my screen?",
+          "a": "Screens, lighting and camera settings all shift colour. Our swatches are a close guide, but always view the hair in daylight if you can."
+        }
+      ]
+    },
+    {
+      "title": "Orders",
+      "items": [
+        {
+          "q": "How do I place an order?",
+          "a": "Add items to your bag and press Checkout. While full online payments are being set up, checkout sends your bag to us on WhatsApp and we confirm everything with you directly."
+        },
+        {
+          "q": "Can I change or cancel my order?",
+          "a": "Message us within 12 hours of ordering and we will do our best before it ships."
+        }
+      ]
+    }
+  ]
+}

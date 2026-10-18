@@ -16,9 +16,9 @@
 import { storage, emit, on, pageData, $, toast } from './core.js';
 import { money, currentCurrency } from './currency.js';
 import { openDialog } from './dialogs.js';
-import { html } from '../shared/html.js';
-import { media } from '../components/hair-art.js';
-import { icon } from '../components/icons.js';
+import { html, raw } from '../shared/html.js';
+import { imageOrArt } from '../shared/art.js';
+import { icons } from '../shared/icons.js';
 
 const STORAGE_KEY = 'sd-cart';
 const MAX_QTY = 20;
@@ -91,7 +91,7 @@ function lineTemplate(l) {
   const atMax = l.qty >= Math.min(l.max ?? MAX_QTY, MAX_QTY);
   return html`<div class="cart-line" data-key="${l.key}">
     <a class="cart-line__media media-frame" href="/products/${l.slug}" tabindex="-1" aria-hidden="true">
-      ${media({ image: l.image, alt: '', swatch: l.swatch, texture: l.texture, seed: l.slug })}
+      <img src="${imageOrArt({ image: l.image, swatch: l.swatch, texture: l.texture, seed: l.slug })}" alt="" width="80" height="100" loading="lazy" />
     </a>
     <div>
       <div class="cart-line__top">
@@ -103,9 +103,9 @@ function lineTemplate(l) {
       </div>
       <div class="cart-line__bottom">
         <div class="qty" role="group" aria-label="Quantity for ${l.name}">
-          <button type="button" data-qty="-1" aria-label="Decrease quantity">${icon('minus', 'icon--sm')}</button>
+          <button type="button" data-qty="-1" aria-label="Decrease quantity">${raw(icons.minus('icon--sm'))}</button>
           <output aria-live="polite">${l.qty}</output>
-          <button type="button" data-qty="1" aria-label="Increase quantity" ${atMax ? html`disabled` : ''}>${icon('plus', 'icon--sm')}</button>
+          <button type="button" data-qty="1" aria-label="Increase quantity" ${atMax ? html`disabled` : ''}>${raw(icons.plus('icon--sm'))}</button>
         </div>
         <button type="button" class="cart-line__remove" data-remove>Remove</button>
       </div>

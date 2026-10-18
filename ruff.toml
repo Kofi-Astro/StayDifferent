@@ -1,0 +1,11 @@
+# Ruff — Python linter & formatter settings (run: .venv/bin/ruff check . && .venv/bin/ruff format --check .)
+line-length = 140
+target-version = "py312"
+extend-exclude = ["storage", ".venv"]
+
+[lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM"]
+ignore = ["E501", "SIM105"]  # try/except is clearer than contextlib.suppress for newcomers
+
+[lint.flake8-bugbear]
+extend-immutable-calls = ["fastapi.Depends"]

@@ -1,0 +1,56 @@
+{
+  "hero": {
+    "eyebrow": "Premium human hair · Extensions · Wigs",
+    "heading": "Stay|different.",
+    "sub": "Made for the ones who stand out. Premium human hair in shades and textures that say exactly who you are.",
+    "primaryLabel": "Shop the collection",
+    "primaryLink": "/shop",
+    "secondaryLabel": "Find your shade",
+    "secondaryLink": "/colour-guide",
+    "image": "",
+    "artShade": "wild-card",
+    "artTexture": "body-wave"
+  },
+  "collections": {
+    "eyebrow": "Shop by collection",
+    "heading": "Pick your|texture"
+  },
+  "shadeTeaser": {
+    "eyebrow": "The Colour Guide",
+    "heading": "Find the shade|that feels like you",
+    "body": "Warm, cool or somewhere in between? Take our 30-second undertone quiz and meet the shades made for you.",
+    "ctaLabel": "Open the Colour Guide"
+  },
+  "bestsellers": {
+    "eyebrow": "Most loved",
+    "heading": "The|bestsellers"
+  },
+  "promise": [
+    {
+      "title": "100% human hair",
+      "text": "Cuticle-aligned, ethically sourced, never mixed."
+    },
+    {
+      "title": "Colour-matched",
+      "text": "Professionally coloured and toned in-house."
+    },
+    {
+      "title": "Fast, tracked delivery",
+      "text": "Dispatched within 1–2 business days."
+    },
+    {
+      "title": "14-day returns",
+      "text": "Unopened, unworn hair — no awkward questions."
+    }
+  ],
+  "social": {
+    "eyebrow": "Join the different ones",
+    "heading": "As seen on|you",
+    "body": "Tag @staydifferenthair to be featured. Real people, real installs, zero filters (okay, maybe one)."
+  },
+  "newsletter": {
+    "eyebrow": "The inner circle",
+    "heading": "First dibs on every drop.",
+    "text": "New shades land with subscribers first — plus restock alerts and the occasional members-only treat."
+  }
+}

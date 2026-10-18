@@ -1,0 +1,123 @@
+{#
+  ==========================================================================
+  /products/<slug> — Product page
+  Gallery · name · price · length selector · texture · shade swatch · quantity
+  · Add to bag · accordion (Details / Care / Shipping & Returns) ·
+  "Not sure about the shade?" → Colour Guide · related products.
+  Behaviour: public/js/client/product.js
+  ==========================================================================
+#}
+{% extends 'base.html' %}
+{% block scripts %}<script type="module" src="{{ asset('/js/client/product.js') }}"></script>{% endblock %}
+
+{% block content %}
+<div class="container-page product-page">
+  <nav class="breadcrumbs product-page__crumbs" aria-label="Breadcrumb">
+    <ol role="list">
+      <li><a href="/">Home</a></li>
+      <li><a href="/shop">Shop</a></li>
+      {% if primary_collection %}<li><a href="/shop/{{ primary_collection.slug }}">{{ primary_collection.name }}</a></li>{% endif %}
+      <li aria-current="page">{{ product.name }}</li>
+    </ol>
+  </nav>
+
+  <div class="product-layout">
+    {# ── Gallery ── #}
+    <section class="gallery" aria-label="Product images">
+      <div class="gallery__track no-scrollbar" data-gallery-track tabindex="0" aria-label="Image gallery, scroll for more">
+        {% for v in views %}
+          <figure class="gallery__slide media-frame">
+            {{ ui.media(v.image, product.name ~ (' in ' ~ shade.name if shade else '') ~ ' — view ' ~ loop.index, shade.swatch if shade else none, product.texture, v.seed, loop.first, '(min-width: 1024px) 55vw, 100vw') }}
+          </figure>
+        {% endfor %}
+      </div>
+      {% if views | length > 1 %}
+        <div class="gallery__thumbs" role="group" aria-label="Choose image">
+          {% for v in views %}
+            <button type="button" class="gallery__thumb media-frame" data-gallery-thumb="{{ loop.index0 }}" aria-label="Show image {{ loop.index }}" aria-current="{{ 'true' if loop.first else 'false' }}">
+              {{ ui.media(v.image, '', shade.swatch if shade else none, product.texture, v.seed) }}
+            </button>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </section>
+
+    {# ── Details & buy box ── #}
+    <section class="buy-box" aria-labelledby="product-title">
+      {% if shade %}<p class="eyebrow buy-box__eyebrow">{{ shade.family }} · No. {{ shade.number }}</p>{% endif %}
+      <h1 class="buy-box__title" id="product-title">{{ product.name }}</h1>
+      <p class="buy-box__price">
+        <span data-product-price>{{ ui.price(selected.price if selected else 0) }}</span>
+        <s class="buy-box__compare" data-product-compare{% if not (selected and selected.compareAt) %} hidden{% endif %}>{% if selected and selected.compareAt %}{{ ui.price(selected.compareAt) }}{% endif %}</s>
+      </p>
+      <p class="buy-box__summary">{{ product.summary }}</p>
+
+      <form class="buy-form" data-product-form novalidate>
+        <dl class="buy-box__facts">
+          <div><dt>Texture</dt><dd>{{ label_for(settings.catalog.textures, product.texture) }}</dd></div>
+          <div><dt>Type</dt><dd>{{ label_for(settings.catalog.types, product.type) }}</dd></div>
+          {% if shade %}
+            <div class="buy-box__shade">
+              <dt>Shade</dt>
+              <dd>{{ ui.swatch_dot(shade, 'swatch-dot--lg') }} {{ shade.name }} <span class="muted">· {{ shade.undertoneLabel }}</span></dd>
+            </div>
+          {% endif %}
+        </dl>
+
+        <fieldset class="length-picker">
+          <legend class="buy-form__label">Length <span class="muted" data-length-label>{{ (selected.length ~ '"') if selected and not sold_out }}</span></legend>
+          <div class="length-picker__options">
+            {% for v in product.variants %}
+              {% set ok = variant_available(product, v) %}
+              <label class="check-chip{{ '' if ok else ' is-unavailable' }}">
+                <input type="radio" name="length" value="{{ v.length }}"{% if v is sameas selected and ok %} checked{% endif %}{% if not ok %} disabled{% endif %} />
+                <span>{{ v.length }}"{% if not ok %}<span class="sr-only"> (sold out)</span>{% endif %}</span>
+              </label>
+            {% endfor %}
+          </div>
+        </fieldset>
+
+        <p class="stock stock--{{ stock.state }}" data-stock role="status" aria-live="polite"><span class="stock__dot" aria-hidden="true"></span><span data-stock-text>{{ stock.text }}</span></p>
+
+        <div class="buy-form__row">
+          <div class="qty qty--lg" role="group" aria-label="Quantity">
+            <button type="button" data-qty-step="-1" aria-label="Decrease quantity">{{ icon('minus', 'icon--sm') }}</button>
+            <label class="sr-only" for="qty-input">Quantity</label>
+            <input id="qty-input" type="number" name="qty" value="1" min="1" max="{{ [20, selected.stock] | min if selected and selected.stock > 0 else 20 }}" inputmode="numeric" data-qty-input />
+            <button type="button" data-qty-step="1" aria-label="Increase quantity">{{ icon('plus', 'icon--sm') }}</button>
+          </div>
+          <button type="submit" class="btn btn-primary buy-form__add" data-add-to-cart{% if sold_out %} disabled{% endif %}>
+            {% if sold_out %}Sold out{% else %}{{ icon('bag', 'icon--sm') }} Add to bag{% endif %}
+          </button>
+        </div>
+        {% if sold_out %}
+          <a class="link-arrow buy-form__restock" href="{{ whatsapp_url(settings.contact, 'Hi! When will ' ~ product.name ~ ' be back in stock?') }}" target="_blank" rel="noopener">
+            Ask about a restock on WhatsApp {{ icon('arrow', 'icon--sm') }}
+          </a>
+        {% endif %}
+      </form>
+
+      <a class="shade-help" href="/colour-guide">
+        {{ icon('palette') }}
+        <span><strong>Not sure about the shade?</strong><br />Take the 30-second undertone quiz in our Colour Guide.</span>
+        {{ icon('arrow', 'icon--sm shade-help__arrow') }}
+      </a>
+
+      <div class="buy-box__desc">{{ product.description | paragraphs }}</div>
+
+      {{ ui.accordion(info_items, 'product-info', true) }}
+    </section>
+  </div>
+</div>
+
+{% if related %}
+<section class="section related" aria-labelledby="related-title">
+  <div class="container-page">
+    {{ ui.section_heading('Complete|the look', 'You might also love', id='related-title') }}
+    <div class="product-grid product-grid--4">
+      {% for p in related %}{{ ui.product_card(p, shades.get(p.shade)) }}{% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

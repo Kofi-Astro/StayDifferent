@@ -1,0 +1,133 @@
+{#
+  ==========================================================================
+  macros.html — reusable UI pieces ("components") for every page.
+  Import with:  {% import 'partials/macros.html' as ui with context %}
+  then call e.g. {{ ui.product_card(product, shade) }}.
+  ==========================================================================
+#}
+
+{# Brand logo. Default: a typographic recreation of the chosen logo
+   (brand/logo-option-2-black-circle.jpg). An uploaded logo replaces it. #}
+{% macro logo(tone='dark', size='md') -%}
+  {% if settings.brand.logoImage %}
+    <img class="logo-img logo-img--{{ size }}" src="{{ settings.brand.logoImage | safe_url }}" alt="{{ settings.brand.name }}" width="160" height="48" />
+  {% else %}
+    <span class="logo logo--{{ tone }} logo--{{ size }}" role="img" aria-label="{{ settings.brand.name }}">
+      <span class="logo__word" aria-hidden="true">STAY D</span>
+      <span class="logo__sub" aria-hidden="true"><span class="logo__diamond"></span>( HAIR )</span>
+    </span>
+  {% endif %}
+{%- endmacro %}
+
+{# Image or generated placeholder art.
+   TODO: replace with brand photography (upload images in the admin). #}
+{% macro media(image='', alt='', swatch=none, texture='straight', seed='x', eager=false, sizes='100vw') -%}
+  <img class="media-img" src="{{ (image | safe_url) if image else art_url(swatch, texture, seed) }}" alt="{{ alt }}"
+       width="800" height="1000" sizes="{{ sizes }}" decoding="async"
+       loading="{{ 'eager' if eager else 'lazy' }}"{% if eager %} fetchpriority="high"{% endif %} />
+{%- endmacro %}
+
+{# Small round shade swatch (base → highlight gradient). #}
+{% macro swatch_dot(shade, cls='') -%}
+  <span class="swatch-dot {{ cls }}" style="--a:{{ shade.swatch.base }};--b:{{ shade.swatch.highlight }}" aria-hidden="true"></span>
+{%- endmacro %}
+
+{# Price in the default currency; the browser re-formats [data-price] on currency change. #}
+{% macro price(amount, cls='') -%}
+  <span class="price {{ cls }}" data-price="{{ amount }}">{{ money(amount) }}</span>
+{%- endmacro %}
+
+{# SectionHeading — the signature "EYEBROW / Two-line heading" combo. #}
+{% macro section_heading(heading, eyebrow='', body='', tag='h2', align='left', id='', cls='') -%}
+  <header class="section-heading section-heading--{{ align }} {{ cls }}">
+    {% if eyebrow %}<p class="eyebrow section-heading__eyebrow">{{ eyebrow }}</p>{% endif %}
+    <{{ tag }} class="section-heading__title"{% if id %} id="{{ id }}"{% endif %}>{{ heading | split_heading }}</{{ tag }}>
+    {% if body %}<div class="section-heading__body">{{ body | paragraphs }}</div>{% endif %}
+  </header>
+{%- endmacro %}
+
+{# Accordion (WAI-ARIA disclosure pattern). Each item: {title, body} or {title, html}.
+   Behaviour: public/js/client/accordion.js #}
+{% macro accordion(items, id, open_first=false) -%}
+  <div class="accordion" data-accordion>
+    {% for item in items %}
+      {% set is_open = open_first and loop.first %}
+      <div class="accordion__item">
+        <h3 class="accordion__heading">
+          <button type="button" class="accordion__trigger" id="{{ id }}-btn-{{ loop.index }}" aria-expanded="{{ 'true' if is_open else 'false' }}" aria-controls="{{ id }}-panel-{{ loop.index }}">
+            <span>{{ item.title }}</span>
+            <span class="accordion__icon" aria-hidden="true">{{ icon('plus') }}</span>
+          </button>
+        </h3>
+        <div class="accordion-panel" id="{{ id }}-panel-{{ loop.index }}" role="region" aria-labelledby="{{ id }}-btn-{{ loop.index }}" data-open="{{ 'true' if is_open else 'false' }}"{% if not is_open %} inert{% endif %}>
+          <div><div class="accordion__content">{{ item.html if item.html else (item.body | paragraphs) }}</div></div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{%- endmacro %}
+
+{# Newsletter sign-up. Posts to /api/newsletter (works without JS too). #}
+{% macro newsletter(heading='', text='', id_prefix='newsletter', tone='light') -%}
+  <form class="newsletter newsletter--{{ tone }}" action="/api/newsletter" method="post" data-form="newsletter" novalidate>
+    {% if heading %}<p class="newsletter__heading">{{ heading }}</p>{% endif %}
+    {% if text %}<p class="newsletter__text">{{ text }}</p>{% endif %}
+    <div class="newsletter__row">
+      <label class="sr-only" for="{{ id_prefix }}-email">Email address</label>
+      <input class="field newsletter__input" id="{{ id_prefix }}-email" type="email" name="email" autocomplete="email" placeholder="Your email address" required />
+      {# Honeypot: hidden from people; bots fill it in and get ignored. #}
+      <input type="text" name="company" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true" />
+      <button class="btn {{ 'btn-accent' if tone == 'dark' else 'btn-primary' }}" type="submit">Sign up</button>
+    </div>
+    <p class="form-status" role="status" aria-live="polite"></p>
+  </form>
+{%- endmacro %}
+
+{# Simple hero for content pages. #}
+{% macro page_hero(hero) -%}
+  <section class="page-hero">
+    <div class="container-page page-hero__inner reveal">
+      {% if hero.eyebrow %}<p class="eyebrow page-hero__eyebrow">{{ hero.eyebrow }}</p>{% endif %}
+      <h1 class="page-hero__title">{{ hero.heading | split_heading }}</h1>
+      {% if hero.sub %}<p class="page-hero__sub">{{ hero.sub }}</p>{% endif %}
+    </div>
+  </section>
+{%- endmacro %}
+
+{# ProductCard — Home bestsellers, Shop grid, related products.
+   data-slug lets the Shop's browser script filter/sort these cards in place. #}
+{% macro product_card(p, shade=none, eager=false, tag='h3', hidden=false) -%}
+  {% set low, high = price_range(p) %}
+  {% set sold_out = is_sold_out(p) %}
+  <article class="product-card{{ ' product-card--soldout' if sold_out }}" data-slug="{{ p.slug }}"{% if hidden %} hidden{% endif %}>
+    <div class="product-card__media media-frame">
+      {{ media(p.images[0] if p.images else '', p.name ~ (' in ' ~ shade.name if shade else ''), shade.swatch if shade else none, p.texture, p.slug, eager, '(min-width: 1024px) 33vw, 50vw') }}
+    </div>
+    <div class="product-card__badges">
+      {% if sold_out %}<span class="badge badge--dark">Sold out</span>
+      {% elif on_sale(p) %}<span class="badge badge--accent">Sale</span>{% endif %}
+      {% if not sold_out and p.badge %}<span class="badge">{{ p.badge }}</span>{% endif %}
+    </div>
+    <div class="product-card__body">
+      {% if shade %}<p class="product-card__shade">{{ swatch_dot(shade) }} {{ shade.name }}</p>{% endif %}
+      <{{ tag }} class="product-card__name"><a class="product-card__link" href="/products/{{ p.slug }}">{{ p.name }}</a></{{ tag }}>
+      <p class="product-card__price">{% if low != high %}<span class="muted">From</span> {% endif %}{{ price(low) }}</p>
+    </div>
+  </article>
+{%- endmacro %}
+
+{# Currency <select>. `id` must be unique on the page. #}
+{% macro currency_select(id) -%}
+  {% set c = settings.commerce %}
+  {% if c.currencies | length > 1 %}
+    <div class="currency">
+      <label class="sr-only" for="{{ id }}">Currency</label>
+      {{ icon('globe', 'currency__icon') }}
+      <select class="currency__select" id="{{ id }}" data-currency-select>
+        {% for cur in c.currencies %}
+          <option value="{{ cur.code }}"{% if cur.code == c.defaultCurrency %} selected{% endif %}>{{ cur.code }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  {% endif %}
+{%- endmacro %}

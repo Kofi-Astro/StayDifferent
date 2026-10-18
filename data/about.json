@@ -1,0 +1,35 @@
+{
+  "hero": {
+    "eyebrow": "Our story",
+    "heading": "Built for the ones|who refuse to blend in",
+    "sub": "Stay Different started with a simple idea: your hair should look like your personality, not like everyone else's."
+  },
+  "story": {
+    "eyebrow": "Why \"Stay Different\"?",
+    "heading": "Hair is|self-expression",
+    "body": "We grew tired of an industry that sold one look to everyone. The same three shades. The same \"safe\" textures. The same message: fit in.\n\nSo we built the opposite. Stay Different Hair makes premium, 100% human hair in shades with personality and textures that celebrate every curl pattern. We colour and tone in small batches, obsess over hairlines, and test every unit on real people before it reaches you.\n\nWhether you want to blend in beautifully or walk in and change the room, we are here for both. Just do it your way.",
+    "image": ""
+  },
+  "values": [
+    {
+      "title": "Quality without compromise",
+      "text": "100% human hair, cuticle-aligned and double-drawn. If we would not wear it, we will not sell it."
+    },
+    {
+      "title": "Shades with personality",
+      "text": "Original colours developed in-house and named for the people who wear them."
+    },
+    {
+      "title": "Every texture, celebrated",
+      "text": "From bone-straight to kinky coils — no texture is an afterthought."
+    },
+    {
+      "title": "Honest help",
+      "text": "Real people on WhatsApp who will tell you which shade actually suits you."
+    }
+  ],
+  "closing": {
+    "heading": "Your hair.|Your rules.",
+    "body": "Ready to find yours?"
+  }
+}

@@ -1,0 +1,46 @@
+{# Footer: brand promise, support & explore links, newsletter, socials, copyright. #}
+{% set socials = social_links(settings.social) %}
+<footer class="site-footer">
+  <div class="container-page site-footer__top">
+    <div class="site-footer__brand">
+      {{ ui.logo('light', 'lg') }}
+      <p class="site-footer__tagline">{{ settings.brand.tagline }}</p>
+      <p class="site-footer__promise">{{ settings.brand.promise }}</p>
+      {% if socials %}
+        <ul class="social-list" role="list">
+          {% for s in socials %}
+            <li><a class="icon-btn icon-btn--light" href="{{ s.href }}" target="_blank" rel="noopener">{{ icon(s.key) }}<span class="sr-only">{{ s.label }} (opens in a new tab)</span></a></li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+
+    <nav class="site-footer__col" aria-labelledby="footer-support">
+      <h2 class="site-footer__heading eyebrow" id="footer-support">Customer care</h2>
+      <ul role="list">
+        {% for l in footer_nav.support %}<li><a href="{{ l.href }}">{{ l.label }}</a></li>{% endfor %}
+        <li><a href="{{ whatsapp_url(settings.contact) }}" target="_blank" rel="noopener">WhatsApp us</a></li>
+      </ul>
+    </nav>
+
+    <nav class="site-footer__col" aria-labelledby="footer-explore">
+      <h2 class="site-footer__heading eyebrow" id="footer-explore">Explore</h2>
+      <ul role="list">
+        {% for l in footer_nav.explore %}<li><a href="{{ l.href }}">{{ l.label }}</a></li>{% endfor %}
+      </ul>
+    </nav>
+
+    <div class="site-footer__news">
+      {{ ui.newsletter(settings.footer.newsletterHeading, settings.footer.newsletterText, 'footer-newsletter', 'dark') }}
+    </div>
+  </div>
+
+  <div class="container-page site-footer__bottom">
+    <p>© {{ year }} {{ settings.brand.name }}. All rights reserved.</p>
+    <p class="site-footer__contact">
+      <a href="mailto:{{ settings.contact.email }}">{{ settings.contact.email }}</a>
+      <span aria-hidden="true">·</span>
+      <a href="tel:{{ tel(settings.contact.phone) }}">{{ settings.contact.phone }}</a>
+    </p>
+  </div>
+</footer>

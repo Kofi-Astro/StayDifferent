@@ -1,0 +1,75 @@
+{# Contact — form, WhatsApp, email, phone, hours, socials. Copy: data/contact-page.json #}
+{% extends 'base.html' %}
+{% set contact = settings.contact %}
+{% set socials = social_links(settings.social) %}
+
+{% block content %}
+{{ ui.page_hero(page.hero) }}
+
+<section class="section section--tight">
+  <div class="container-page contact-layout">
+    <div class="contact-form-wrap">
+      <h2 class="contact-form__title">{{ page.formHeading }}</h2>
+      {# Real form: works without JS; with JS, forms.js validates and submits inline. #}
+      <form class="form-grid form-grid--2" action="/api/contact" method="post" data-form="contact" novalidate>
+        <div class="form-field">
+          <label class="form-label" for="contact-name">Your name</label>
+          <input class="field" id="contact-name" name="name" autocomplete="name" required />
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="contact-email">Email</label>
+          <input class="field" id="contact-email" name="email" type="email" autocomplete="email" required />
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="contact-topic">What can we help with?</label>
+          <select class="field" id="contact-topic" name="topic">{% for t in page.topics %}<option>{{ t }}</option>{% endfor %}</select>
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="contact-order">Order number <span class="muted">(optional)</span></label>
+          <input class="field" id="contact-order" name="orderNumber" />
+        </div>
+        <div class="form-field span-2">
+          <label class="form-label" for="contact-message">Message</label>
+          <textarea class="field" id="contact-message" name="message" rows="6" required></textarea>
+        </div>
+        <input type="text" name="company" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true" />
+        <div class="span-2 contact-form__submit">
+          <button class="btn btn-primary" type="submit">Send message {{ icon('arrow', 'icon--sm') }}</button>
+          <p class="form-status" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+    </div>
+
+    <aside class="contact-cards" aria-label="Other ways to reach us">
+      <a class="contact-card contact-card--accent" href="{{ whatsapp_url(contact) }}" target="_blank" rel="noopener">
+        {{ icon('whatsapp') }}
+        <span><span class="contact-card__label">WhatsApp</span><span class="contact-card__value">Fastest reply — chat now</span></span>
+        <span class="sr-only">(opens in a new tab)</span>
+      </a>
+      <a class="contact-card" href="mailto:{{ contact.email }}">
+        {{ icon('mail') }}
+        <span><span class="contact-card__label">Email</span><span class="contact-card__value">{{ contact.email }}</span></span>
+      </a>
+      <a class="contact-card" href="tel:{{ tel(contact.phone) }}">
+        {{ icon('phone') }}
+        <span><span class="contact-card__label">Phone</span><span class="contact-card__value">{{ contact.phone }}</span></span>
+      </a>
+      <div class="contact-card contact-card--plain">
+        {{ icon('clock') }}
+        <span>
+          <span class="contact-card__label">Hours</span><span class="contact-card__value">{{ contact.hours }}</span>
+          {% if contact.address %}<span class="contact-card__value">{{ contact.address }}</span>{% endif %}
+        </span>
+      </div>
+      {% if socials %}
+        <div class="contact-socials">
+          <p class="eyebrow">Follow the different ones</p>
+          <ul class="social-list" role="list">
+            {% for s in socials %}<li><a class="icon-btn contact-social" href="{{ s.href }}" target="_blank" rel="noopener">{{ icon(s.key) }}<span class="sr-only">{{ s.label }} (opens in a new tab)</span></a></li>{% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+    </aside>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,159 @@
+{#
+  ==========================================================================
+  /shop and /shop/<collection> — product listing with filters.
+
+  Filters live in the URL (?texture=curly&sort=price-asc…), so every view is
+  shareable and works WITHOUT JavaScript (the panel is a normal GET form).
+  With JavaScript, public/js/client/shop.js filters and re-orders the cards
+  below instantly — all products in the collection are rendered, and the
+  ones that don't match are simply hidden.
+  ==========================================================================
+#}
+{% extends 'base.html' %}
+{% block scripts %}<script type="module" src="{{ asset('/js/client/shop.js') }}"></script>{% endblock %}
+
+{# Price band label with live-currency amounts #}
+{% macro band_label(b) -%}
+  {% if b.min == 0 %}Under {{ ui.price(b.max) }}{% elif b.value.endswith('-') %}{{ ui.price(b.min) }} +{% else %}{{ ui.price(b.min) }} – {{ ui.price(b.max) }}{% endif %}
+{%- endmacro %}
+
+{% block content %}
+<section class="shop-hero">
+  <div class="container-page">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <ol role="list">
+        <li><a href="/">Home</a></li>
+        {% if collection %}
+          <li><a href="/shop">Shop</a></li><li aria-current="page">{{ collection.name }}</li>
+        {% else %}
+          <li aria-current="page">Shop</li>
+        {% endif %}
+      </ol>
+    </nav>
+    <h1 class="shop-hero__title">{{ title }}</h1>
+    <p class="shop-hero__desc">
+      {% if collection %}{{ collection.description }}{% else %}Premium human hair in every texture and every shade — find the one that says <em>you</em>.{% endif %}
+    </p>
+    <nav class="shop-collections no-scrollbar" aria-label="Collections">
+      <a class="chip" href="/shop"{% if not collection %} aria-current="page"{% endif %}>All</a>
+      {% for c in collections %}
+        <a class="chip" href="/shop/{{ c.slug }}"{% if collection and collection.slug == c.slug %} aria-current="page"{% endif %}>{{ c.name }}</a>
+      {% endfor %}
+    </nav>
+  </div>
+</section>
+
+<section class="shop" aria-label="Products">
+  <div class="container-page shop__layout">
+    {# Filters: ONE piece of markup. On phones/tablets it's a slide-in <dialog>;
+       on desktop CSS shows the same (closed) dialog as a sidebar. #}
+    <dialog class="drawer drawer-left filters-dialog" id="filters-dialog" aria-label="Filters">
+      <form class="filters" id="filter-form" action="{{ path }}" method="get" data-filter-form aria-label="Filter products">
+        <div class="filters__head">
+          <h2 class="filters__title">Filters</h2>
+          <button type="button" class="icon-btn" data-dialog-close>{{ icon('close') }}<span class="sr-only">Close filters</span></button>
+        </div>
+        <div class="filters__body">
+          {% if filters.q %}<input type="hidden" name="q" value="{{ filters.q }}" />{% endif %}
+
+          {% if textures | length > 1 %}
+          <fieldset class="filter-group">
+            <legend class="eyebrow filter-group__legend">Texture</legend>
+            <div class="filter-group__options">
+              {% for t in textures %}
+                <label class="check">
+                  <input type="checkbox" name="texture" value="{{ t.value }}"{% if t.value in filters.texture %} checked{% endif %} />
+                  <span>{{ t.label }}</span><span class="check__count">{{ t.count }}</span>
+                </label>
+              {% endfor %}
+            </div>
+          </fieldset>
+          {% endif %}
+
+          {% if shade_options | length > 1 %}
+          <fieldset class="filter-group">
+            <legend class="eyebrow filter-group__legend">Shade</legend>
+            <div class="filter-group__options">
+              {% for s in shade_options %}
+                <label class="check check--swatch">
+                  <input type="checkbox" name="shade" value="{{ s.slug }}"{% if s.slug in filters.shade %} checked{% endif %} />
+                  {{ ui.swatch_dot(s) }}<span>{{ s.name }}</span>
+                </label>
+              {% endfor %}
+            </div>
+          </fieldset>
+          {% endif %}
+
+          <fieldset class="filter-group">
+            <legend class="eyebrow filter-group__legend">Length (inches)</legend>
+            <div class="filter-group__chips">
+              {% for l in lengths %}
+                <label class="check-chip">
+                  <input type="checkbox" name="length" value="{{ l }}"{% if l in filters.length %} checked{% endif %} />
+                  <span>{{ l }}"</span>
+                </label>
+              {% endfor %}
+            </div>
+          </fieldset>
+
+          <fieldset class="filter-group">
+            <legend class="eyebrow filter-group__legend">Price</legend>
+            <div class="filter-group__options">
+              {% for b in price_bands %}
+                <label class="check">
+                  <input type="checkbox" name="price" value="{{ b.value }}"{% if b.value in filters.price %} checked{% endif %} />
+                  <span>{{ band_label(b) }}</span>
+                </label>
+              {% endfor %}
+            </div>
+          </fieldset>
+
+          <fieldset class="filter-group">
+            <legend class="eyebrow filter-group__legend">Availability</legend>
+            <label class="check">
+              <input type="checkbox" name="available" value="1"{% if filters.available %} checked{% endif %} />
+              <span>In stock only</span>
+            </label>
+          </fieldset>
+        </div>
+        <div class="filters__foot">
+          <a class="btn btn-outline" href="{{ path }}" data-filter-clear>Clear all</a>
+          {# Without JS this submits the form; with JS it just closes the drawer. #}
+          <button class="btn btn-primary" type="submit" data-filter-apply>Show results</button>
+        </div>
+      </form>
+    </dialog>
+
+    <div class="shop__main">
+      <div class="shop-toolbar">
+        <button type="button" class="btn btn-outline shop-toolbar__filters" data-dialog-open="filters-dialog" aria-haspopup="dialog">
+          Filters <span data-filter-count>{{ '(%d)' % active_count if active_count }}</span>
+        </button>
+        <p class="shop-toolbar__count" data-result-count role="status" aria-live="polite">{{ results | length }} {{ 'product' if results | length == 1 else 'products' }}</p>
+        <div class="shop-toolbar__sort">
+          <label for="sort-select" class="sr-only">Sort by</label>
+          {# form="filter-form" ties this menu to the filter form even though it sits outside it. #}
+          <select id="sort-select" class="field field--compact" name="sort" form="filter-form" data-sort-select>
+            {% for s in sorts %}<option value="{{ s.value }}"{% if filters.sort == s.value %} selected{% endif %}>{{ s.label }}</option>{% endfor %}
+          </select>
+        </div>
+      </div>
+
+      {# Matching products first (in sorted order), then the rest hidden — the
+         browser script shows/hides and re-orders these without reloading. #}
+      <div class="product-grid" data-product-grid>
+        {% for p in results %}{{ ui.product_card(p, shades.get(p.shade), loop.index <= 2, 'h2') }}{% endfor %}
+        {% for p in hidden_products %}{{ ui.product_card(p, shades.get(p.shade), false, 'h2', true) }}{% endfor %}
+      </div>
+      <div class="shop-empty" data-empty{% if results %} hidden{% endif %}>
+        <p class="shop-empty__title">Nothing matches — yet.</p>
+        <p>Try removing a filter, or let the Colour Guide point you somewhere new.</p>
+        <div class="btn-row">
+          <a class="btn btn-primary" href="{{ path }}" data-filter-clear>Clear filters</a>
+          <a class="btn btn-outline" href="/colour-guide">Colour Guide</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -9,7 +9,7 @@
 import { on, $ } from './core.js';
 import { money } from './currency.js';
 import { html, escapeHtml, raw } from '../shared/html.js';
-import { media } from '../components/hair-art.js';
+import { imageOrArt } from '../shared/art.js';
 
 let index = null;
 
@@ -37,7 +37,7 @@ function highlight(text, words) {
 function resultTemplate(p, words) {
   return html`<li>
     <a class="search-result" href="/products/${p.slug}">
-      <span class="search-result__thumb media-frame">${media({ image: p.image, alt: '', swatch: p.swatch, texture: p.texture, seed: p.slug })}</span>
+      <span class="search-result__thumb media-frame"><img src="${imageOrArt({ image: p.image, swatch: p.swatch, texture: p.texture, seed: p.slug })}" alt="" width="60" height="75" loading="lazy" /></span>
       <span>
         <span class="search-result__name">${highlight(p.name, words)}</span><br />
         <span class="search-result__meta">${p.shade} · ${p.soldOut ? 'Sold out' : html`From ${money(p.from)}`}</span>
@@ -60,6 +60,15 @@ export function initSearch() {
     input.focus();
     input.select();
     await loadIndex();
+  });
+
+  // In a type="search" box, Esc normally just clears the text. One press
+  // should close the whole overlay, so handle it ourselves.
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      /** @type {HTMLDialogElement} */ (dialog).close();
+    }
   });
 
   let debounce;

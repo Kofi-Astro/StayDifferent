@@ -1,0 +1,123 @@
+{
+  "brand": {
+    "name": "Stay Different Hair",
+    "shortName": "Stay D",
+    "monogram": "SD",
+    "tagline": "Stay different.",
+    "taglineAlts": [
+      "Made for the ones who stand out.",
+      "Your hair. Your rules."
+    ],
+    "logoImage": "",
+    "promise": "Premium 100% human hair, ethically sourced and made for people who refuse to blend in. Hair as self-expression — never conformity."
+  },
+  "contact": {
+    "email": "hello@staydifferenthair.com",
+    "phone": "+44 20 0000 0000",
+    "whatsapp": "440000000000",
+    "whatsappMessage": "Hi Stay Different! I'd love some help choosing my hair.",
+    "hours": "Mon–Sat, 9am – 6pm",
+    "address": ""
+  },
+  "social": {
+    "instagram": "staydifferenthair",
+    "tiktok": "staydifferenthair",
+    "youtube": "",
+    "facebook": ""
+  },
+  "commerce": {
+    "baseCurrency": "USD",
+    "defaultCurrency": "USD",
+    "currencies": [
+      {
+        "code": "USD",
+        "label": "US Dollar",
+        "rate": 1
+      },
+      {
+        "code": "GBP",
+        "label": "British Pound",
+        "rate": 0.79
+      },
+      {
+        "code": "EUR",
+        "label": "Euro",
+        "rate": 0.92
+      },
+      {
+        "code": "GHS",
+        "label": "Ghana Cedi",
+        "rate": 15.5
+      },
+      {
+        "code": "CAD",
+        "label": "Canadian Dollar",
+        "rate": 1.37
+      }
+    ],
+    "freeShippingThreshold": 250,
+    "checkoutMode": "whatsapp",
+    "checkoutMessage": "Online checkout is launching soon. In the meantime, send us your bag on WhatsApp and we will sort the rest.",
+    "lowStockThreshold": 3
+  },
+  "announcement": {
+    "enabled": true,
+    "text": "Free express shipping on orders over {threshold} — stay different, stay fast.",
+    "link": "/shipping-returns"
+  },
+  "catalog": {
+    "textures": [
+      {
+        "value": "straight",
+        "label": "Straight"
+      },
+      {
+        "value": "body-wave",
+        "label": "Body Wave"
+      },
+      {
+        "value": "curly",
+        "label": "Curly"
+      },
+      {
+        "value": "kinky-curly",
+        "label": "Kinky Curly"
+      }
+    ],
+    "types": [
+      {
+        "value": "bundle",
+        "label": "Bundle"
+      },
+      {
+        "value": "clip-in",
+        "label": "Clip-in set"
+      },
+      {
+        "value": "tape-in",
+        "label": "Tape-in"
+      },
+      {
+        "value": "wig",
+        "label": "Wig"
+      },
+      {
+        "value": "closure",
+        "label": "Closure"
+      },
+      {
+        "value": "frontal",
+        "label": "Frontal"
+      }
+    ]
+  },
+  "seo": {
+    "title": "Stay Different Hair — Premium Human Hair Extensions & Wigs",
+    "description": "Premium human-hair extensions, wigs, closures and frontals for people who refuse to blend in. Find your shade with the Stay Different Colour Guide.",
+    "ogImage": ""
+  },
+  "footer": {
+    "newsletterHeading": "Be the first to stand out.",
+    "newsletterText": "New shades, restocks and members-only drops. No spam — just hair worth talking about."
+  }
+}

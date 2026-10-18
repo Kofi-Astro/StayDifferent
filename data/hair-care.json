@@ -1,0 +1,59 @@
+{
+  "hero": {
+    "eyebrow": "Hair care",
+    "heading": "Look after it,|it looks after you",
+    "sub": "Premium hair lasts a year or more with the right routine. Here is everything you need to know."
+  },
+  "sections": [
+    {
+      "title": "Washing",
+      "icon": "drop",
+      "tips": [
+        "Wash every 7–10 wears (curls every 5–7), or when product builds up.",
+        "Detangle gently before you wash, starting at the ends.",
+        "Use lukewarm water and a sulphate-free shampoo, smoothing downwards — never scrub in circles.",
+        "Deep condition for 15–20 minutes, then rinse with cool water to seal the cuticle.",
+        "Blot with a microfibre towel and air-dry flat or on a wig stand."
+      ]
+    },
+    {
+      "title": "Styling",
+      "icon": "comb",
+      "tips": [
+        "Use a wide-tooth comb or loop brush; never brush curls when dry.",
+        "Keep products light — heavy oils weigh hair down and loosen lace knots.",
+        "Refresh waves and curls with water and a leave-in between washes.",
+        "Sleep in a satin bonnet or on a silk pillowcase to cut down frizz."
+      ]
+    },
+    {
+      "title": "Heat",
+      "icon": "flame",
+      "tips": [
+        "Always apply a heat protectant first.",
+        "Keep tools at or below 180°C / 350°F (lower for coloured hair).",
+        "One slow pass beats five fast ones.",
+        "Give hair heat-free days to keep it soft and shiny."
+      ]
+    },
+    {
+      "title": "Storage",
+      "icon": "box",
+      "tips": [
+        "Store wigs on a stand or in their satin bag, away from direct sunlight.",
+        "Loosely braid or wrap bundles and clip-ins before storing.",
+        "Keep hair completely dry before packing it away."
+      ]
+    },
+    {
+      "title": "Lifespan",
+      "icon": "clock",
+      "tips": [
+        "With good care, our hair lasts 12 months or more.",
+        "Coloured and blonde hair needs a little extra moisture to go the distance.",
+        "Tape-ins can be re-taped and reused for 2–3 applications.",
+        "Sun, chlorine and salt water shorten lifespan — rinse straight after swimming."
+      ]
+    }
+  ]
+}

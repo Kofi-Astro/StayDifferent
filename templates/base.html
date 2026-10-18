@@ -1,0 +1,69 @@
+{#
+  ==========================================================================
+  base.html — the document shell every storefront page extends.
+  Contains <head> (SEO, Open Graph, JSON-LD, fonts, CSS), the header, <main>,
+  the footer, inline JSON for the browser scripts, and the script tags.
+
+  Pages fill these blocks:
+    {% block content %}   page markup inside <main>
+    {% block styles %}    extra <link rel="stylesheet">
+    {% block scripts %}   page-specific <script type="module">
+  ==========================================================================
+#}
+{% import 'partials/macros.html' as ui with context %}
+{% set page_title = (meta.title ~ ' — ' ~ settings.brand.name) if meta.title else settings.seo.title %}
+{% set page_description = meta.description or settings.seo.description %}
+{% set canonical = site_url ~ ('' if path == '/' else path) %}
+{% set share_image = meta.image or settings.seo.ogImage or '/og-image.png' %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Flag that JavaScript is running (CSS shows no-JS fallbacks otherwise). -->
+  <script>document.documentElement.classList.add('js')</script>
+  <title>{{ page_title }}</title>
+  <meta name="description" content="{{ page_description }}" />
+  <link rel="canonical" href="{{ canonical }}" />
+  {% if meta.noindex %}<meta name="robots" content="noindex" />{% endif %}
+  <meta name="theme-color" content="#1e1612" />
+
+  <!-- Open Graph / social sharing -->
+  <meta property="og:site_name" content="{{ settings.brand.name }}" />
+  <meta property="og:type" content="{{ meta.type or 'website' }}" />
+  <meta property="og:title" content="{{ page_title }}" />
+  <meta property="og:description" content="{{ page_description }}" />
+  <meta property="og:url" content="{{ canonical }}" />
+  <meta property="og:image" content="{{ share_image if share_image.startswith('http') else site_url ~ share_image }}" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Icons -->
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <!-- Self-hosted fonts: preload the two used above the fold -->
+  <link rel="preload" href="/fonts/bodoni-moda.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/dm-sans.woff2" as="font" type="font/woff2" crossorigin />
+
+  <link rel="stylesheet" href="{{ asset('/css/styles.css') }}" />
+  {% block styles %}{% endblock %}
+
+  {% for item in jsonld %}
+  <script type="application/ld+json">{{ item | json_script }}</script>
+  {% endfor %}
+</head>
+<body>
+  {% include 'partials/header.html' %}
+
+  <main id="main" tabindex="-1">
+    {% block content %}{% endblock %}
+  </main>
+
+  {% include 'partials/footer.html' %}
+
+  <!-- Data for the browser scripts (settings, products for filters, …) -->
+  <script id="sd-data" type="application/json">{{ client_data | json_script }}</script>
+  <script type="module" src="{{ asset('/js/client/app.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

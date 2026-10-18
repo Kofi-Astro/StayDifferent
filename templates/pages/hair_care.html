@@ -1,0 +1,31 @@
+{# Hair Care — washing, styling, heat, storage, lifespan. Copy: data/hair-care.json #}
+{% extends 'base.html' %}
+{% block content %}
+{{ ui.page_hero(care.hero) }}
+
+<section class="section section--tight">
+  <div class="container-page">
+    <nav class="care-jump no-scrollbar" aria-label="Hair care topics">
+      {% for s in care.sections %}<a class="chip" href="#care-{{ loop.index }}">{{ s.title }}</a>{% endfor %}
+    </nav>
+    <div class="care-grid">
+      {% for s in care.sections %}
+        <article class="care-card reveal" id="care-{{ loop.index }}" aria-labelledby="care-{{ loop.index }}-title">
+          <span class="care-card__icon" aria-hidden="true">{{ icon(s.icon or 'sparkle') }}</span>
+          <p class="eyebrow care-card__num">0{{ loop.index }}</p>
+          <h2 class="care-card__title" id="care-{{ loop.index }}-title">{{ s.title }}</h2>
+          <ul class="care-card__tips" role="list">{% for t in s.tips %}<li>{{ t }}</li>{% endfor %}</ul>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section section--sand">
+  <div class="container-page care-cta reveal">
+    <h2 class="care-cta__title">Still have a <em>hair question?</em></h2>
+    <p>Send us a message and a real person (who knows hair) will reply.</p>
+    <a class="btn btn-primary" href="/contact">Ask us anything {{ icon('arrow', 'icon--sm') }}</a>
+  </div>
+</section>
+{% endblock %}

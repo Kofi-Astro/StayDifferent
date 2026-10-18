@@ -1,0 +1,174 @@
+{#
+  ==========================================================================
+  Header: skip link · announcement bar · sticky header (logo, nav with Shop
+  mega-menu, currency, search, cart) · mobile menu · search overlay · cart drawer.
+
+  Accessibility:
+   - Skip link is the first focusable element.
+   - Mega-menu = disclosure pattern: "Shop" is a normal link, and a separate
+     chevron button (aria-expanded) opens the panel for keyboard/touch users.
+   - Menu, search and cart are native <dialog>s opened with showModal(), which
+     gives focus trapping, Esc-to-close and an inert background for free.
+  Behaviour: public/js/client/header.js, dialogs.js, cart.js, search.js
+  ==========================================================================
+#}
+<a class="skip-link" href="#main">Skip to content</a>
+
+{# Announcement bar — "{threshold}" becomes a live, currency-aware price. #}
+{% set a = settings.announcement %}
+{% if a.enabled and a.text %}
+  {% set before, _, after = a.text.partition('{threshold}') %}
+  {% set content %}{{ before }}{% if '{threshold}' in a.text %}{{ ui.price(settings.commerce.freeShippingThreshold) }}{% endif %}{{ after }}{% endset %}
+  <div class="announcement">
+    <div class="container-page announcement__inner">
+      {% if a.link %}<a href="{{ a.link | safe_url }}">{{ content }}</a>{% else %}<p>{{ content }}</p>{% endif %}
+    </div>
+  </div>
+{% endif %}
+
+<header class="site-header" data-header>
+  <div class="container-page site-header__bar">
+    <button type="button" class="icon-btn site-header__menu-btn" data-dialog-open="mobile-menu" aria-haspopup="dialog" aria-controls="mobile-menu">
+      {{ icon('menu') }}<span class="sr-only">Open menu</span>
+    </button>
+
+    <a class="site-header__logo" href="/">{{ ui.logo() }}<span class="sr-only"> — home</span></a>
+
+    <nav class="main-nav" aria-label="Main">
+      <ul class="main-nav__list" role="list">
+        {% for item in main_nav %}
+          {% set current = (path == '/') if item.href == '/' else path.startswith(item.href) %}
+          {% if item.mega %}
+            <li class="main-nav__item main-nav__item--mega" data-mega>
+              <a class="main-nav__link" href="{{ item.href }}"{% if current %} aria-current="page"{% endif %}>{{ item.label }}</a>
+              <button type="button" class="main-nav__toggle" aria-expanded="false" aria-controls="mega-shop" data-mega-toggle>
+                {{ icon('chevron', 'icon--xs') }}<span class="sr-only">Show {{ item.label }} menu</span>
+              </button>
+
+              {# ── Shop mega-menu ── #}
+              <div class="mega" id="mega-shop" data-mega-panel hidden>
+                <div class="container-page mega__inner">
+                  <div class="mega__collections">
+                    <p class="eyebrow mega__label">Collections</p>
+                    <ul class="mega__grid" role="list">
+                      {% for c in collections %}
+                        <li>
+                          <a class="mega__item" href="/shop/{{ c.slug }}">
+                            <span class="mega__thumb">{{ ui.media(c.image, '', shades[c.artShade].swatch if c.artShade in shades else none, c.artTexture, c.slug) }}</span>
+                            <span class="mega__text">
+                              <span class="mega__name">{{ c.name }}</span>
+                              <span class="mega__tagline">{{ c.tagline }}</span>
+                            </span>
+                          </a>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                    <a class="mega__all link-underline" href="/shop">Shop everything {{ icon('arrow', 'icon--sm') }}</a>
+                  </div>
+                  <a class="mega__feature" href="/colour-guide">
+                    <p class="eyebrow">The Colour Guide</p>
+                    <p class="mega__feature-title">Not sure which shade? <em>Find yours in 30 seconds.</em></p>
+                    <span class="swatch-row" aria-hidden="true">
+                      {% for s in shades.values() if s.inGuide %}{{ ui.swatch_dot(s) }}{% endfor %}
+                    </span>
+                    <span class="mega__feature-cta">Take the quiz {{ icon('arrow', 'icon--sm') }}</span>
+                  </a>
+                </div>
+              </div>
+            </li>
+          {% else %}
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="{{ item.href }}"{% if current %} aria-current="page"{% endif %}>{{ item.label }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </nav>
+
+    <div class="site-header__actions">
+      <div class="site-header__currency">{{ ui.currency_select('currency-header') }}</div>
+      <button type="button" class="icon-btn" data-dialog-open="search-dialog" aria-haspopup="dialog" aria-controls="search-dialog">
+        {{ icon('search') }}<span class="sr-only">Search</span>
+      </button>
+      <button type="button" class="icon-btn cart-btn" data-dialog-open="cart-drawer" aria-haspopup="dialog" aria-controls="cart-drawer">
+        {{ icon('bag') }}
+        <span class="cart-btn__count" data-cart-count hidden>0</span>
+        <span class="sr-only">Open bag, <span data-cart-count-label>0 items</span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+{# ── Mobile menu (slides in from the left) ── #}
+<dialog class="drawer drawer-left mobile-menu" id="mobile-menu" aria-label="Menu">
+  <div class="drawer__head">
+    {{ ui.logo() }}
+    <button type="button" class="icon-btn" data-dialog-close>{{ icon('close') }}<span class="sr-only">Close menu</span></button>
+  </div>
+  <nav class="mobile-menu__nav" aria-label="Mobile">
+    <ul role="list">
+      {% for item in main_nav %}
+        {% if item.mega %}
+          <li>
+            <details class="mobile-menu__group"{% if path.startswith('/shop') %} open{% endif %}>
+              <summary>{{ item.label }} {{ icon('chevron', 'icon--sm') }}</summary>
+              <ul role="list">
+                <li><a href="/shop">Shop all</a></li>
+                {% for c in collections %}<li><a href="/shop/{{ c.slug }}">{{ c.name }}</a></li>{% endfor %}
+              </ul>
+            </details>
+          </li>
+        {% else %}
+          <li><a href="{{ item.href }}"{% if path == item.href %} aria-current="page"{% endif %}>{{ item.label }}</a></li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </nav>
+  <div class="mobile-menu__foot">
+    {{ ui.currency_select('currency-mobile') }}
+    <a class="mobile-menu__contact" href="mailto:{{ settings.contact.email }}">{{ icon('mail', 'icon--sm') }} {{ settings.contact.email }}</a>
+  </div>
+</dialog>
+
+{# ── Search overlay (results filled in by search.js) ── #}
+<dialog class="fade-dialog search-dialog" id="search-dialog" aria-label="Search products">
+  <div class="container-page search-dialog__inner">
+    <form class="search-dialog__form" action="/shop" role="search">
+      {{ icon('search', 'search-dialog__icon') }}
+      <label class="sr-only" for="search-input">Search products</label>
+      <input id="search-input" class="search-dialog__input" type="search" name="q" placeholder="Search shades, textures, wigs…" autocomplete="off" aria-controls="search-results" aria-describedby="search-status" />
+      <button type="button" class="icon-btn" data-dialog-close>{{ icon('close') }}<span class="sr-only">Close search</span></button>
+    </form>
+    <p class="sr-only" id="search-status" role="status" aria-live="polite"></p>
+    <div class="search-dialog__results" id="search-results" data-search-results>
+      <p class="eyebrow">Popular</p>
+      <ul class="search-dialog__suggest" role="list">
+        {% for c in collections %}<li><a class="chip" href="/shop/{{ c.slug }}">{{ c.name }}</a></li>{% endfor %}
+        <li><a class="chip" href="/colour-guide">Colour Guide</a></li>
+      </ul>
+    </div>
+  </div>
+</dialog>
+
+{# ── Cart drawer (lines rendered by cart.js) ── #}
+<dialog class="drawer cart-drawer" id="cart-drawer" aria-labelledby="cart-title">
+  <div class="drawer__head">
+    <h2 class="cart-drawer__title" id="cart-title">Your bag <span data-cart-count-inline></span></h2>
+    <button type="button" class="icon-btn" data-dialog-close>{{ icon('close') }}<span class="sr-only">Close bag</span></button>
+  </div>
+  <div class="cart-drawer__shipping" data-cart-shipping></div>
+  <div class="cart-drawer__body" data-cart-items>
+    <p class="cart-drawer__empty">Your bag is empty — for now.</p>
+  </div>
+  <div class="cart-drawer__foot" data-cart-foot hidden>
+    <div class="cart-drawer__row">
+      <span>Subtotal</span>
+      <span class="cart-drawer__subtotal" data-cart-subtotal></span>
+    </div>
+    <p class="cart-drawer__note">Shipping & taxes calculated at checkout.</p>
+    <button type="button" class="btn btn-primary cart-drawer__checkout" data-checkout>
+      {% if settings.commerce.checkoutMode == 'whatsapp' %}{{ icon('whatsapp', 'icon--sm') }} Checkout via WhatsApp{% else %}Checkout{% endif %}
+    </button>
+    <p class="form-status" data-checkout-status role="status" aria-live="polite"></p>
+  </div>
+</dialog>

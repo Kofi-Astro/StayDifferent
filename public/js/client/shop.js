@@ -1,25 +1,23 @@
 /**
  * Shop page — instant filtering & sorting.
  *
- * The server already rendered the right products for the URL. From here on,
- * every change to the filter form or sort menu:
- *   1. reads the form into a filters object,
- *   2. runs the SAME applyFilters() the server uses,
- *   3. re-renders the grid with the SAME productCard() template,
- *   4. updates the URL (so refresh/back/share keep the filters).
+ * The server rendered EVERY product in this collection (non-matching ones
+ * hidden). On each filter/sort change we:
+ *   1. read the form into a filters object,
+ *   2. run applyFilters() (the JS twin of app/catalog.py),
+ *   3. show/hide and re-order the existing cards — no re-rendering,
+ *   4. update the URL so refresh, back and sharing keep the filters.
  */
-import { pageData, $, $$, on } from './core.js';
-import { currentCurrency } from './currency.js';
+import { pageData, $, $$ } from './core.js';
 import { closeDialog } from './dialogs.js';
 import { parseFilters, applyFilters, filtersToQuery, activeFilterCount } from '../shared/filter.js';
-import { productCard } from '../components/product-card.js';
 
-const { products = [], shades = {}, path = '/shop' } = pageData();
+const { products = [], shadeNames = {}, path = '/shop' } = pageData();
 const form = /** @type {HTMLFormElement|null} */ ($('[data-filter-form]'));
 const grid = $('[data-product-grid]');
-const sortSelect = /** @type {HTMLSelectElement|null} */ ($('[data-sort-select]'));
+const sortSelect = $('[data-sort-select]');
 
-/** Read the current form + sort state into a filters object. */
+/** Read the form (+ the sort menu, which belongs to it via form="…"). */
 function readFilters() {
   const data = new FormData(form);
   return parseFilters({
@@ -33,12 +31,22 @@ function readFilters() {
   });
 }
 
-function render() {
+function update() {
   const filters = readFilters();
-  const results = applyFilters([...products], filters, shades);
-  const currency = currentCurrency();
+  const results = applyFilters([...products], filters, shadeNames);
+  const cards = new Map($$('[data-slug]', grid).map((el) => [el.dataset.slug, el]));
 
-  grid.innerHTML = results.map((p) => productCard(p, { shade: shades[p.shade], currency, headingTag: 'h2' })).join('');
+  // Matching cards, in sorted order, go first; everything else is hidden.
+  const visible = new Set(results.map((p) => p.slug));
+  for (const p of results) {
+    const card = cards.get(p.slug);
+    if (card) {
+      card.hidden = false;
+      grid.append(card); // append() moves an existing element → re-orders
+    }
+  }
+  for (const [slug, card] of cards) if (!visible.has(slug)) card.hidden = true;
+
   $('[data-empty]').hidden = results.length > 0;
   $('[data-result-count]').textContent = `${results.length} ${results.length === 1 ? 'product' : 'products'}`;
   const count = activeFilterCount(filters);
@@ -47,10 +55,10 @@ function render() {
 }
 
 if (form && grid) {
-  // The sort <select> belongs to the form (form="filter-form") but sits outside
-  // it in the DOM, so its change event doesn't bubble to the form.
-  form.addEventListener('change', render);
-  sortSelect?.addEventListener('change', render);
+  // The sort <select> sits outside the form in the page, so its change event
+  // doesn't bubble to the form — listen to both.
+  form.addEventListener('change', update);
+  sortSelect?.addEventListener('change', update);
 
   // "Show results" just closes the mobile drawer (the grid is already updated).
   form.addEventListener('submit', (e) => {
@@ -58,15 +66,12 @@ if (form && grid) {
     closeDialog(/** @type {HTMLDialogElement} */ (form.closest('dialog')));
   });
 
-  // "Clear all" / "Clear filters": untick everything instead of reloading.
+  // "Clear" links: untick everything instead of reloading the page.
   for (const link of $$('[data-filter-clear]')) {
     link.addEventListener('click', (e) => {
       e.preventDefault();
       for (const input of $$('input[type="checkbox"]', form)) /** @type {HTMLInputElement} */ (input).checked = false;
-      render();
+      update();
     });
   }
-
-  // Cards are rendered in the shopper's currency, so re-render when it changes.
-  on('currency:change', render);
 }

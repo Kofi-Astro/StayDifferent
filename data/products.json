@@ -1,0 +1,1048 @@
+[
+  {
+    "id": "p001",
+    "slug": "rebel-straight-bundle",
+    "name": "The Rebel Straight Bundle",
+    "status": "active",
+    "collections": [
+      "straight"
+    ],
+    "texture": "straight",
+    "type": "bundle",
+    "shade": "natural-black",
+    "summary": "Silky, bone-straight human hair with a natural off-black finish.",
+    "description": "Our signature straight bundle — double-drawn so it is just as full at the ends as at the weft. It lays flat, swings when you move and takes colour like a dream.",
+    "details": [
+      "100% human hair, cuticle-aligned",
+      "Double-drawn for full ends",
+      "100g per bundle",
+      "Can be coloured and heat-styled"
+    ],
+    "care": "Detangle gently from ends to roots with a wide-tooth comb. Wash every 7–10 wears with sulphate-free shampoo, deep condition, and air-dry flat. Use heat protectant and keep tools under 180°C / 350°F.",
+    "variants": [
+      {
+        "length": 12,
+        "price": 79,
+        "compareAt": null,
+        "stock": 12
+      },
+      {
+        "length": 14,
+        "price": 91,
+        "compareAt": null,
+        "stock": 14
+      },
+      {
+        "length": 16,
+        "price": 103,
+        "compareAt": null,
+        "stock": 20
+      },
+      {
+        "length": 18,
+        "price": 115,
+        "compareAt": null,
+        "stock": 18
+      },
+      {
+        "length": 20,
+        "price": 127,
+        "compareAt": null,
+        "stock": 15
+      },
+      {
+        "length": 22,
+        "price": 139,
+        "compareAt": null,
+        "stock": 9
+      },
+      {
+        "length": 24,
+        "price": 151,
+        "compareAt": null,
+        "stock": 7
+      },
+      {
+        "length": 26,
+        "price": 163,
+        "compareAt": null,
+        "stock": 4
+      },
+      {
+        "length": 28,
+        "price": 175,
+        "compareAt": null,
+        "stock": 2
+      },
+      {
+        "length": 30,
+        "price": 187,
+        "compareAt": null,
+        "stock": 1
+      }
+    ],
+    "images": [],
+    "bestseller": true,
+    "allowPreorder": false,
+    "badge": "Bestseller",
+    "createdAt": "2026-06-01"
+  },
+  {
+    "id": "p002",
+    "slug": "silk-press-straight-wig",
+    "name": "Silk Press 13×4 Lace Wig",
+    "status": "active",
+    "collections": [
+      "straight",
+      "wigs"
+    ],
+    "texture": "straight",
+    "type": "wig",
+    "shade": "natural-black",
+    "summary": "Glueless HD lace wig with a pre-plucked hairline and silk-press finish.",
+    "description": "A 13×4 HD lace front with a hairline that is pre-plucked, bleached and ready to go. Pop it on, adjust the band, and get on with your day.",
+    "details": [
+      "13×4 HD lace front",
+      "Pre-plucked hairline, bleached knots",
+      "180% density",
+      "Adjustable band + 4 combs"
+    ],
+    "care": "Detangle gently from ends to roots with a wide-tooth comb. Wash every 7–10 wears with sulphate-free shampoo, deep condition, and air-dry flat. Use heat protectant and keep tools under 180°C / 350°F.",
+    "variants": [
+      {
+        "length": 16,
+        "price": 249,
+        "compareAt": null,
+        "stock": 5
+      },
+      {
+        "length": 18,
+        "price": 274,
+        "compareAt": null,
+        "stock": 8
+      },
+      {
+        "length": 20,
+        "price": 299,
+        "compareAt": null,
+        "stock": 6
+      },
+      {
+        "length": 22,
+        "price": 324,
+        "compareAt": null,
+        "stock": 4
+      },
+      {
+        "length": 24,
+        "price": 349,
+        "compareAt": null,
+        "stock": 2
+      },
+      {
+        "length": 26,
+        "price": 374,
+        "compareAt": null,
+        "stock": 0
+      }
+    ],
+    "images": [],
+    "bestseller": true,
+    "allowPreorder": false,
+    "badge": "",
+    "createdAt": "2026-07-10"
+  },
+  {
+    "id": "p003",
+    "slug": "honey-rebel-straight-bundle",
+    "name": "Honey Rebel Straight Bundle",
+    "status": "active",
+    "collections": [
+      "straight",
+      "coloured"
+    ],
+    "texture": "straight",
+    "type": "bundle",
+    "shade": "honey-rebel",
+    "summary": "Light bronde straight bundle with soft honey ribbons.",
+    "description": "Honey Rebel on our silkiest straight texture. Soft bronde dimension that catches the light without ever looking brassy.",
+    "details": [
+      "100% human hair, professionally coloured",
+      "Toned to stay brass-free",
+      "100g per bundle",
+      "Use colour-safe products"
+    ],
+    "care": "Detangle gently from ends to roots with a wide-tooth comb. Wash every 7–10 wears with sulphate-free shampoo, deep condition, and air-dry flat. Use heat protectant and keep tools under 180°C / 350°F. Use a purple or blue toning mask once a month to keep tones fresh.",
+    "variants": [
+      {
+        "length": 14,
+        "price": 109,
+        "compareAt": null,
+        "stock": 6
+      },
+      {
+        "length": 16,
+        "price": 124,
+        "compareAt": null,
+        "stock": 9
+      },
+      {
+        "length": 18,
+        "price": 139,
+        "compareAt": null,
+        "stock": 10
+      },
+      {
+        "length": 20,
+        "price": 154,
+        "compareAt": null,
+        "stock": 7
+      },
+      {
+        "length": 22,
+        "price": 169,
+        "compareAt": null,
+        "stock": 3
+      },
+      {
+        "length": 24,
+        "price": 184,
+        "compareAt": null,
+        "stock": 2
+      }
+    ],
+    "images": [],
+    "bestseller": false,
+    "allowPreorder": false,
+    "badge": "",
+    "createdAt": "2026-08-02"
+  },
+  {
+    "id": "p004",
+    "slug": "smoke-signal-straight-bundle",
+    "name": "Smoke Signal Straight Bundle",
+    "status": "active",
+    "collections": [
+      "straight",
+      "coloured"
+    ],
+    "texture": "straight",
+    "type": "bundle",
+    "shade": "smoke-signal",
+    "summary": "Ash-brown straight bundle for a cool, editorial finish.",
+    "description": "Cool ash brown with zero brass. It is the quiet flex of the collection, and it looks incredible with silver jewellery.",
+    "details": [
+      "100% human hair, professionally coloured",
+      "Cool-toned, ash finish",
+      "100g per bundle"
+    ],
+    "care": "Detangle gently from ends to roots with a wide-tooth comb. Wash every 7–10 wears with sulphate-free shampoo, deep condition, and air-dry flat. Use heat protectant and keep tools under 180°C / 350°F. Use a blue toning mask every few washes to keep the ash cool.",
+    "variants": [
+      {
+        "length": 14,
+        "price": 109,
+        "compareAt": null,
+        "stock": 4
+      },
+      {
+        "length": 16,
+        "price": 124,
+        "compareAt": null,
+        "stock": 6
+      },
+      {
+        "length": 18,
+        "price": 139,
+        "compareAt": null,
+        "stock": 5
+      },
+      {
+        "length": 20,
+        "price": 154,
+        "compareAt": null,
+        "stock": 3
+      },
+      {
+        "length": 22,
+        "price": 169,
+        "compareAt": null,
+        "stock": 0
+      }
+    ],
+    "images": [],
+    "bestseller": false,
+    "allowPreorder": true,
+    "badge": "New",
+    "createdAt": "2026-09-20"
+  },
+  {
+    "id": "p005",
+    "slug": "body-wave-bundle",
+    "name": "Signature Body Wave Bundle",
+    "status": "active",
+    "collections": [
+      "body-wave"
+    ],
+    "texture": "body-wave",
+    "type": "bundle",
+    "shade": "natural-black",
+    "summary": "Soft, bouncy S-waves with natural volume and shine.",
+    "description": "The wave that started it all. Steam-set S-waves with real bounce that you can straighten, curl or leave exactly as it falls.",
+    "details": [
+      "100% human hair, cuticle-aligned",
+      "Steam-set wave pattern",
+      "100g per bundle",
+      "Holds pattern after washing"
+    ],
+    "care": "Detangle gently from ends to roots with a wide-tooth comb. Wash every 7–10 wears with sulphate-free shampoo, deep condition, and air-dry flat. Use heat protectant and keep tools under 180°C / 350°F.",
+    "variants": [
+      {
+        "length": 12,
+        "price": 85,
+        "compareAt": null,
+        "stock": 10
+      },
+      {
+        "length": 14,
+        "price": 97,
+        "compareAt": null,
+        "stock": 15
+      },
+      {
+        "length": 16,
+        "price": 109,
+        "compareAt": null,
+        "stock": 18
+      },
+      {
+        "length": 18,
+        "price": 121,
+        "compareAt": null,
+        "stock": 20
+      },
+      {
+        "length": 20,
+        "price": 133,
+        "compareAt": null,
+        "stock": 14
+      },
+      {
+        "length": 22,
+        "price": 145,
+        "compareAt": null,
+        "stock": 10
+      },
+      {
+        "length": 24,
+        "price": 157,
+        "compareAt": null,
+        "stock": 6
+      },
+      {
+        "length": 26,
+        "price": 169,
+        "compareAt": null,
+        "stock": 3
+      },
+      {
+        "length": 28,
+        "price": 181,
+        "compareAt": null,
+        "stock": 2
+      }
+    ],
+    "images": [],
+    "bestseller": true,
+    "allowPreorder": false,
+    "badge": "Bestseller",
+    "createdAt": "2026-05-15"
+  },
+  {
+    "id": "p006",
+    "slug": "cocoa-muse-body-wave-bundle",
+    "name": "Cocoa Muse Body Wave Bundle",
+    "status": "active",
+    "collections": [
+      "body-wave",
+      "coloured"
+    ],
+    "texture": "body-wave",
+    "type": "bundle",
+    "shade": "cocoa-muse",
+    "summary": "Medium brunette waves with caramel ribbons that show when you move.",
+    "description": "Cocoa Muse on our signature body wave. The caramel ribbons follow every curve of the wave, so you get dimension without trying.",
+    "details": [
+      "100% human hair, professionally coloured",
+      "Caramel ribbon highlights",
+      "100g per bundle"
+    ],
+    "care": "Detangle gently from ends to roots with a wide-tooth comb. Wash every 7–10 wears with sulphate-free shampoo, deep condition, and air-dry flat. Use heat protectant and keep tools under 180°C / 350°F. Rinse with cool water to seal the cuticle and lock in colour.",
+    "variants": [
+      {
+        "length": 14,
+        "price": 115,
+        "compareAt": null,
+        "stock": 7
+      },
+      {
+        "length": 16,
+        "price": 130,
+        "compareAt": null,
+        "stock": 12
+      },
+      {
+        "length": 18,
+        "price": 145,
+        "compareAt": null,
+        "stock": 10
+      },
+      {
+        "length": 20,
+        "price": 160,
+        "compareAt": null,
+        "stock": 8
+      },
+      {
+        "length": 22,
+        "price": 175,
+        "compareAt": null,
+        "stock": 5
+      },
+      {
+        "length": 24,
+        "price": 190,
+        "compareAt": null,
+        "stock": 3
+      }
+    ],
+    "images": [],
+    "bestseller": true,
+    "allowPreorder": false,
+    "badge": "",
+    "createdAt": "2026-08-12"
+  },
+  {
+    "id": "p007",
+    "slug": "golden-hour-body-wave-wig",
+    "name": "Golden Hour Body Wave Wig",
+    "status": "active",
+    "collections": [
+      "body-wave",
+      "coloured",
+      "wigs"
+    ],
+    "texture": "body-wave",
+    "type": "wig",
+    "shade": "golden-hour",
+    "summary": "Light golden blonde 13×4 HD lace wig with soft, bouncy waves.",
+    "description": "Golden Hour on a glueless HD lace wig — warm, buttery blonde waves that light up your face from every angle.",
+    "details": [
+      "13×4 HD lace front",
+      "Pre-plucked, bleached knots",
+      "180% density",
+      "Professionally coloured"
+    ],
+    "care": "Detangle gently from ends to roots with a wide-tooth comb. Wash every 7–10 wears with sulphate-free shampoo, deep condition, and air-dry flat. Use heat protectant and keep tools under 180°C / 350°F. Store on a wig stand to keep the wave pattern.",
+    "variants": [
+      {
+        "length": 18,
+        "price": 289,
+        "compareAt": null,
+        "stock": 3
+      },
+      {
+        "length": 20,
+        "price": 314,
+        "compareAt": null,
+        "stock": 5
+      },
+      {
+        "length": 22,
+        "price": 339,
+        "compareAt": null,
+        "stock": 4
+      },
+      {
+        "length": 24,
+        "price": 364,
+        "compareAt": null,
+        "stock": 2
+      },
+      {
+        "length": 26,
+        "price": 389,
+        "compareAt": null,
+        "stock": 0
+      }
+    ],
+    "images": [],
+    "bestseller": true,
+    "allowPreorder": false,
+    "badge": "Bestseller",
+    "createdAt": "2026-07-28"
+  },
+  {
+    "id": "p008",
+    "slug": "midnight-espresso-body-wave-wig",
+    "name": "Midnight Espresso Body Wave Wig",
+    "status": "active",
+    "collections": [
+      "body-wave",
+      "coloured",
+      "wigs"
+    ],
+    "texture": "body-wave",
+    "type": "wig",
+    "shade": "midnight-espresso",
+    "summary": "Deep, glossy espresso-brown waves on a glueless HD lace wig.",
+    "description": "Midnight Espresso is the easiest shade you will ever wear: rich, glossy depth that blends with natural dark hair.",
+    "details": [
+      "5×5 glueless HD lace",
+      "Pre-cut lace, wear-and-go",
+      "180% density",
+      "Professionally coloured"
+    ],
+    "care": "Detangle gently from ends to roots with a wide-tooth comb. Wash every 7–10 wears with sulphate-free shampoo, deep condition, and air-dry flat. Use heat protectant and keep tools under 180°C / 350°F.",
+    "variants": [
+      {
+        "length": 16,
+        "price": 259,
+        "compareAt": null,
+        "stock": 6
+      },
+      {
+        "length": 18,
+        "price": 284,
+        "compareAt": null,
+        "stock": 8
+      },
+      {
+        "length": 20,
+        "price": 309,
+        "compareAt": null,
+        "stock": 7
+      },
+      {
+        "length": 22,
+        "price": 334,
+        "compareAt": null,
+        "stock": 4
+      },
+      {
+        "length": 24,
+        "price": 359,
+        "compareAt": null,
+        "stock": 2
+      }
+    ],
+    "images": [],
+    "bestseller": false,
+    "allowPreorder": false,
+    "badge": "",
+    "createdAt": "2026-06-22"
+  },
+  {
+    "id": "p009",
+    "slug": "wild-card-body-wave-bundle",
+    "name": "Wild Card Body Wave Bundle",
+    "status": "active",
+    "collections": [
+      "body-wave",
+      "coloured"
+    ],
+    "texture": "body-wave",
+    "type": "bundle",
+    "shade": "wild-card",
+    "summary": "Brunette-to-blonde melt on bouncy body waves.",
+    "description": "Wild Card on our body wave: rich brunette roots that melt into bright blonde ends. Big, bold and unmistakably you.",
+    "details": [
+      "100% human hair, professionally coloured",
+      "Hand-painted melt",
+      "100g per bundle"
+    ],
+    "care": "Detangle gently from ends to roots with a wide-tooth comb. Wash every 7–10 wears with sulphate-free shampoo, deep condition, and air-dry flat. Use heat protectant and keep tools under 180°C / 350°F. Use a toning mask monthly on the blonde ends.",
+    "variants": [
+      {
+        "length": 16,
+        "price": 125,
+        "compareAt": null,
+        "stock": 5
+      },
+      {
+        "length": 18,
+        "price": 140,
+        "compareAt": null,
+        "stock": 7
+      },
+      {
+        "length": 20,
+        "price": 155,
+        "compareAt": null,
+        "stock": 6
+      },
+      {
+        "length": 22,
+        "price": 170,
+        "compareAt": null,
+        "stock": 4
+      },
+      {
+        "length": 24,
+        "price": 185,
+        "compareAt": null,
+        "stock": 2
+      }
+    ],
+    "images": [],
+    "bestseller": false,
+    "allowPreorder": false,
+    "badge": "New",
+    "createdAt": "2026-09-30"
+  },
+  {
+    "id": "p010",
+    "slug": "deep-curl-bundle",
+    "name": "Deep Curl Bundle",
+    "status": "active",
+    "collections": [
+      "curly"
+    ],
+    "texture": "curly",
+    "type": "bundle",
+    "shade": "natural-black",
+    "summary": "Juicy, defined curls that hold their shape wash after wash.",
+    "description": "Springy, defined curls with volume for days. Finger-detangle, add your curl cream and let them do their thing.",
+    "details": [
+      "100% human hair, cuticle-aligned",
+      "Steam-set curl pattern",
+      "100g per bundle"
+    ],
+    "care": "Finger-detangle only when wet and coated in conditioner. Wash every 5–7 wears, apply a leave-in, and scrunch while drying. Avoid brushing dry curls.",
+    "variants": [
+      {
+        "length": 12,
+        "price": 89,
+        "compareAt": null,
+        "stock": 8
+      },
+      {
+        "length": 14,
+        "price": 101,
+        "compareAt": null,
+        "stock": 10
+      },
+      {
+        "length": 16,
+        "price": 113,
+        "compareAt": null,
+        "stock": 12
+      },
+      {
+        "length": 18,
+        "price": 125,
+        "compareAt": null,
+        "stock": 10
+      },
+      {
+        "length": 20,
+        "price": 137,
+        "compareAt": null,
+        "stock": 8
+      },
+      {
+        "length": 22,
+        "price": 149,
+        "compareAt": null,
+        "stock": 5
+      },
+      {
+        "length": 24,
+        "price": 161,
+        "compareAt": null,
+        "stock": 3
+      }
+    ],
+    "images": [],
+    "bestseller": false,
+    "allowPreorder": false,
+    "badge": "",
+    "createdAt": "2026-05-30"
+  },
+  {
+    "id": "p011",
+    "slug": "toffee-riot-curly-bundle",
+    "name": "Toffee Riot Curly Bundle",
+    "status": "active",
+    "collections": [
+      "curly",
+      "coloured"
+    ],
+    "texture": "curly",
+    "type": "bundle",
+    "shade": "toffee-riot",
+    "summary": "Dark brunette curls lit up with loud toffee highlights.",
+    "description": "Toffee Riot was made for curls. The highlights sit on the outside of every coil, so your curl pattern looks deeper and more defined.",
+    "details": [
+      "100% human hair, professionally coloured",
+      "High-dimension toffee highlights",
+      "Steam-set curl pattern",
+      "100g per bundle"
+    ],
+    "care": "Finger-detangle only when wet. Use a colour-safe curl cream and a monthly protein-free deep conditioner.",
+    "variants": [
+      {
+        "length": 14,
+        "price": 119,
+        "compareAt": null,
+        "stock": 6
+      },
+      {
+        "length": 16,
+        "price": 134,
+        "compareAt": null,
+        "stock": 8
+      },
+      {
+        "length": 18,
+        "price": 149,
+        "compareAt": null,
+        "stock": 9
+      },
+      {
+        "length": 20,
+        "price": 164,
+        "compareAt": null,
+        "stock": 5
+      },
+      {
+        "length": 22,
+        "price": 179,
+        "compareAt": null,
+        "stock": 3
+      }
+    ],
+    "images": [],
+    "bestseller": true,
+    "allowPreorder": false,
+    "badge": "",
+    "createdAt": "2026-08-20"
+  },
+  {
+    "id": "p012",
+    "slug": "wild-card-curly-wig",
+    "name": "Wild Card Curly Wig",
+    "status": "active",
+    "collections": [
+      "curly",
+      "coloured",
+      "wigs"
+    ],
+    "texture": "kinky-curly",
+    "type": "wig",
+    "shade": "wild-card",
+    "summary": "Brunette-to-blonde kinky curls on a glueless HD lace wig.",
+    "description": "Our most-talked-about wig: kinky curls that melt from brunette to blonde. No glue, no stress, all attention.",
+    "details": [
+      "5×5 glueless HD lace",
+      "Pre-plucked hairline",
+      "200% density for full volume",
+      "Professionally coloured"
+    ],
+    "care": "Finger-detangle when wet. Refresh with water and leave-in between washes. Store loosely on a wig stand.",
+    "variants": [
+      {
+        "length": 16,
+        "price": 299,
+        "compareAt": null,
+        "stock": 4
+      },
+      {
+        "length": 18,
+        "price": 324,
+        "compareAt": null,
+        "stock": 5
+      },
+      {
+        "length": 20,
+        "price": 349,
+        "compareAt": null,
+        "stock": 3
+      },
+      {
+        "length": 22,
+        "price": 374,
+        "compareAt": null,
+        "stock": 1
+      }
+    ],
+    "images": [],
+    "bestseller": true,
+    "allowPreorder": false,
+    "badge": "New",
+    "createdAt": "2026-10-01"
+  },
+  {
+    "id": "p013",
+    "slug": "seamless-clip-in-set-honey-rebel",
+    "name": "Seamless Clip-In Set — Honey Rebel",
+    "status": "active",
+    "collections": [
+      "clip-ins-tape-ins",
+      "coloured"
+    ],
+    "texture": "straight",
+    "type": "clip-in",
+    "shade": "honey-rebel",
+    "summary": "7-piece seamless clip-in set with flat silicone wefts.",
+    "description": "Ultra-flat seamless wefts that disappear into your own hair. Seven pieces, five minutes, a whole new look.",
+    "details": [
+      "7 pieces, 16 clips",
+      "Seamless silicone weft",
+      "160g full head set",
+      "Professionally coloured"
+    ],
+    "care": "Detangle gently from ends to roots with a wide-tooth comb. Wash every 7–10 wears with sulphate-free shampoo, deep condition, and air-dry flat. Use heat protectant and keep tools under 180°C / 350°F.",
+    "variants": [
+      {
+        "length": 16,
+        "price": 159,
+        "compareAt": null,
+        "stock": 6
+      },
+      {
+        "length": 18,
+        "price": 179,
+        "compareAt": null,
+        "stock": 8
+      },
+      {
+        "length": 20,
+        "price": 199,
+        "compareAt": null,
+        "stock": 5
+      },
+      {
+        "length": 22,
+        "price": 219,
+        "compareAt": null,
+        "stock": 3
+      }
+    ],
+    "images": [],
+    "bestseller": false,
+    "allowPreorder": false,
+    "badge": "",
+    "createdAt": "2026-07-05"
+  },
+  {
+    "id": "p014",
+    "slug": "seamless-clip-in-set-smoke-signal",
+    "name": "Seamless Clip-In Set — Smoke Signal",
+    "status": "active",
+    "collections": [
+      "clip-ins-tape-ins",
+      "coloured"
+    ],
+    "texture": "straight",
+    "type": "clip-in",
+    "shade": "smoke-signal",
+    "summary": "7-piece seamless clip-in set in cool ash brown.",
+    "description": "Smoke Signal clip-ins for instant cool-toned length. Flat, invisible wefts that blend with ash and mousy browns.",
+    "details": [
+      "7 pieces, 16 clips",
+      "Seamless silicone weft",
+      "160g full head set"
+    ],
+    "care": "Detangle gently from ends to roots with a wide-tooth comb. Wash every 7–10 wears with sulphate-free shampoo, deep condition, and air-dry flat. Use heat protectant and keep tools under 180°C / 350°F.",
+    "variants": [
+      {
+        "length": 16,
+        "price": 159,
+        "compareAt": null,
+        "stock": 0
+      },
+      {
+        "length": 18,
+        "price": 179,
+        "compareAt": null,
+        "stock": 0
+      },
+      {
+        "length": 20,
+        "price": 199,
+        "compareAt": null,
+        "stock": 0
+      }
+    ],
+    "images": [],
+    "bestseller": false,
+    "allowPreorder": false,
+    "badge": "",
+    "createdAt": "2026-07-06"
+  },
+  {
+    "id": "p015",
+    "slug": "tape-in-extensions-midnight-espresso",
+    "name": "Tape-In Extensions — Midnight Espresso",
+    "status": "active",
+    "collections": [
+      "clip-ins-tape-ins",
+      "coloured"
+    ],
+    "texture": "straight",
+    "type": "tape-in",
+    "shade": "midnight-espresso",
+    "summary": "20 flat tape-in wefts for natural, long-wear volume.",
+    "description": "Feather-light tape-ins that lie completely flat. Have them fitted by your stylist for six to eight weeks of effortless length.",
+    "details": [
+      "20 pieces (10 sandwiches)",
+      "Medical-grade adhesive",
+      "50g per pack",
+      "Reusable with re-tape"
+    ],
+    "care": "Avoid oils and conditioner near the tapes. Brush from ends upward with a loop brush. Have them moved up every 6–8 weeks.",
+    "variants": [
+      {
+        "length": 16,
+        "price": 99,
+        "compareAt": null,
+        "stock": 10
+      },
+      {
+        "length": 18,
+        "price": 114,
+        "compareAt": null,
+        "stock": 12
+      },
+      {
+        "length": 20,
+        "price": 129,
+        "compareAt": null,
+        "stock": 8
+      },
+      {
+        "length": 22,
+        "price": 144,
+        "compareAt": null,
+        "stock": 5
+      }
+    ],
+    "images": [],
+    "bestseller": false,
+    "allowPreorder": false,
+    "badge": "",
+    "createdAt": "2026-06-10"
+  },
+  {
+    "id": "p016",
+    "slug": "hd-lace-closure-5x5-straight",
+    "name": "5×5 HD Lace Closure — Straight",
+    "status": "active",
+    "collections": [
+      "closures-frontals",
+      "straight"
+    ],
+    "texture": "straight",
+    "type": "closure",
+    "shade": "natural-black",
+    "summary": "Invisible 5×5 HD lace closure with a free-part design.",
+    "description": "A free-part 5×5 closure in ultra-thin HD lace that melts into every skin tone. Pre-plucked and ready to install.",
+    "details": [
+      "5×5 HD lace",
+      "Free part",
+      "Pre-plucked, bleached knots",
+      "Matches our straight bundles"
+    ],
+    "care": "Wash the lace gently with your fingertips. Avoid heavy oils on the knots so they stay secure.",
+    "variants": [
+      {
+        "length": 12,
+        "price": 89,
+        "compareAt": null,
+        "stock": 9
+      },
+      {
+        "length": 14,
+        "price": 99,
+        "compareAt": null,
+        "stock": 12
+      },
+      {
+        "length": 16,
+        "price": 109,
+        "compareAt": null,
+        "stock": 10
+      },
+      {
+        "length": 18,
+        "price": 119,
+        "compareAt": null,
+        "stock": 6
+      },
+      {
+        "length": 20,
+        "price": 129,
+        "compareAt": null,
+        "stock": 4
+      }
+    ],
+    "images": [],
+    "bestseller": false,
+    "allowPreorder": false,
+    "badge": "",
+    "createdAt": "2026-05-20"
+  },
+  {
+    "id": "p017",
+    "slug": "hd-lace-frontal-13x4-body-wave",
+    "name": "13×4 HD Lace Frontal — Body Wave",
+    "status": "active",
+    "collections": [
+      "closures-frontals",
+      "body-wave"
+    ],
+    "texture": "body-wave",
+    "type": "frontal",
+    "shade": "natural-black",
+    "summary": "Ear-to-ear 13×4 HD lace frontal in our signature body wave.",
+    "description": "Ear-to-ear HD lace for unlimited parting and sleek-back styles. Pairs perfectly with our Signature Body Wave bundles.",
+    "details": [
+      "13×4 HD lace",
+      "Ear-to-ear coverage",
+      "Pre-plucked hairline",
+      "Matches our body wave bundles"
+    ],
+    "care": "Wash the lace gently with your fingertips. Avoid heavy oils on the knots so they stay secure.",
+    "variants": [
+      {
+        "length": 14,
+        "price": 129,
+        "compareAt": null,
+        "stock": 6
+      },
+      {
+        "length": 16,
+        "price": 141,
+        "compareAt": null,
+        "stock": 7
+      },
+      {
+        "length": 18,
+        "price": 153,
+        "compareAt": null,
+        "stock": 5
+      },
+      {
+        "length": 20,
+        "price": 165,
+        "compareAt": null,
+        "stock": 3
+      }
+    ],
+    "images": [],
+    "bestseller": false,
+    "allowPreorder": false,
+    "badge": "",
+    "createdAt": "2026-05-21"
+  }
+]
