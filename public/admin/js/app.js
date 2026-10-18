@@ -11,6 +11,7 @@
  *    #/inbox                Orders, messages, newsletter subscribers
  *    #/media                Uploaded images
  *    #/backup               Download / restore all content
+ *    #/account              Change the admin password
  *
  *  Data flow: on load we fetch /admin/api/bootstrap (schemas + every section).
  *  Edits happen in schema-driven forms (form.js); "Save" sends the whole
@@ -140,7 +141,7 @@ function renderNav() {
       ...Object.entries(groups).map(([group, items]) =>
         h('div', { class: 'a-nav__group' }, h('p', { class: 'a-nav__heading' }, group), items.map((s) => link(s.kind === 'collection' ? `#/${s.key}` : `#/section/${s.key}`, s.label))),
       ),
-      h('div', { class: 'a-nav__group' }, h('p', { class: 'a-nav__heading' }, 'Tools'), link('#/media', 'Media library'), link('#/backup', 'Backup & restore')),
+      h('div', { class: 'a-nav__group' }, h('p', { class: 'a-nav__heading' }, 'Tools'), link('#/media', 'Media library'), link('#/backup', 'Backup & restore'), link('#/account', 'Account & password')),
     ),
     h(
       'div',
@@ -635,6 +636,55 @@ function viewBackup() {
   );
 }
 
+/* ───────────────────────── Account (change password) ──────────────────── */
+
+async function viewAccount() {
+  const info = await api('/account');
+  const status = h('p', { class: 'a-muted', role: 'status', 'aria-live': 'polite' });
+  const field = (id, label, autocomplete) =>
+    h('div', { class: 'a-field' }, h('label', { class: 'a-label', for: id }, label), h('input', { class: 'a-input', id, type: 'password', autocomplete, required: true }));
+
+  const form = h(
+    'form',
+    { class: 'a-form a-form--narrow', novalidate: true },
+    field('pw-current', 'Current password', 'current-password'),
+    field('pw-new', 'New password', 'new-password'),
+    h('p', { class: 'a-help' }, `At least ${info.minLength} characters. Changing it signs out every other device.`),
+    field('pw-confirm', 'Type the new password again', 'new-password'),
+    h('div', { class: 'a-row' }, h('button', { type: 'submit', class: 'a-btn a-btn--primary' }, 'Change password'), status),
+  );
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const value = (id) => /** @type {HTMLInputElement} */ (form.querySelector(`#${id}`)).value;
+    status.textContent = 'Saving…';
+    try {
+      await api('/password', { method: 'POST', body: { current: value('pw-current'), new: value('pw-new'), confirm: value('pw-confirm') } });
+      form.reset();
+      status.textContent = '';
+      toast('Password changed.');
+    } catch (err) {
+      status.textContent = err.message;
+      toast(err.message, 'error');
+    }
+  });
+
+  main.replaceChildren(
+    header('Account & password', { subtitle: 'Keep the admin safe with a password only you know.' }),
+    h('div', { class: 'a-columns' },
+      h('section', { class: 'a-card' }, h('h2', {}, 'Change password'), form),
+      h(
+        'section',
+        { class: 'a-card' },
+        h('h2', {}, 'If you forget it'),
+        info.emailReset
+          ? h('p', {}, 'Use "Forgot password?" on the sign-in page. A one-time reset link is emailed to ', h('strong', {}, info.adminEmail), '.')
+          : h('p', {}, 'Email reset links are not set up yet (add ADMIN_EMAIL and the SMTP settings in Railway — see the README).'),
+        h('p', { class: 'a-muted' }, 'You can always get back in by changing the ADMIN_PASSWORD variable in Railway → web → Variables. After the redeploy, that password works again.'),
+      ),
+    ),
+  );
+}
+
 function viewNotFound() {
   main.replaceChildren(header('Page not found'), h('p', {}, h('a', { href: '#/' }, '← Dashboard')));
 }
@@ -654,6 +704,7 @@ async function route() {
     else if (parts[0] === 'inbox') await viewInbox(query);
     else if (parts[0] === 'media') await viewMedia();
     else if (parts[0] === 'backup') viewBackup();
+    else if (parts[0] === 'account') await viewAccount();
     else if (parts[0] === 'section') viewSection(parts[1]);
     else if (schemaFor(parts[0])?.kind === 'collection') (parts[1] ? viewItem(parts[0], decodeURIComponent(parts[1])) : viewList(parts[0], query));
     else viewNotFound();

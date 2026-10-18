@@ -1,0 +1,36 @@
+{# Choose a new password from an emailed reset link. #}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="referrer" content="no-referrer" />
+  <title>Choose a new password — Stay Different admin</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/admin/admin.css" />
+</head>
+<body class="login-page">
+  <main class="login-card">
+    <p class="login-logo"><span>STAY D</span><small>( ADMIN )</small></p>
+    {% if valid %}
+      <h1>Choose a new password</h1>
+      <form method="post" action="/admin/reset">
+        <input type="hidden" name="token" value="{{ token }}" />
+        <label for="password">New password</label>
+        <input id="password" name="password" type="password" autocomplete="new-password" minlength="{{ min_length }}" required autofocus aria-describedby="pw-hint{% if error %} pw-error{% endif %}" />
+        <p class="login-hint" id="pw-hint" style="text-align:left">At least {{ min_length }} characters. A short phrase is easy to remember and hard to guess.</p>
+        <label for="confirm">Type it again</label>
+        <input id="confirm" name="confirm" type="password" autocomplete="new-password" minlength="{{ min_length }}" required />
+        {% if error %}<p class="login-error" id="pw-error" role="alert">{{ error }}</p>{% endif %}
+        <button type="submit">Save and sign in</button>
+      </form>
+    {% else %}
+      <h1>This link has expired</h1>
+      <p class="login-note">Reset links work once and only for 30 minutes. Request a fresh one.</p>
+      <p class="login-hint"><a href="/admin/forgot">Send a new link</a></p>
+    {% endif %}
+    <p class="login-hint"><a href="/admin/login">← Back to sign in</a></p>
+  </main>
+</body>
+</html>

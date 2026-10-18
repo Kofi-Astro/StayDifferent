@@ -122,6 +122,7 @@ Fonts are Bodoni Moda for display headings and DM Sans for body text.
 | **Inbox** | Order requests (change their status), contact messages, newsletter subscribers (CSV export) |
 | **Media library** | Upload and manage images |
 | **Backup & restore** | Download or restore everything in one file. The server also keeps the last 30 versions automatically. |
+| **Account & password** | Change the admin password (signs out other devices) |
 
 Changes go live immediately. Any section can be **reset to the original** content.
 
@@ -184,10 +185,18 @@ The admin dashboard's **Getting started** checklist tracks most of these.
    | `SITE_URL` | Your public URL, e.g. `https://staydifferenthair.com` (no trailing slash) |
    | `ENV` | `production` |
 
+   Optional, for emailed "Forgot password?" links: `ADMIN_EMAIL`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD` and `SMTP_FROM` (see `.env.example`).
+
 4. **Generate a domain** (*Settings → Networking*) or attach your own, then update `SITE_URL` to match.
 5. Visit `/admin`, sign in, and work through the Getting started checklist.
 
 With the Railway CLI the same steps are `railway init`, `railway volume add --mount-path /storage`, `railway variables --set KEY=value`, then `railway up`.
+
+### Admin password: changing and resetting it
+
+- **Change it:** Admin → Account & password. The new password is stored hashed (PBKDF2) in `DATA_DIR/admin-auth.json`, takes priority over `ADMIN_PASSWORD`, and signs out every other device.
+- **Forgot it (email):** "Forgot password?" on the sign-in page emails a one-time link (valid for 30 minutes) to `ADMIN_EMAIL`. This needs the SMTP variables above.
+- **Forgot it (no email):** change `ADMIN_PASSWORD` in Railway → web → Variables. Once it redeploys, that password works again. Changing the variable always overrides a password set in the admin.
 
 ---
 

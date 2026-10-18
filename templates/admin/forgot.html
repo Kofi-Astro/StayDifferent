@@ -1,0 +1,38 @@
+{# "Forgot password?" — emails a one-time reset link to ADMIN_EMAIL (see app/mailer.py). #}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Reset password — Stay Different admin</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/admin/admin.css" />
+</head>
+<body class="login-page">
+  <main class="login-card">
+    <p class="login-logo"><span>STAY D</span><small>( ADMIN )</small></p>
+    <h1>Forgot your password?</h1>
+    {% if sent %}
+      <p class="login-note" role="status">If email reset is set up, a link is on its way to the admin inbox. It works once and expires in 30 minutes.</p>
+    {% elif email_ready %}
+      <p class="login-note">We'll email a one-time reset link to the store's admin address.</p>
+      <form method="post" action="/admin/forgot">
+        <button type="submit">Email me a reset link</button>
+      </form>
+    {% endif %}
+    {% if not email_ready %}
+      <div class="login-note">
+        <p><strong>Email reset isn't set up yet.</strong> You can still get back in:</p>
+        <ol>
+          <li>Open your project in Railway → <em>web</em> → <em>Variables</em>.</li>
+          <li>Change <code>ADMIN_PASSWORD</code> to a new password and save.</li>
+          <li>Wait for the redeploy, then sign in with the new password.</li>
+        </ol>
+        <p>To get reset links by email, add <code>ADMIN_EMAIL</code> and the <code>SMTP_…</code> settings (see the README).</p>
+      </div>
+    {% endif %}
+    <p class="login-hint"><a href="/admin/login">← Back to sign in</a></p>
+  </main>
+</body>
+</html>

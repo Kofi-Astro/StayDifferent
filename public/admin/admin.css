@@ -1119,3 +1119,27 @@ body[data-dirty='true'] .a-savebar .a-btn--primary {
   font-size: 0.88rem;
   color: var(--muted);
 }
+
+.login-note {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--espresso);
+  line-height: 1.55;
+}
+.login-note ol {
+  padding-left: 1.2rem;
+  margin: 0.5rem 0;
+}
+.login-note code,
+.login-hint code {
+  font-size: 0.85em;
+  background: var(--sand);
+  padding: 0.05rem 0.3rem;
+  border-radius: 4px;
+}
+
+.a-form--narrow {
+  max-width: 420px;
+  padding: 0;
+  border: 0;
+}

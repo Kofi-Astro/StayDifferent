@@ -6,6 +6,10 @@ Pages
     GET  /admin/login          login form
     POST /admin/login          check password → set session cookie
     POST /admin/logout
+    GET  /admin/forgot         "Forgot password?" — emails a one-time reset link
+    POST /admin/forgot
+    GET  /admin/reset?token=   choose a new password from the emailed link
+    POST /admin/reset
     GET  /admin                the admin app (a single page; its JavaScript
                                lives in public/admin/js/)
 
@@ -21,6 +25,8 @@ JSON API (all require a valid session)
     DELETE /admin/api/submissions/{kind}/{id}
     GET    /admin/api/export                  download a full content backup
     POST   /admin/api/import                  restore a backup
+    GET    /admin/api/account                 password / email-reset status
+    POST   /admin/api/password                change the admin password
 """
 
 from __future__ import annotations
@@ -32,8 +38,8 @@ from datetime import UTC, datetime
 from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 
-from .. import auth, store
-from ..config import UPLOAD_DIR
+from .. import auth, mailer, store
+from ..config import ASSET_VERSION, SITE_URL, UPLOAD_DIR
 from ..ratelimit import rate_limit
 from ..render import env
 from ..schemas import load_schemas, prepare_section
@@ -82,9 +88,62 @@ def logout():
 def admin_app(request: Request):
     if not auth.is_logged_in(request):
         return RedirectResponse("/admin/login", status_code=303)
-    from ..config import ASSET_VERSION
-
     return _page("admin/index.html", v=ASSET_VERSION)
+
+
+# ---------------------------------------------------------------------------
+# Forgot / reset password
+# ---------------------------------------------------------------------------
+@router.get("/forgot", response_class=HTMLResponse)
+def forgot_form():
+    return _page("admin/forgot.html", email_ready=mailer.email_configured(), sent=False)
+
+
+@router.post("/forgot", dependencies=[rate_limit("forgot", 5)])
+def forgot_send():
+    """Email a reset link to ADMIN_EMAIL. The page always shows the same
+    message, so it can't be used to probe whether email is set up."""
+    if mailer.email_configured():
+        link = f"{SITE_URL}/admin/reset?token={auth.make_reset_token()}"
+        body = (
+            "Someone (hopefully you) asked to reset the Stay Different admin password.\n\n"
+            f"Choose a new password here (the link works once, for {auth.RESET_LINK_MINUTES} minutes):\n{link}\n\n"
+            "If this wasn't you, ignore this email — your password stays the same."
+        )
+        try:
+            mailer.send_email(mailer.ADMIN_EMAIL, "Reset your Stay Different admin password", body)
+        except Exception as exc:  # noqa: BLE001 — never show SMTP errors to visitors
+            print(f"[admin] Could not send reset email: {exc}")
+    return _page("admin/forgot.html", email_ready=mailer.email_configured(), sent=True)
+
+
+@router.get("/reset", response_class=HTMLResponse)
+def reset_form(request: Request):
+    token = request.query_params.get("token", "")
+    return _page("admin/reset.html", token=token, valid=auth.check_reset_token(token), error=None, min_length=auth.MIN_PASSWORD_LENGTH)
+
+
+@router.post("/reset", dependencies=[rate_limit("reset", 10)])
+async def reset_password(request: Request):
+    form = await request.form()
+    token = str(form.get("token", ""))
+    password, confirm = str(form.get("password", "")), str(form.get("confirm", ""))
+    if not auth.check_reset_token(token):
+        return _page("admin/reset.html", token=token, valid=False, error=None, min_length=auth.MIN_PASSWORD_LENGTH)
+    error = None
+    if password != confirm:
+        error = "The two passwords don't match."
+    else:
+        try:
+            auth.set_password(password)
+        except ValueError as exc:
+            error = str(exc)
+    if error:
+        return _page("admin/reset.html", token=token, valid=True, error=error, min_length=auth.MIN_PASSWORD_LENGTH)
+    # Sign straight in with the new password.
+    response = RedirectResponse("/admin", status_code=303)
+    response.set_cookie(value=auth.make_session(), **auth.cookie_options())
+    return response
 
 
 # ---------------------------------------------------------------------------
@@ -236,3 +295,28 @@ async def import_backup(request: Request):
         return JSONResponse({"error": "The backup has problems.", "errors": problems[:20]}, status_code=400)
     store.import_all(cleaned)
     return {"ok": True, "sections": list(cleaned)}
+
+
+# ---------------------------------------------------------------------------
+# Account (change password)
+# ---------------------------------------------------------------------------
+@api.get("/account")
+def account():
+    return {"emailReset": mailer.email_configured(), "adminEmail": mailer.ADMIN_EMAIL, "minLength": auth.MIN_PASSWORD_LENGTH}
+
+
+@api.post("/password", dependencies=[rate_limit("change-password", 10)])
+async def change_password(request: Request):
+    data = await request.json()
+    if not auth.check_password(str(data.get("current", ""))):
+        raise HTTPException(400, "Your current password isn't right.")
+    if data.get("new") != data.get("confirm"):
+        raise HTTPException(400, "The two new passwords don't match.")
+    try:
+        auth.set_password(str(data.get("new", "")))
+    except ValueError as exc:
+        raise HTTPException(400, str(exc)) from exc
+    # The old session is now invalid (other devices are signed out); issue a fresh one here.
+    response = JSONResponse({"ok": True})
+    response.set_cookie(value=auth.make_session(), **auth.cookie_options())
+    return response

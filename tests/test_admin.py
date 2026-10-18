@@ -86,3 +86,41 @@ def test_order_status(admin, client):
 def test_backup_roundtrip(admin):
     backup = admin.get("/admin/api/export").json()
     assert admin.post("/admin/api/import", json=backup).status_code == 200
+
+
+def test_change_password_and_reset(admin, client):
+    from app import auth
+
+    # Wrong current password / too short / mismatch are rejected
+    assert admin.post("/admin/api/password", json={"current": "nope", "new": "longenough1", "confirm": "longenough1"}).status_code == 400
+    assert admin.post("/admin/api/password", json={"current": "test-password", "new": "short", "confirm": "short"}).status_code == 400
+    assert (
+        admin.post("/admin/api/password", json={"current": "test-password", "new": "longenough1", "confirm": "different1"}).status_code
+        == 400
+    )
+
+    # Change it: this session keeps working, the old password stops working
+    assert (
+        admin.post("/admin/api/password", json={"current": "test-password", "new": "new-pass-123", "confirm": "new-pass-123"}).status_code
+        == 200
+    )
+    assert admin.get("/admin/api/account").status_code == 200
+    assert not auth.check_password("test-password") and auth.check_password("new-pass-123")
+
+    # A reset link works once, then expires (the password version changes)
+    token = auth.make_reset_token()
+    assert "Choose a new password" in client.get(f"/admin/reset?token={token}").text
+    res = client.post(
+        "/admin/reset", data={"token": token, "password": "via-email-456", "confirm": "via-email-456"}, follow_redirects=False
+    )
+    assert res.status_code == 303 and auth.check_password("via-email-456")
+    assert "expired" in client.get(f"/admin/reset?token={token}").text
+    assert "expired" in client.get("/admin/reset?token=123.forged").text
+
+    # Forgot page explains the Railway fallback when email isn't configured
+    assert "ADMIN_PASSWORD" in client.get("/admin/forgot").text
+
+    # Changing ADMIN_PASSWORD in the hosting dashboard always wins again
+    auth.AUTH_FILE.write_text(auth.AUTH_FILE.read_text().replace(auth._env_fingerprint(), "old-env"))
+    assert auth.check_password("test-password")
+    auth.AUTH_FILE.unlink()
