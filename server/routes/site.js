@@ -10,6 +10,7 @@ import { homePage } from '../../views/pages/home.js';
 import { colourGuidePage } from '../../views/pages/colour-guide.js';
 import { shopPage } from '../../views/pages/shop.js';
 import { productPage } from '../../views/pages/product.js';
+import { aboutPage, hairCarePage, faqPage, shippingPage, contactPage } from '../../views/pages/content.js';
 
 export const siteRouter = express.Router();
 
@@ -18,6 +19,11 @@ siteRouter.get('/colour-guide', page(colourGuidePage));
 siteRouter.get('/shop', page(shopPage));
 siteRouter.get('/shop/:collection', page(shopPage));
 siteRouter.get('/products/:slug', page(productPage));
+siteRouter.get('/about', page(aboutPage));
+siteRouter.get('/hair-care', page(hairCarePage));
+siteRouter.get('/faq', page(faqPage));
+siteRouter.get('/shipping-returns', page(shippingPage));
+siteRouter.get('/contact', page(contactPage));
 
 /* ---------- SEO files ----------------------------------------------------- */
 siteRouter.get('/sitemap.xml', async (req, res) => {
