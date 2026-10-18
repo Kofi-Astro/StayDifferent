@@ -14,7 +14,7 @@
 {% set page_title = (meta.title ~ ' — ' ~ settings.brand.name) if meta.title else settings.seo.title %}
 {% set page_description = meta.description or settings.seo.description %}
 {% set canonical = site_url ~ ('' if path == '/' else path) %}
-{% set share_image = meta.image or settings.seo.ogImage or '/og-image.png' %}
+{% set share_image = meta.image or settings.seo.ogImage or '/og-image.jpg' %}
 <!doctype html>
 <html lang="en">
 <head>

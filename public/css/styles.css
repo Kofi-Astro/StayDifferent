@@ -655,6 +655,11 @@ select.field {
   margin-right: -0.45em;
   color: var(--gold);
 }
+/* On light backgrounds the small "( HAIR )" text uses a deeper gold so it
+   still meets WCAG contrast (5.2:1 on cream). */
+.logo--dark .logo__sub {
+  color: #7d5f2e;
+}
 .logo__diamond {
   width: 0.35rem;
   height: 0.35rem;
