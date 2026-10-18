@@ -57,6 +57,8 @@ export function layout({ ctx, meta, body, jsonLd = [], styles = [], script, data
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Flag that JavaScript is running (CSS shows no-JS fallbacks otherwise). -->
+  <script>document.documentElement.classList.add('js')</script>
   <title>${title}</title>
   <meta name="description" content="${description}" />
   <link rel="canonical" href="${canonical}" />

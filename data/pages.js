@@ -47,6 +47,11 @@ export const home = {
     heading: 'As seen on|you',
     body: 'Tag @staydifferenthair to be featured. Real people, real installs, zero filters (okay, maybe one).',
   },
+  newsletter: {
+    eyebrow: 'The inner circle',
+    heading: 'First dibs on every drop.',
+    text: 'New shades land with subscribers first — plus restock alerts and the occasional members-only treat.',
+  },
 };
 
 export const about = {
